@@ -13,6 +13,8 @@ app_license = "MIT"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/ts_cloud_gst/css/ts_cloud_gst.css"
 # app_include_js = "/assets/ts_cloud_gst/js/ts_cloud_gst.js"
+app_include_js = ["/assets/ts_cloud_gst/node_modules/vuetify/dist/vuetify.js",
+                  "ts_cloud_gst.bundle.js"]
 
 # include js, css files in header of web template
 # web_include_css = "/assets/ts_cloud_gst/css/ts_cloud_gst.css"
