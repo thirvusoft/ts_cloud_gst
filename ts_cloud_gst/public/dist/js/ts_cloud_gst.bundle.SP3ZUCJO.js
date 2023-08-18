@@ -7,10 +7,16 @@
         year_list: [],
         current_year: "",
         current_month: "",
-        pos_profile: ""
+        current_week: "Aug 13 - Aug 19, 2023",
+        pos_profile: "",
+        select_date: "",
+        allow_date_picker: false
       };
     },
     methods: {
+      update_date() {
+        this.allow_date_picker = false;
+      },
       get_year() {
         var me = this;
         frappe.call({
@@ -45,7 +51,6 @@
       }
     },
     created: function() {
-      this.get_year();
       this.$nextTick(function() {
         evntBus.$on("show_mesage", (data) => {
           this.show_mesage(data);
@@ -62,24 +67,15 @@
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
     return _c("nav", [
-      _c("v-app-bar", { staticClass: "elevation-2", attrs: { app: "", height: "40" } }, [
-        _c("v-toolbar-title", {
-          staticClass: "text-uppercase primary--text",
-          staticStyle: { cursor: "pointer" },
-          on: { click: _vm.go_desk }
-        }, [
-          _c("span", { staticClass: "font-weight-light" }, [
-            _vm._v("Timesheet Helper")
-          ])
+      _c("v-app-bar", {
+        staticClass: "elevation-2",
+        attrs: { app: "", height: "40", color: "background" }
+      }, [
+        _c("v-toolbar-title", [
+          _c("span", { staticStyle: { color: "#1565C0", "font-size": "4vh" } }, [_vm._v("TSheets")])
         ]),
         _vm._v(" "),
-        _c("v-spacer"),
-        _vm._v(" "),
-        _c("v-btn", {
-          staticStyle: { cursor: "unset" },
-          attrs: { text: "", color: "primary" },
-          on: { click: _vm.logOut }
-        }, [_c("span", { attrs: { right: "" } }, [_vm._v(_vm._s("Logout"))])])
+        _c("v-spacer")
       ], 1),
       _vm._v(" "),
       _c("v-bottom-navigation", {
@@ -87,79 +83,161 @@
           "max-height": "7vh",
           height: "7vh",
           "margin-top": "13px"
-        }
+        },
+        attrs: { "background-color": "background", color: "button" }
       }, [
-        _c("v-autocomplete", {
-          staticStyle: { "margin-left": "2vh", "max-width": "30vh" },
+        _c("v-menu", {
+          ref: "allow_date_picker",
           attrs: {
-            items: _vm.month_list,
-            outlined: "",
-            dense: "",
-            label: _vm.frappe._("Select Month")
+            "close-on-content-click": false,
+            transition: "scale-transition",
+            dense: ""
           },
+          scopedSlots: _vm._u([
+            {
+              key: "activator",
+              fn: function(ref) {
+                var on = ref.on;
+                var attrs = ref.attrs;
+                return [
+                  _c("v-btn", _vm._g(_vm._b({
+                    staticStyle: {
+                      "margin-left": "0vh",
+                      "max-width": "30vh"
+                    }
+                  }, "v-btn", attrs, false), on), [
+                    _c("span", {
+                      staticStyle: {
+                        color: "#283593",
+                        "font-weight": "bold"
+                      },
+                      attrs: { right: "" }
+                    }, [_vm._v(_vm._s("Select Date"))])
+                  ])
+                ];
+              }
+            }
+          ]),
           model: {
-            value: _vm.current_month,
+            value: _vm.allow_date_picker,
             callback: function($$v) {
-              _vm.current_month = $$v;
+              _vm.allow_date_picker = $$v;
             },
-            expression: "current_month"
+            expression: "allow_date_picker"
           }
-        }),
-        _vm._v(" "),
-        _c("v-autocomplete", {
-          staticStyle: { "margin-left": "3vh", "max-width": "30vh" },
-          attrs: {
-            items: _vm.year_list,
-            outlined: "",
-            dense: "",
-            label: _vm.frappe._("Select Year")
-          },
-          model: {
-            value: _vm.current_year,
-            callback: function($$v) {
-              _vm.current_year = $$v;
+        }, [
+          _vm._v(" "),
+          _c("v-date-picker", {
+            attrs: {
+              "no-title": "",
+              scrollable: "",
+              color: "date_select",
+              max: _vm.frappe.datetime.add_days(_vm.frappe.datetime.now_date(true))
             },
-            expression: "current_year"
-          }
-        }),
+            on: { input: _vm.update_date },
+            model: {
+              value: _vm.select_date,
+              callback: function($$v) {
+                _vm.select_date = $$v;
+              },
+              expression: "select_date"
+            }
+          })
+        ], 1),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
             "margin-left": "5vh",
             "max-height": "7vh",
             cursor: "unset"
-          },
-          attrs: { color: "week" }
-        }, [_c("span", { attrs: { right: "" } }, [_vm._v(_vm._s("<"))])]),
+          }
+        }, [
+          _c("span", {
+            staticStyle: {
+              color: "#283593",
+              "font-weight": "bold",
+              "font-size": "3vh"
+            },
+            attrs: { right: "" }
+          }, [_vm._v(_vm._s("<"))])
+        ]),
         _vm._v(" "),
-        _c("span", { staticStyle: { "margin-top": "12px", "margin-left": "2vh" } }, [_vm._v("Week")]),
+        _c("span", {
+          staticStyle: {
+            "margin-top": "12px",
+            "margin-left": "2vh",
+            color: "#1565C0",
+            "font-weight": "bold"
+          }
+        }, [_vm._v(_vm._s(_vm.current_week))]),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
             "margin-left": "2vh",
             "max-height": "7vh",
             cursor: "unset"
-          },
-          attrs: { test: "", color: "week" }
-        }, [_c("span", { attrs: { right: "" } }, [_vm._v(_vm._s(">"))])]),
+          }
+        }, [
+          _c("span", {
+            staticStyle: {
+              color: "#283593",
+              "font-weight": "bold",
+              "font-size": "3vh"
+            },
+            attrs: { right: "" }
+          }, [_vm._v(_vm._s(">"))])
+        ]),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "60vh",
+            "margin-left": "80vh",
             "max-height": "7vh",
             cursor: "unset"
-          },
-          attrs: { color: "reset" }
-        }, [_c("span", { attrs: { right: "" } }, [_vm._v(_vm._s("Reset"))])]),
+          }
+        }, [
+          _c("span", {
+            staticStyle: {
+              color: "#283593",
+              "font-weight": "bold",
+              "font-size": "2vh"
+            },
+            attrs: { right: "" }
+          }, [_vm._v(_vm._s("Reset"))])
+        ]),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
             "margin-left": "3vh",
             "max-height": "7vh",
             cursor: "unset"
-          },
-          attrs: { color: "save" }
-        }, [_c("span", { attrs: { right: "" } }, [_vm._v(_vm._s("Save"))])])
+          }
+        }, [
+          _c("span", {
+            staticStyle: {
+              color: "#283593",
+              "font-weight": "bold",
+              "font-size": "2vh"
+            },
+            attrs: { right: "" }
+          }, [_vm._v(_vm._s("Save"))])
+        ]),
+        _vm._v(" "),
+        _c("v-btn", {
+          staticStyle: {
+            "margin-left": "3vh",
+            "max-height": "7vh",
+            cursor: "unset"
+          }
+        }, [
+          _c("span", {
+            staticStyle: {
+              color: "#283593",
+              "font-weight": "bold",
+              "font-size": "2vh"
+            },
+            attrs: { right: "" }
+          }, [_vm._v(_vm._s("Submit"))])
+        ])
       ], 1)
     ], 1);
   };
@@ -230,17 +308,69 @@
           { "customer_name": "Mohan", "project": "School", "qty": "20", "row_total": "140" },
           { "customer_name": "Rahul", "project": "School", "qty": "1", "row_total": "7" },
           { "customer_name": "Nirmal", "project": "School", "qty": "2", "row_total": "14" },
-          { "customer_name": "Siva", "project": "School", "qty": "3", "row_total": "70" }
+          { "customer_name": "Siva", "project": "School", "qty": "3", "row_total": "21" }
+        ],
+        table_column_total: [
+          { "column_total": "Total", "qty": "31", "row_total": "217" }
+        ],
+        table_total_column_headers: [
+          {
+            sortable: false,
+            value: "column_total",
+            align: "center"
+          },
+          {
+            text: __("Mon (01/01)"),
+            value: "qty",
+            align: "center"
+          },
+          {
+            text: __("Tue (02/01)"),
+            value: "qty",
+            align: "center"
+          },
+          {
+            text: __("Wed (03/01)"),
+            value: "qty",
+            align: "center"
+          },
+          {
+            text: __("Thu (04/01)"),
+            value: "qty",
+            align: "center"
+          },
+          {
+            text: __("Fri (05/01)"),
+            value: "qty",
+            align: "center"
+          },
+          {
+            text: __("Sat (06/01)"),
+            value: "qty",
+            align: "center"
+          },
+          {
+            text: __("Sun (07/01)"),
+            value: "qty",
+            align: "center"
+          },
+          {
+            text: __("Total"),
+            sortable: false,
+            value: "row_total",
+            align: "center"
+          }
         ],
         table_headers: [
           {
             text: __("Customer"),
-            align: "start",
-            sortable: true,
+            align: "center",
+            sortable: false,
             value: "customer_name"
           },
           {
             text: __("Project"),
+            sortable: false,
             value: "project",
             align: "center"
           },
@@ -281,7 +411,14 @@
           },
           {
             text: __("Total"),
+            sortable: false,
             value: "row_total",
+            align: "center"
+          },
+          {
+            text: __("Remove"),
+            sortable: false,
+            value: "delete",
             align: "center"
           }
         ]
@@ -302,11 +439,11 @@
     return _c("v-row", [
       _c("v-card-actions", { staticStyle: { "margin-top": "30px" } }, [
         _c("v-data-table", {
-          staticClass: "elevation-1",
           attrs: {
             headers: _vm.table_headers,
             items: _vm.table_row,
-            "item-key": "posa_row_id"
+            "item-key": "posa_row_id",
+            color: "background"
           },
           scopedSlots: _vm._u([
             {
@@ -318,8 +455,7 @@
                     attrs: {
                       dense: "",
                       outlined: "",
-                      color: "primary",
-                      "background-color": "white",
+                      color: "table_field_box",
                       "hide-details": "",
                       value: item.customer_name
                     }
@@ -336,8 +472,7 @@
                     attrs: {
                       dense: "",
                       outlined: "",
-                      color: "primary",
-                      "background-color": "white",
+                      color: "table_field_box",
                       "hide-details": "",
                       value: item.project
                     }
@@ -354,8 +489,7 @@
                     attrs: {
                       dense: "",
                       outlined: "",
-                      color: "primary",
-                      "background-color": "white",
+                      color: "table_field_box",
                       "hide-details": "",
                       value: item.qty
                     }
@@ -372,9 +506,111 @@
                     attrs: {
                       dense: "",
                       outlined: "",
-                      color: "primary",
-                      "background-color": "white",
+                      color: "table_field_box",
                       "hide-details": "",
+                      readonly: "",
+                      value: item.row_total
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.delete",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-btn", {
+                    attrs: { icon: "", color: "#90CAF9" },
+                    on: {
+                      click: function($event) {
+                        $event.stopPropagation();
+                        return _vm.remove_item(item);
+                      }
+                    }
+                  }, [_c("v-icon", [_vm._v("mdi-delete")])], 1)
+                ];
+              }
+            }
+          ])
+        })
+      ], 1),
+      _vm._v(" "),
+      _c("v-card-actions", { staticStyle: { "margin-top": "-12vh", "margin-left": "3vh" } }, [
+        _c("v-btn", {
+          staticStyle: {
+            "margin-left": "0vh",
+            color: "#283593",
+            "font-weight": "bold"
+          },
+          attrs: { color: "#BBDEFB" },
+          on: { click: _vm.add_row }
+        }, [_vm._v(_vm._s(_vm.__("Add Row")))])
+      ], 1),
+      _vm._v(" "),
+      _c("v-card-actions", {
+        staticStyle: {
+          "margin-top": "-2vh",
+          "margin-left": "1vh",
+          "max-width": "170vh"
+        }
+      }, [
+        _c("v-data-table", {
+          attrs: {
+            headers: _vm.table_total_column_headers,
+            items: _vm.table_column_total,
+            "item-key": "posa_row_id",
+            "hide-default-footer": ""
+          },
+          scopedSlots: _vm._u([
+            {
+              key: "item.column_total",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      readonly: "",
+                      value: item.column_total
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.qty",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      readonly: "",
+                      value: item.qty
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.row_total",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      readonly: "",
                       value: item.row_total
                     }
                   })
@@ -383,14 +619,6 @@
             }
           ])
         })
-      ], 1),
-      _vm._v(" "),
-      _c("v-card-actions", [
-        _c("v-btn", {
-          staticStyle: { "margin-left": "0vh" },
-          attrs: { color: "success", dark: "" },
-          on: { click: _vm.add_row }
-        }, [_vm._v(_vm._s(_vm.__("Add Row")))])
       ], 1)
     ], 1);
   };
@@ -683,21 +911,12 @@
           theme: {
             themes: {
               light: {
-                background: "#FFFFFF",
-                primary: "#0097A7",
-                secondary: "#00BCD4",
-                accent: "#9575CD",
-                success: "#66BB6A",
-                info: "#2196F3",
-                warning: "#FF9800",
-                error: "#E86674",
-                orange: "#E65100",
-                golden: "#A68C59",
-                badge: "#F5528C",
-                customPrimary: "#085294",
-                save: "#E3F2FD",
-                reset: "#E3F2FD",
-                week: "#E3F2FD"
+                background: "#E3F2FD",
+                button: "#283593",
+                navigation_field: "#BBDEFB",
+                date_select: "#1565C0",
+                text: "#1565C0",
+                table_field_box: "#82B1FF"
               }
             }
           }
@@ -711,4 +930,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.FOCRQMRZ.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.SP3ZUCJO.js.map
