@@ -4,7 +4,7 @@
  "docstatus": 0,
  "doctype": "Page",
  "idx": 0,
- "modified": "2023-08-16 11:18:09.969011",
+ "modified": "2023-08-18 15:49:51.542347",
  "modified_by": "Administrator",
  "module": "Ts Cloud Gst",
  "name": "timesheethelper",
@@ -15,5 +15,5 @@
  "standard": "Yes",
  "style": null,
  "system_page": 0,
- "title": "Timesheet Helper"
+ "title": "TSheets"
 }

@@ -18,21 +18,12 @@ ts_cloud_gst.timesheethelper = class {
                     theme: {
                         themes: {
                             light: {
-                                background: '#FFFFFF',
-                                primary: '#0097A7',
-                                secondary: '#00BCD4',
-                                accent: '#9575CD',
-                                success: '#66BB6A',
-                                info: '#2196F3',
-                                warning: '#FF9800',
-                                error: '#E86674',
-                                orange: '#E65100',
-                                golden: '#A68C59',
-                                badge: '#F5528C',
-                                customPrimary: '#085294',
-                                save: '#E3F2FD',
-                                reset: '#E3F2FD',
-                                week: '#E3F2FD'
+                                background: '#E3F2FD',
+                                button: '#283593',
+                                navigation_field: '#BBDEFB',
+                                date_select: '#1565C0',
+                                text: '#1565C0',
+                                table_field_box: '#82B1FF'
                             },
                         },
                     },
