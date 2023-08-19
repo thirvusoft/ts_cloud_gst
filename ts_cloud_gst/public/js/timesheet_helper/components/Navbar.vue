@@ -52,22 +52,6 @@
 
           </v-menu>
             
-            <!-- <v-autocomplete style="margin-left: 2vh; max-width: 30vh" 
-                :items="month_list"
-                v-model="current_month"
-                outlined
-                dense
-                :label="frappe._('Select Month')"
-            ></v-autocomplete>
-
-            <v-autocomplete style="margin-left: 3vh; max-width: 30vh" 
-                :items="year_list"
-                v-model="current_year"
-                outlined
-                dense
-                :label="frappe._('Select Year')"
-            ></v-autocomplete> -->
-
             <v-btn style="margin-left: 5vh; max-height: 7vh; cursor: unset">
                 <span style="color: #283593; font-weight: bold; font-size: 3vh" right>{{"<"}}</span>
             </v-btn>
@@ -94,49 +78,54 @@
         
     </nav>
     
-  </template>
-  
-  <script>
-//   import { evntBus } from '../bus';
-  
-  export default {
-    // components: {MyPopup},
+</template>
+
+<script>
+
+import { evntBus } from '../bus';
+
+export default {
+
     data() {
 
-      return {
+        return {
 
-        month_list: [],
-        year_list: [],
-        current_year: '',
-        current_month: '',
-        current_week: 'Aug 13 - Aug 19, 2023',
-        pos_profile: '',
+        current_week: '',
         select_date: '',
         allow_date_picker: false,
-      };
+        
+        };
 
     },
 
     methods: {
 
         update_date() {
+
             this.allow_date_picker = false
+            
+            this.get_week()
         },
         
-        get_year(){
+        get_week(){
             var me = this;
 
             frappe.call({
-                method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.year_month_finding_and_list",
+                method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.find_week",
+                args: {
+                    date: this.select_date
+                },
 
                 callback: function (r) {
 
                     if(r.message){
                         
-                        me.month_list = r.message[1]
-                        me.year_list = r.message[0]
-                        me.current_year = r.message[2]
-                        me.current_month = r.message[3]
+                        me.current_week = r.message[0]
+                        evntBus.$emit("update_main_table_header", r.message[1]);
+                        evntBus.$emit("update_total_table_header", r.message[2]);
+                        evntBus.$emit("main_table_values", r.message[3]);
+                        evntBus.$emit("total_table_values", r.message[4]);
+                        
                     }
 
                 }
@@ -153,40 +142,28 @@
             me.logged_out = true;
 
             return frappe.call({
-            method: 'logout',
-            
-            callback: function (r) {
-                if (r.exc) {
-                return;
-                }
+                method: 'logout',
+                
+                callback: function (r) {
+                    if (r.exc) {
+                        return;
+                    }
 
-                frappe.set_route('/login');
-                location.reload();
-            },
+                    frappe.set_route('/login');
+                    location.reload();
+                },
             });
-      },
-      
+        },
+        
     },
 
     created: function () {
 
-        // this.get_year()
+        this.select_date = frappe.datetime.now_date()
 
-        this.$nextTick(function () {
-            evntBus.$on('show_mesage', (data) => {
-            this.show_mesage(data);
-            });
-            evntBus.$on('set_company', (data) => {
-            this.company = data.name;
-            this.company_img = data.company_logo
-                ? data.company_logo
-                : this.company_img;
-            });
+        this.get_week()
 
-            
-        });
     },
-  };
-  </script>
+};
+</script>
 
-  
