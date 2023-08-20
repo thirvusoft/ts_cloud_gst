@@ -1,14 +1,12 @@
 (() => {
+  // ../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/bus.js
+  var evntBus = new Vue();
+
   // ../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/components/Navbar.vue
   var __vue_script__ = {
     data() {
       return {
-        month_list: [],
-        year_list: [],
-        current_year: "",
-        current_month: "",
-        current_week: "Aug 13 - Aug 19, 2023",
-        pos_profile: "",
+        current_week: "",
         select_date: "",
         allow_date_picker: false
       };
@@ -16,17 +14,22 @@
     methods: {
       update_date() {
         this.allow_date_picker = false;
+        this.get_week();
       },
-      get_year() {
+      get_week() {
         var me = this;
         frappe.call({
-          method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.year_month_finding_and_list",
+          method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.find_week",
+          args: {
+            date: this.select_date
+          },
           callback: function(r) {
             if (r.message) {
-              me.month_list = r.message[1];
-              me.year_list = r.message[0];
-              me.current_year = r.message[2];
-              me.current_month = r.message[3];
+              me.current_week = r.message[0];
+              evntBus.$emit("update_main_table_header", r.message[1]);
+              evntBus.$emit("update_total_table_header", r.message[2]);
+              evntBus.$emit("main_table_values", r.message[3]);
+              evntBus.$emit("total_table_values", r.message[4]);
             }
           }
         });
@@ -51,15 +54,8 @@
       }
     },
     created: function() {
-      this.$nextTick(function() {
-        evntBus.$on("show_mesage", (data) => {
-          this.show_mesage(data);
-        });
-        evntBus.$on("set_company", (data) => {
-          this.company = data.name;
-          this.company_img = data.company_logo ? data.company_logo : this.company_img;
-        });
-      });
+      this.select_date = frappe.datetime.now_date();
+      this.get_week();
     }
   };
   var __vue_render__ = function() {
@@ -303,133 +299,73 @@
   var __vue_script__2 = {
     data() {
       return {
-        table_row: [
-          { "customer_name": "Gokul", "project": "Colud GST", "qty": "5", "row_total": "35" },
-          { "customer_name": "Mohan", "project": "School", "qty": "20", "row_total": "140" },
-          { "customer_name": "Rahul", "project": "School", "qty": "1", "row_total": "7" },
-          { "customer_name": "Nirmal", "project": "School", "qty": "2", "row_total": "14" },
-          { "customer_name": "Siva", "project": "School", "qty": "3", "row_total": "21" }
-        ],
-        table_column_total: [
-          { "column_total": "Total", "qty": "31", "row_total": "217" }
-        ],
-        table_total_column_headers: [
-          {
-            sortable: false,
-            value: "column_total",
-            align: "center"
-          },
-          {
-            text: __("Mon (01/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Tue (02/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Wed (03/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Thu (04/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Fri (05/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Sat (06/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Sun (07/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Total"),
-            sortable: false,
-            value: "row_total",
-            align: "center"
-          }
-        ],
-        table_headers: [
-          {
-            text: __("Customer"),
-            align: "center",
-            sortable: false,
-            value: "customer_name"
-          },
-          {
-            text: __("Project"),
-            sortable: false,
-            value: "project",
-            align: "center"
-          },
-          {
-            text: __("Mon (01/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Tue (02/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Wed (03/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Thu (04/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Fri (05/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Sat (06/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Sun (07/01)"),
-            value: "qty",
-            align: "center"
-          },
-          {
-            text: __("Total"),
-            sortable: false,
-            value: "row_total",
-            align: "center"
-          },
-          {
-            text: __("Remove"),
-            sortable: false,
-            value: "delete",
-            align: "center"
-          }
-        ]
+        itemsPerPage: 5,
+        customer_data: [],
+        table_row: [],
+        table_column_total: [],
+        table_total_column_headers: [],
+        table_headers: [],
+        total_row_id: 0
       };
     },
     methods: {
       add_row() {
-        this.table_row.push({});
+        this.total_row_id = this.total_row_id + 1;
+        this.table_row.push({ "main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0 });
+      },
+      remove_item(item) {
+        const index = this.table_row.findIndex((el) => el.main_row_id == item.main_row_id);
+        if (index >= 0) {
+          this.table_row.splice(index, 1);
+        }
+      },
+      get_customer_data() {
+        var me = this;
+        frappe.call({
+          method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.get_customer",
+          callback: function(r) {
+            if (r.message) {
+              me.customer_data = r.message;
+            }
+          }
+        });
+      },
+      update_project_data(item) {
+        if (item.customer_name) {
+          var me = item;
+          frappe.call({
+            method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.get_project",
+            args: {
+              customer: item.customer_name
+            },
+            async: false,
+            callback: function(r) {
+              if (r.message) {
+                me.project_data = r.message;
+              }
+            }
+          });
+        } else {
+          item.project_data = [];
+        }
       }
     },
+    mounted() {
+      evntBus.$on("update_main_table_header", (table_headers) => {
+        this.table_headers = table_headers;
+      });
+      evntBus.$on("update_total_table_header", (table_total_column_headers) => {
+        this.table_total_column_headers = table_total_column_headers;
+      });
+      evntBus.$on("main_table_values", (table_row) => {
+        this.table_row = table_row;
+      });
+      evntBus.$on("total_table_values", (table_column_total) => {
+        this.table_column_total = table_column_total;
+      });
+    },
     created: function() {
+      this.get_customer_data();
     }
   };
   var __vue_render__2 = function() {
@@ -437,13 +373,14 @@
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
     return _c("v-row", [
-      _c("v-card-actions", { staticStyle: { "margin-top": "30px" } }, [
+      _c("v-card-actions", { staticStyle: { "margin-top": "30px", width: "200vh" } }, [
         _c("v-data-table", {
           attrs: {
             headers: _vm.table_headers,
             items: _vm.table_row,
-            "item-key": "posa_row_id",
-            color: "background"
+            "item-key": "main_row_id",
+            color: "background",
+            "items-per-page": _vm.itemsPerPage
           },
           scopedSlots: _vm._u([
             {
@@ -451,13 +388,46 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  _c("v-autocomplete", {
                     attrs: {
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      value: item.customer_name
+                      items: item.customer_data,
+                      "item-text": "name",
+                      "item-value": "name"
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.update_project_data(item);
+                      }
+                    },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "item",
+                        fn: function(data) {
+                          return [
+                            [
+                              _c("v-list-item-content", [
+                                _c("v-list-item-subtitle", {
+                                  staticClass: "button--text",
+                                  domProps: {
+                                    innerHTML: _vm._s("ID: " + data.item.name)
+                                  }
+                                })
+                              ], 1)
+                            ]
+                          ];
+                        }
+                      }
+                    ], null, true),
+                    model: {
+                      value: item.customer_name,
+                      callback: function($$v) {
+                        _vm.$set(item, "customer_name", $$v);
+                      },
+                      expression: "item.customer_name"
                     }
                   })
                 ];
@@ -468,20 +438,55 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  _c("v-autocomplete", {
                     attrs: {
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      value: item.project
+                      items: item.project_data,
+                      "item-text": "project_name",
+                      "item-value": "name"
+                    },
+                    scopedSlots: _vm._u([
+                      {
+                        key: "item",
+                        fn: function(data) {
+                          return [
+                            [
+                              _c("v-list-item-content", [
+                                _c("v-list-item-subtitle", {
+                                  staticClass: "button--text",
+                                  domProps: {
+                                    innerHTML: _vm._s("ID: " + data.item.name)
+                                  }
+                                }),
+                                _vm._v(" "),
+                                _c("v-list-item-subtitle", {
+                                  staticClass: "button--text",
+                                  domProps: {
+                                    innerHTML: _vm._s("Name: " + data.item.project_name)
+                                  }
+                                })
+                              ], 1)
+                            ]
+                          ];
+                        }
+                      }
+                    ], null, true),
+                    model: {
+                      value: item.project,
+                      callback: function($$v) {
+                        _vm.$set(item, "project", $$v);
+                      },
+                      expression: "item.project"
                     }
                   })
                 ];
               }
             },
             {
-              key: "item.qty",
+              key: "item.mon",
               fn: function(ref) {
                 var item = ref.item;
                 return [
@@ -491,7 +496,109 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      value: item.qty
+                      value: item.mon
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.tue",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.tue
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.wed",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.wed
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.thu",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.thu
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.fri",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.fri
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.sat",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.sat
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.sun",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.sun
                     }
                   })
                 ];
@@ -521,7 +628,7 @@
                 var item = ref.item;
                 return [
                   _c("v-btn", {
-                    attrs: { icon: "", color: "#90CAF9" },
+                    attrs: { icon: "", color: "button" },
                     on: {
                       click: function($event) {
                         $event.stopPropagation();
@@ -536,7 +643,7 @@
         })
       ], 1),
       _vm._v(" "),
-      _c("v-card-actions", { staticStyle: { "margin-top": "-12vh", "margin-left": "3vh" } }, [
+      _c("v-card-actions", { staticStyle: { "margin-top": "-26vh", "margin-left": "3vh" } }, [
         _c("v-btn", {
           staticStyle: {
             "margin-left": "0vh",
@@ -551,15 +658,15 @@
       _c("v-card-actions", {
         staticStyle: {
           "margin-top": "-2vh",
-          "margin-left": "1vh",
-          "max-width": "170vh"
+          "margin-left": "5vh",
+          "max-width": "165vh"
         }
       }, [
         _c("v-data-table", {
           attrs: {
             headers: _vm.table_total_column_headers,
             items: _vm.table_column_total,
-            "item-key": "posa_row_id",
+            "item-key": "total_row_id",
             "hide-default-footer": ""
           },
           scopedSlots: _vm._u([
@@ -582,7 +689,7 @@
               }
             },
             {
-              key: "item.qty",
+              key: "item.mon",
               fn: function(ref) {
                 var item = ref.item;
                 return [
@@ -592,8 +699,109 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      readonly: "",
-                      value: item.qty
+                      value: item.mon
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.tue",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.tue
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.wed",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.wed
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.thu",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.thu
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.fri",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.fri
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.sat",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.sat
+                    }
+                  })
+                ];
+              }
+            },
+            {
+              key: "item.sun",
+              fn: function(ref) {
+                var item = ref.item;
+                return [
+                  _c("v-text-field", {
+                    attrs: {
+                      dense: "",
+                      outlined: "",
+                      color: "table_field_box",
+                      "hide-details": "",
+                      value: item.sun
                     }
                   })
                 ];
@@ -930,4 +1138,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.SP3ZUCJO.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.OGFWKMJ3.js.map

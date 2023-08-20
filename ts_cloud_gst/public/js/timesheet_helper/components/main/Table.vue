@@ -1,47 +1,158 @@
 <template>
     <v-row>
-        <v-card-actions style="margin-top: 30px;">
+        <v-card-actions style="margin-top: 30px; width:200vh">
             <v-data-table
                 :headers="table_headers"
                 :items="table_row"
-                item-key="posa_row_id"
+                item-key="main_row_id"
                 color="background"
+                :items-per-page="itemsPerPage"
                 >
 
                 <template v-slot:item.customer_name="{ item }">
 
-                    <v-text-field
+                    <v-autocomplete
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.customer_name"
+                        v-model="item.customer_name"
+                        :items="item.customer_data"
+                        item-text="name"
+                        item-value="name"
+                        @change="update_project_data(item)"
                         >
-                    </v-text-field>
+                        <template v-slot:item="data">
+                            <template>
+                                <v-list-item-content>
+                                    <v-list-item-subtitle
+                                        class="button--text"
+                                        v-html="`ID: ${data.item.name}`"
+                                    ></v-list-item-subtitle>
+                                </v-list-item-content>
+                            </template>
+                        </template>
+                    </v-autocomplete>
                             
                 </template>
 
                 <template v-slot:item.project="{ item }">
 
-                    <v-text-field
+                    <v-autocomplete
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.project"
+                        v-model="item.project"
+                        :items="item.project_data"
+                        item-text="project_name"
+                        item-value="name"
                         >
-                    </v-text-field>
+                        <template v-slot:item="data">
+                            <template>
+                                <v-list-item-content>
+                                    <v-list-item-subtitle
+                                        class="button--text"
+                                        v-html="`ID: ${data.item.name}`"
+                                    ></v-list-item-subtitle>
+                                    <v-list-item-subtitle
+                                        class="button--text"
+                                        v-html="`Name: ${data.item.project_name}`"
+                                    ></v-list-item-subtitle>
+                                    
+                                </v-list-item-content>
+                            </template>
+                        </template>
+                    </v-autocomplete>
                             
                 </template>
 
-                <template v-slot:item.qty="{ item }">
+                <template v-slot:item.mon="{ item }">
 
                     <v-text-field
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.qty"
+                        :value="item.mon"
+                        >
+                    </v-text-field>
+                        
+                </template>
+                
+                <template v-slot:item.tue="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.tue"
+                        >
+                    </v-text-field>
+                    
+                </template>
+
+                <template v-slot:item.wed="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.wed"
+                        >
+                    </v-text-field>
+                        
+                </template>
+
+                <template v-slot:item.thu="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.thu"
+                        >
+                    </v-text-field>
+                        
+                </template>
+
+                <template v-slot:item.fri="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.fri"
+                        >
+                    </v-text-field>
+                        
+                </template>
+
+                <template v-slot:item.sat="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.sat"
+                        >
+                    </v-text-field>
+                        
+                </template>
+
+                <template v-slot:item.sun="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.sun"
                         >
                     </v-text-field>
                         
@@ -64,7 +175,7 @@
                 <template v-slot:item.delete="{ item }">
                     <v-btn
                       icon
-                      color=#90CAF9
+                      color="button"
                       @click.stop="remove_item(item)"
                     >
                       <v-icon>mdi-delete</v-icon>
@@ -76,7 +187,7 @@
             
         </v-card-actions>
 
-        <v-card-actions style="margin-top: -12vh; margin-left: 3vh;">
+        <v-card-actions style="margin-top: -26vh; margin-left: 3vh;">
 
             <v-btn style="margin-left: 0vh; color: #283593; font-weight: bold;" color=#BBDEFB @click="add_row">{{
                 __('Add Row')
@@ -84,11 +195,12 @@
 
             </v-card-actions>
 
-        <v-card-actions style="margin-top: -2vh; margin-left: 1vh; max-width: 170vh;">
+        <v-card-actions style="margin-top: -2vh; margin-left: 5vh; max-width: 165vh;">
+
             <v-data-table
                 :headers="table_total_column_headers"
                 :items="table_column_total"
-                item-key="posa_row_id"
+                item-key="total_row_id"
                 hide-default-footer
             >
 
@@ -106,18 +218,95 @@
 
                 </template>
 
-                <template v-slot:item.qty="{ item }">
+                <template v-slot:item.mon="{ item }">
 
                     <v-text-field
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
-                        readonly
-                        :value="item.qty"
+                        :value="item.mon"
+                        >
+                    </v-text-field>
+                    
+                </template>
+
+                <template v-slot:item.tue="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.tue"
                         >
                     </v-text-field>
 
+                </template>
+
+                <template v-slot:item.wed="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.wed"
+                        >
+                    </v-text-field>
+                    
+                </template>
+
+                <template v-slot:item.thu="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.thu"
+                        >
+                    </v-text-field>
+                    
+                </template>
+
+                <template v-slot:item.fri="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.fri"
+                        >
+                    </v-text-field>
+                    
+                </template>
+
+                <template v-slot:item.sat="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.sat"
+                        >
+                    </v-text-field>
+                    
+                </template>
+
+                <template v-slot:item.sun="{ item }">
+
+                    <v-text-field
+                        dense
+                        outlined
+                        color="table_field_box"
+                        hide-details
+                        :value="item.sun"
+                        >
+                    </v-text-field>
+                    
                 </template>
                     
                 <template v-slot:item.row_total="{ item }">
@@ -140,173 +329,133 @@
 
     </v-row>
 
-  </template>
-  
-  <script>
-  
-  export default {
+</template>
 
-    data() {
+<script>
 
-      return {
+import { evntBus } from '../../bus';
 
-        table_row: [
-            {"customer_name":"Gokul", "project": "Colud GST", "qty": "5", "row_total": "35"},
-            {"customer_name":"Mohan", "project": "School", "qty": "20", "row_total": "140"},
-            {"customer_name":"Rahul", "project": "School", "qty": "1", "row_total": "7"},
-            {"customer_name":"Nirmal", "project": "School", "qty": "2", "row_total": "14"},
-            {"customer_name":"Siva", "project": "School", "qty": "3", "row_total": "21"},
-            // {"project": "Total", "qty": "31", "row_total": "217"},
-        ],
+export default {
 
-        table_column_total: [
-            {"column_total": "Total", "qty": "31", "row_total": "217"}
-        ],
+data() {
 
-        table_total_column_headers: [
-            {
-                sortable: false,
-                value: "column_total",
-                align: "center"
-            },
-            {
-                text: __("Mon (01/01)"),
-                value: "qty",
-                align: "center"
-            },
+    return {
 
-            {
-                text: __("Tue (02/01)"),
-                value: "qty",
-                align: "center"
-            },
+    itemsPerPage: 5,
 
-            {
-                text: __("Wed (03/01)"),
-                value: "qty",
-                align: "center"
-            },
+    customer_data: [],
 
-            {
-                text: __("Thu (04/01)"),
-                value: "qty",
-                align: "center"
-            },
+    table_row: [],
+    table_column_total: [],
 
-            {
-                text: __("Fri (05/01)"),
-                value: "qty",
-                align: "center"
-            },
+    table_total_column_headers: [],
+    table_headers: [],
 
-            {
-                text: __("Sat (06/01)"),
-                value: "qty",
-                align: "center"
-            },
+    total_row_id: 0
 
-            {
-                text: __("Sun (07/01)"),
-                value: "qty",
-                align: "center"
-            },
+    };
 
-            {
-                text: __("Total"),
-                sortable: false,
-                value: "row_total",
-                align: "center"
-            },
-        ],
+},
 
-        table_headers: [
-            {
-                text: __("Customer"),
-                align: "center",
-                sortable: false,
-                value: "customer_name",
-            },
+methods: {
+    
+    add_row() {
 
-            {
-                text: __("Project"),
-                sortable: false,
-                value: "project",
-                align: "center"
-            },
+        this.total_row_id = this.total_row_id + 1
 
-            {
-                text: __("Mon (01/01)"),
-                value: "qty",
-                align: "center"
-            },
-
-            {
-                text: __("Tue (02/01)"),
-                value: "qty",
-                align: "center"
-            },
-
-            {
-                text: __("Wed (03/01)"),
-                value: "qty",
-                align: "center"
-            },
-
-            {
-                text: __("Thu (04/01)"),
-                value: "qty",
-                align: "center"
-            },
-
-            {
-                text: __("Fri (05/01)"),
-                value: "qty",
-                align: "center"
-            },
-
-            {
-                text: __("Sat (06/01)"),
-                value: "qty",
-                align: "center"
-            },
-
-            {
-                text: __("Sun (07/01)"),
-                value: "qty",
-                align: "center"
-            },
-
-            {
-                text: __("Total"),
-                sortable: false,
-                value: "row_total",
-                align: "center"
-            },
-
-            {
-                text: __("Remove"),
-                sortable: false,
-                value: "delete",
-                align: "center"
-            },
-
-        ]
-
-      };
+        this.table_row.push({"main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0})
 
     },
 
-    methods: {
-        add_row() {
-            this.table_row.push({})
+    remove_item(item) {
+
+        const index = this.table_row.findIndex(
+            (el) => el.main_row_id == item.main_row_id
+        );
+
+        if (index >= 0) {
+            this.table_row.splice(index, 1);
         }
+        
     },
 
-    created: function () {
+    get_customer_data() {
+        var me = this;
+        
+        frappe.call({
+            method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.get_customer",
+
+            callback: function (r) {
+
+                if(r.message){
+                    
+                    me.customer_data = r.message
+                }
+
+            }
+        })
+    },
+
+    update_project_data(item){
+
+        if (item.customer_name){
+
+            var me = item;
+            
+            frappe.call({
+
+                method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.get_project",
+                args: {
+                    customer: item.customer_name
+                },
+                async: false,
+
+
+                callback: function (r) {
+
+                    if(r.message){
+                        me.project_data = r.message
+                    }
+
+                }
+            })
+        }
+
+        else{
+
+            item.project_data = []
+
+        }
 
     },
 
-  };
-  </script>
+},
+
+mounted() {
+
+    evntBus.$on("update_main_table_header", (table_headers) => {
+      this.table_headers = table_headers;
+    });
+
+    evntBus.$on("update_total_table_header", (table_total_column_headers) => {
+      this.table_total_column_headers = table_total_column_headers;
+    });
+
+    evntBus.$on("main_table_values", (table_row) => {
+        this.table_row = table_row
+    });
+
+    evntBus.$on("total_table_values", (table_column_total) => {
+        this.table_column_total = table_column_total
+    });
+},
+
+created: function () {
+
+    this.get_customer_data()
+},
+
+};
+</script>
 
   
