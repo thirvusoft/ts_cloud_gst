@@ -4,16 +4,24 @@ from datetime import timedelta
 
 import calendar
 
+import json
+
 from frappe.utils import getdate, nowdate
+
+week_short_forms = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+week_days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
 @frappe.whitelist()
 def find_week(date):
 
-    week_short_forms = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    msg = ""
+
+    global week_short_forms
 
     customer_dict = get_customer()
 
-    main_table_values = {"main_row_id": 0, "customer_data": customer_dict, "project": []}
+    main_table_values = {"main_row_id": 0, "customer_data": customer_dict, "project_data": []}
 
     total_table_values = {"column_total": "Total"}
 
@@ -139,7 +147,50 @@ def find_week(date):
         },
     ]
 
-    return week_description, table_headers, table_total_column_headers, [main_table_values], [total_table_values], start_of_week, end_of_week
+    main_table_values = [main_table_values]
+
+    if frappe.db.exists("TSheets Record", {"user": frappe.session.user, "date": start_of_week, "docstatus": ["!=", 2]}):
+
+        main_table_values = []
+
+        doc = frappe.get_doc("TSheets Record", {"user": frappe.session.user, "date": start_of_week, "docstatus": ["!=", 2]})
+
+        if doc.docstatus == 1:
+
+            msg = "Already Submitted, Not Able To Edit It..."
+
+        for row in doc.details:
+
+            main_table_values.append({
+                "main_row_id": row.idx - 1,
+                "customer_data": customer_dict,
+                "project_data": get_project(row.customer),
+                f"{week_short_forms[0].lower()}": row.hrs,
+                "customer_name": row.customer,
+                "project": row.project,
+                "row_total": row.hrs
+            })
+
+            total_table_values[week_short_forms[0].lower()] += row.hrs
+            total_table_values["row_total"] += row.hrs
+
+        for i in range(1, 7, 1):
+
+            next_date = start_of_week + timedelta(days = i)
+
+            if frappe.db.exists("TSheets Record", {"user": frappe.session.user, "date": next_date, "docstatus": ["!=", 2]}):
+
+                doc = frappe.get_doc("TSheets Record", {"user": frappe.session.user, "date": next_date, "docstatus": ["!=", 2]})
+
+                for row in doc.details:
+
+                    main_table_values[row.idx - 1][week_short_forms[i].lower()] = row.hrs
+                    main_table_values[row.idx - 1]["row_total"] += row.hrs
+
+                    total_table_values[week_short_forms[i].lower()] += row.hrs
+                    total_table_values["row_total"] += row.hrs
+
+    return week_description, table_headers, table_total_column_headers, main_table_values, [total_table_values], start_of_week, end_of_week, msg
 
 @frappe.whitelist()
 def get_customer():
@@ -154,3 +205,74 @@ def get_project(customer):
     project_list = frappe.db.get_all("Project", {"customer": customer, "status": "Open"}, ["name", "project_name"], order_by = "name asc")
 
     return project_list
+
+@frappe.whitelist()
+def save_or_submit(start_date_week, end_date_week, data, type):
+
+    global week_short_forms
+
+    global week_days
+
+    data = json.loads(data)
+
+    start_date_week = getdate(start_date_week)
+
+    end_date_week = getdate(end_date_week)
+
+    for i in range(0, 7, 1):
+
+        current_date = start_date_week + timedelta(days = i)
+
+        if current_date <= end_date_week:
+
+            if frappe.db.exists("TSheets Record", {"user": frappe.session.user, "date": current_date, "docstatus": ["!=", 2]}):
+
+                doc = frappe.get_doc("TSheets Record", {"user": frappe.session.user, "date": current_date, "docstatus": ["!=", 2]})
+
+                if doc.docstatus == 1:
+
+                    msg = "Already Submitted, Not Able To Edit It..."
+
+                    return False, msg
+            
+            else:
+
+                doc = frappe.new_doc("TSheets Record")
+
+            doc.user = frappe.session.user
+
+            doc.date = current_date
+            doc.day = week_days[i]
+
+            doc.total_hrs = 0
+
+            doc.details = []
+
+            for row in data:
+
+                doc.append("details", {
+                    "customer": row.get("customer_name"),
+                    "project": row.get("project"),
+                    "hrs": row.get(week_short_forms[i].lower())
+                })
+
+                if row.get(week_short_forms[i].lower()):
+                    doc.total_hrs += float(row[week_short_forms[i].lower()])
+
+            doc.save()
+
+            if type == "Submit":
+                doc.submit()
+
+            frappe.db.commit()
+
+        else:
+            break
+    
+    if type == "Submit":
+        msg = "Submitted Successfully..."
+    
+    else:
+        msg = "Saved Successfully..."
+
+    return True, msg
