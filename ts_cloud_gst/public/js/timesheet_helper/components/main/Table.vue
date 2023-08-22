@@ -27,7 +27,7 @@
                                 <v-list-item-content>
                                     <v-list-item-subtitle
                                         class="button--text"
-                                        v-html="`ID: ${data.item.name}`"
+                                        v-html="`${data.item.name}`"
                                     ></v-list-item-subtitle>
                                 </v-list-item-content>
                             </template>
@@ -74,7 +74,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.mon"
+                        v-model="item.mon"
+                        @change="add_row_value(item)"
                         >
                     </v-text-field>
                         
@@ -87,7 +88,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.tue"
+                        v-model="item.tue"
+                        @change="add_row_value(item)"
                         >
                     </v-text-field>
                     
@@ -100,7 +102,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.wed"
+                        v-model="item.wed"
+                        @change="add_row_value(item)"
                         >
                     </v-text-field>
                         
@@ -113,7 +116,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.thu"
+                        v-model="item.thu"
+                        @change="add_row_value(item)"
                         >
                     </v-text-field>
                         
@@ -126,7 +130,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.fri"
+                        v-model="item.fri"
+                        @change="add_row_value(item)"
                         >
                     </v-text-field>
                         
@@ -139,7 +144,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.sat"
+                        v-model="item.sat"
+                        @change="add_row_value(item)"
                         >
                     </v-text-field>
                         
@@ -152,7 +158,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.sun"
+                        v-model="item.sun"
+                        @change="add_row_value(item)"
                         >
                     </v-text-field>
                         
@@ -166,7 +173,7 @@
                         color="table_field_box"
                         hide-details
                         readonly
-                        :value="item.row_total"
+                        v-model="item.row_total"
                         >
                     </v-text-field>
                     
@@ -176,7 +183,7 @@
                     <v-btn
                       icon
                       color="button"
-                      @click.stop="remove_item(item)"
+                      @click.stop="remove_item_update_total_values(item)"
                     >
                       <v-icon>mdi-delete</v-icon>
                     </v-btn>
@@ -212,7 +219,7 @@
                         color="table_field_box"
                         hide-details
                         readonly
-                        :value="item.column_total"
+                        v-model="item.column_total"
                         >
                     </v-text-field>
 
@@ -225,7 +232,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.mon"
+                        v-model="item.mon"
+                        readonly
                         >
                     </v-text-field>
                     
@@ -238,7 +246,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.tue"
+                        v-model="item.tue"
+                        readonly
                         >
                     </v-text-field>
 
@@ -251,7 +260,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.wed"
+                        v-model="item.wed"
+                        readonly
                         >
                     </v-text-field>
                     
@@ -264,7 +274,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.thu"
+                        v-model="item.thu"
+                        readonly
                         >
                     </v-text-field>
                     
@@ -277,7 +288,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.fri"
+                        v-model="item.fri"
+                        readonly
                         >
                     </v-text-field>
                     
@@ -290,7 +302,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.sat"
+                        v-model="item.sat"
+                        readonly
                         >
                     </v-text-field>
                     
@@ -303,7 +316,8 @@
                         outlined
                         color="table_field_box"
                         hide-details
-                        :value="item.sun"
+                        v-model="item.sun"
+                        readonly
                         >
                     </v-text-field>
                     
@@ -317,7 +331,7 @@
                         color="table_field_box"
                         hide-details
                         readonly
-                        :value="item.row_total"
+                        v-model="item.row_total"
                         >
                     </v-text-field>
 
@@ -358,6 +372,85 @@ data() {
 },
 
 methods: {
+
+    add_row_value(item) {
+
+        item.row_total = 0
+
+        if (item.mon){
+
+            item.row_total = item.row_total + parseFloat(item.mon)
+
+            this.table_column_total[0].mon = 0
+
+            this.table_row.forEach((item) => {
+                this.table_column_total[0].mon += flt(item.mon);
+            });
+        }
+
+        if (item.tue){
+            item.row_total = item.row_total + parseFloat(item.tue)
+
+            this.table_column_total[0].tue = 0
+
+            this.table_row.forEach((item) => {
+                this.table_column_total[0].tue += flt(item.tue);
+            });
+        }
+
+        if (item.wed){
+            item.row_total = item.row_total + parseFloat(item.wed)
+
+            this.table_column_total[0].wed = 0
+
+            this.table_row.forEach((item) => {
+                this.table_column_total[0].wed += flt(item.wed);
+            });
+        }
+
+        if (item.thu){
+            item.row_total = item.row_total + parseFloat(item.thu)
+
+            this.table_column_total[0].thu = 0
+
+            this.table_row.forEach((item) => {
+                this.table_column_total[0].thu += flt(item.thu);
+            });
+        }
+
+        if (item.fri){
+            item.row_total = item.row_total + parseFloat(item.fri)
+
+            this.table_column_total[0].fri = 0
+
+            this.table_row.forEach((item) => {
+                this.table_column_total[0].fri += flt(item.fri);
+            });
+        }
+
+        if (item.sat){
+            item.row_total = item.row_total + parseFloat(item.sat)
+
+            this.table_column_total[0].sat = 0
+
+            this.table_row.forEach((item) => {
+                this.table_column_total[0].sat += flt(item.sat);
+            });
+        }
+
+        if (item.sun){
+            item.row_total = item.row_total + parseFloat(item.sun)
+
+            this.table_column_total[0].sun = 0
+
+            this.table_row.forEach((item) => {
+                this.table_column_total[0].sun += flt(item.sun);
+            });
+        }
+
+        this.table_column_total[0].row_total = flt(this.table_column_total[0].mon) + flt(this.table_column_total[0].tue) + flt(this.table_column_total[0].wed) + flt(this.table_column_total[0].thu) + flt(this.table_column_total[0].fri) + flt(this.table_column_total[0].sat) + flt(this.table_column_total[0].sun)
+
+    },
     
     add_row() {
 
@@ -367,16 +460,29 @@ methods: {
 
     },
 
-    remove_item(item) {
+    remove_item_update_total_values(item) {
 
-        const index = this.table_row.findIndex(
-            (el) => el.main_row_id == item.main_row_id
-        );
+        if ( 1 < (this.table_row).length){
 
-        if (index >= 0) {
-            this.table_row.splice(index, 1);
+            const index = this.table_row.findIndex(
+                (el) => el.main_row_id == item.main_row_id
+            );
+
+            if (index >= 0) {
+                this.table_row.splice(index, 1);
+            }
+
+            this.add_row_value(item);
         }
-        
+
+        else{
+
+            evntBus.$emit("show_mesage", {
+                text: __("Atleast One Row Needed."),
+                color: "error",
+            });
+        }
+ 
     },
 
     get_customer_data() {

@@ -8,8 +8,6 @@
             
             </v-toolbar-title>
     
-            <v-spacer></v-spacer>
-
             <!-- <v-btn style="cursor: unset" text color="button" @click="go_desk">
                 <span right>{{ "Go To Home" }}</span>
             </v-btn>
@@ -52,17 +50,17 @@
 
           </v-menu>
             
-            <v-btn style="margin-left: 5vh; max-height: 7vh; cursor: unset">
+            <v-btn style="margin-left: 5vh; max-height: 7vh; cursor: unset" @click="previous_week">
                 <span style="color: #283593; font-weight: bold; font-size: 3vh" right>{{"<"}}</span>
             </v-btn>
 
             <span style="margin-top: 12px; margin-left: 2vh; color: #1565C0; font-weight: bold;">{{ current_week }}</span>
 
-            <v-btn style="margin-left: 2vh; max-height: 7vh; cursor: unset">
+            <v-btn style="margin-left: 2vh; max-height: 7vh; cursor: unset" @click="next_week">
                 <span style="color: #283593; font-weight: bold; font-size: 3vh" right>{{">"}}</span>
             </v-btn>
             
-            <v-btn style="margin-left: 80vh; max-height: 7vh; cursor: unset">
+            <v-btn style="margin-left: 80vh; max-height: 7vh; cursor: unset" @click="reset">
                 <span style="color: #283593; font-weight: bold; font-size: 2vh" right>{{"Reset"}}</span>
             </v-btn>
 
@@ -75,6 +73,10 @@
             </v-btn>
 
         </v-bottom-navigation>
+
+        <v-snackbar v-model="snack" :timeout="2500" :color="snackColor" top right>
+            {{ snackText }}
+        </v-snackbar>
         
     </nav>
     
@@ -90,10 +92,16 @@ export default {
 
         return {
 
-        current_week: '',
-        select_date: '',
-        allow_date_picker: false,
-        
+            start_date_week: '',
+            end_date_week: '',
+            current_week: '',
+            select_date: '',
+            process_date: '',
+            allow_date_picker: false,
+            
+            snack: false,
+            snackColor: '',
+            snackText: '',
         };
 
     },
@@ -103,24 +111,46 @@ export default {
         update_date() {
 
             this.allow_date_picker = false
+
+            this.process_date = this.select_date
+            
+            this.get_week()
+        },
+
+        previous_week() {
+
+            this.process_date = frappe.datetime.add_days(this.start_date_week, -1)
+
+            this.get_week()
+        },
+
+        next_week() {
+
+            this.process_date = frappe.datetime.add_days(this.end_date_week, 1)
             
             this.get_week()
         },
         
         get_week(){
+
             var me = this;
 
             frappe.call({
                 method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.find_week",
+
                 args: {
-                    date: this.select_date
+                    date: this.process_date
                 },
 
                 callback: function (r) {
 
                     if(r.message){
                         
-                        me.current_week = r.message[0]
+                        me.current_week = r.message[0];
+                        
+                        me.start_date_week = r.message[5];
+                        me.end_date_week = r.message[6];
+
                         evntBus.$emit("update_main_table_header", r.message[1]);
                         evntBus.$emit("update_total_table_header", r.message[2]);
                         evntBus.$emit("main_table_values", r.message[3]);
@@ -132,27 +162,40 @@ export default {
             })
         },
 
-        go_desk() {
-            frappe.set_route('/');
+        // go_desk() {
+        //     frappe.set_route('/');
+        //     location.reload();
+        // },
+
+        reset() {
+            frappe.set_route('/timesheethelper');
             location.reload();
         },
         
-        logOut() {
-            var me = this;
-            me.logged_out = true;
+        // logOut() {
+        //     var me = this;
+        //     me.logged_out = true;
 
-            return frappe.call({
-                method: 'logout',
+        //     return frappe.call({
+        //         method: 'logout',
                 
-                callback: function (r) {
-                    if (r.exc) {
-                        return;
-                    }
+        //         callback: function (r) {
+        //             if (r.exc) {
+        //                 return;
+        //             }
 
-                    frappe.set_route('/login');
-                    location.reload();
-                },
-            });
+        //             frappe.set_route('/login');
+        //             location.reload();
+        //         },
+        //     });
+        // },
+
+        show_mesage(data) {
+
+            this.snack = true;
+            this.snackColor = data.color;
+            this.snackText = data.text;
+
         },
         
     },
@@ -161,7 +204,13 @@ export default {
 
         this.select_date = frappe.datetime.now_date()
 
+        this.process_date = this.select_date
+
         this.get_week()
+
+        evntBus.$on('show_mesage', (data) => {
+            this.show_mesage(data);
+        })
 
     },
 };

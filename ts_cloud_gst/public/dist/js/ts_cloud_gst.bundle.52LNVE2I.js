@@ -6,14 +6,29 @@
   var __vue_script__ = {
     data() {
       return {
+        start_date_week: "",
+        end_date_week: "",
         current_week: "",
         select_date: "",
-        allow_date_picker: false
+        process_date: "",
+        allow_date_picker: false,
+        snack: false,
+        snackColor: "",
+        snackText: ""
       };
     },
     methods: {
       update_date() {
         this.allow_date_picker = false;
+        this.process_date = this.select_date;
+        this.get_week();
+      },
+      previous_week() {
+        this.process_date = frappe.datetime.add_days(this.start_date_week, -1);
+        this.get_week();
+      },
+      next_week() {
+        this.process_date = frappe.datetime.add_days(this.end_date_week, 1);
         this.get_week();
       },
       get_week() {
@@ -21,11 +36,13 @@
         frappe.call({
           method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.find_week",
           args: {
-            date: this.select_date
+            date: this.process_date
           },
           callback: function(r) {
             if (r.message) {
               me.current_week = r.message[0];
+              me.start_date_week = r.message[5];
+              me.end_date_week = r.message[6];
               evntBus.$emit("update_main_table_header", r.message[1]);
               evntBus.$emit("update_total_table_header", r.message[2]);
               evntBus.$emit("main_table_values", r.message[3]);
@@ -34,28 +51,23 @@
           }
         });
       },
-      go_desk() {
-        frappe.set_route("/");
+      reset() {
+        frappe.set_route("/timesheethelper");
         location.reload();
       },
-      logOut() {
-        var me = this;
-        me.logged_out = true;
-        return frappe.call({
-          method: "logout",
-          callback: function(r) {
-            if (r.exc) {
-              return;
-            }
-            frappe.set_route("/login");
-            location.reload();
-          }
-        });
+      show_mesage(data) {
+        this.snack = true;
+        this.snackColor = data.color;
+        this.snackText = data.text;
       }
     },
     created: function() {
       this.select_date = frappe.datetime.now_date();
+      this.process_date = this.select_date;
       this.get_week();
+      evntBus.$on("show_mesage", (data) => {
+        this.show_mesage(data);
+      });
     }
   };
   var __vue_render__ = function() {
@@ -69,9 +81,7 @@
       }, [
         _c("v-toolbar-title", [
           _c("span", { staticStyle: { color: "#1565C0", "font-size": "4vh" } }, [_vm._v("TSheets")])
-        ]),
-        _vm._v(" "),
-        _c("v-spacer")
+        ])
       ], 1),
       _vm._v(" "),
       _c("v-bottom-navigation", {
@@ -146,7 +156,8 @@
             "margin-left": "5vh",
             "max-height": "7vh",
             cursor: "unset"
-          }
+          },
+          on: { click: _vm.previous_week }
         }, [
           _c("span", {
             staticStyle: {
@@ -172,7 +183,8 @@
             "margin-left": "2vh",
             "max-height": "7vh",
             cursor: "unset"
-          }
+          },
+          on: { click: _vm.next_week }
         }, [
           _c("span", {
             staticStyle: {
@@ -189,7 +201,8 @@
             "margin-left": "80vh",
             "max-height": "7vh",
             cursor: "unset"
-          }
+          },
+          on: { click: _vm.reset }
         }, [
           _c("span", {
             staticStyle: {
@@ -234,7 +247,18 @@
             attrs: { right: "" }
           }, [_vm._v(_vm._s("Submit"))])
         ])
-      ], 1)
+      ], 1),
+      _vm._v(" "),
+      _c("v-snackbar", {
+        attrs: { timeout: 2500, color: _vm.snackColor, top: "", right: "" },
+        model: {
+          value: _vm.snack,
+          callback: function($$v) {
+            _vm.snack = $$v;
+          },
+          expression: "snack"
+        }
+      }, [_vm._v("\n        " + _vm._s(_vm.snackText) + "\n    ")])
     ], 1);
   };
   var __vue_staticRenderFns__ = [];
@@ -309,14 +333,75 @@
       };
     },
     methods: {
+      add_row_value(item) {
+        item.row_total = 0;
+        if (item.mon) {
+          item.row_total = item.row_total + parseFloat(item.mon);
+          this.table_column_total[0].mon = 0;
+          this.table_row.forEach((item2) => {
+            this.table_column_total[0].mon += flt(item2.mon);
+          });
+        }
+        if (item.tue) {
+          item.row_total = item.row_total + parseFloat(item.tue);
+          this.table_column_total[0].tue = 0;
+          this.table_row.forEach((item2) => {
+            this.table_column_total[0].tue += flt(item2.tue);
+          });
+        }
+        if (item.wed) {
+          item.row_total = item.row_total + parseFloat(item.wed);
+          this.table_column_total[0].wed = 0;
+          this.table_row.forEach((item2) => {
+            this.table_column_total[0].wed += flt(item2.wed);
+          });
+        }
+        if (item.thu) {
+          item.row_total = item.row_total + parseFloat(item.thu);
+          this.table_column_total[0].thu = 0;
+          this.table_row.forEach((item2) => {
+            this.table_column_total[0].thu += flt(item2.thu);
+          });
+        }
+        if (item.fri) {
+          item.row_total = item.row_total + parseFloat(item.fri);
+          this.table_column_total[0].fri = 0;
+          this.table_row.forEach((item2) => {
+            this.table_column_total[0].fri += flt(item2.fri);
+          });
+        }
+        if (item.sat) {
+          item.row_total = item.row_total + parseFloat(item.sat);
+          this.table_column_total[0].sat = 0;
+          this.table_row.forEach((item2) => {
+            this.table_column_total[0].sat += flt(item2.sat);
+          });
+        }
+        if (item.sun) {
+          item.row_total = item.row_total + parseFloat(item.sun);
+          this.table_column_total[0].sun = 0;
+          this.table_row.forEach((item2) => {
+            this.table_column_total[0].sun += flt(item2.sun);
+          });
+        }
+        this.table_column_total[0].row_total = flt(this.table_column_total[0].mon) + flt(this.table_column_total[0].tue) + flt(this.table_column_total[0].wed) + flt(this.table_column_total[0].thu) + flt(this.table_column_total[0].fri) + flt(this.table_column_total[0].sat) + flt(this.table_column_total[0].sun);
+      },
       add_row() {
         this.total_row_id = this.total_row_id + 1;
         this.table_row.push({ "main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0 });
       },
-      remove_item(item) {
-        const index = this.table_row.findIndex((el) => el.main_row_id == item.main_row_id);
-        if (index >= 0) {
-          this.table_row.splice(index, 1);
+      remove_item_update_total_values(item) {
+        if (1 < this.table_row.length) {
+          const index = this.table_row.findIndex((el) => el.main_row_id == item.main_row_id);
+          if (index >= 0) {
+            this.table_row.splice(index, 1);
+          }
+          this.add_row_value(item);
+        } else {
+          evntBus.$emit("show_mesage", {
+            text: __("Atleast One Row Needed."),
+            color: "error"
+          });
         }
       },
       get_customer_data() {
@@ -413,7 +498,7 @@
                                 _c("v-list-item-subtitle", {
                                   staticClass: "button--text",
                                   domProps: {
-                                    innerHTML: _vm._s("ID: " + data.item.name)
+                                    innerHTML: _vm._s("" + data.item.name)
                                   }
                                 })
                               ], 1)
@@ -495,8 +580,19 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      value: item.mon
+                      "hide-details": ""
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.add_row_value(item);
+                      }
+                    },
+                    model: {
+                      value: item.mon,
+                      callback: function($$v) {
+                        _vm.$set(item, "mon", $$v);
+                      },
+                      expression: "item.mon"
                     }
                   })
                 ];
@@ -512,8 +608,19 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      value: item.tue
+                      "hide-details": ""
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.add_row_value(item);
+                      }
+                    },
+                    model: {
+                      value: item.tue,
+                      callback: function($$v) {
+                        _vm.$set(item, "tue", $$v);
+                      },
+                      expression: "item.tue"
                     }
                   })
                 ];
@@ -529,8 +636,19 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      value: item.wed
+                      "hide-details": ""
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.add_row_value(item);
+                      }
+                    },
+                    model: {
+                      value: item.wed,
+                      callback: function($$v) {
+                        _vm.$set(item, "wed", $$v);
+                      },
+                      expression: "item.wed"
                     }
                   })
                 ];
@@ -546,8 +664,19 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      value: item.thu
+                      "hide-details": ""
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.add_row_value(item);
+                      }
+                    },
+                    model: {
+                      value: item.thu,
+                      callback: function($$v) {
+                        _vm.$set(item, "thu", $$v);
+                      },
+                      expression: "item.thu"
                     }
                   })
                 ];
@@ -563,8 +692,19 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      value: item.fri
+                      "hide-details": ""
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.add_row_value(item);
+                      }
+                    },
+                    model: {
+                      value: item.fri,
+                      callback: function($$v) {
+                        _vm.$set(item, "fri", $$v);
+                      },
+                      expression: "item.fri"
                     }
                   })
                 ];
@@ -580,8 +720,19 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      value: item.sat
+                      "hide-details": ""
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.add_row_value(item);
+                      }
+                    },
+                    model: {
+                      value: item.sat,
+                      callback: function($$v) {
+                        _vm.$set(item, "sat", $$v);
+                      },
+                      expression: "item.sat"
                     }
                   })
                 ];
@@ -597,8 +748,19 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      value: item.sun
+                      "hide-details": ""
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.add_row_value(item);
+                      }
+                    },
+                    model: {
+                      value: item.sun,
+                      callback: function($$v) {
+                        _vm.$set(item, "sun", $$v);
+                      },
+                      expression: "item.sun"
                     }
                   })
                 ];
@@ -615,8 +777,14 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      readonly: "",
-                      value: item.row_total
+                      readonly: ""
+                    },
+                    model: {
+                      value: item.row_total,
+                      callback: function($$v) {
+                        _vm.$set(item, "row_total", $$v);
+                      },
+                      expression: "item.row_total"
                     }
                   })
                 ];
@@ -632,7 +800,7 @@
                     on: {
                       click: function($event) {
                         $event.stopPropagation();
-                        return _vm.remove_item(item);
+                        return _vm.remove_item_update_total_values(item);
                       }
                     }
                   }, [_c("v-icon", [_vm._v("mdi-delete")])], 1)
@@ -681,8 +849,14 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      readonly: "",
-                      value: item.column_total
+                      readonly: ""
+                    },
+                    model: {
+                      value: item.column_total,
+                      callback: function($$v) {
+                        _vm.$set(item, "column_total", $$v);
+                      },
+                      expression: "item.column_total"
                     }
                   })
                 ];
@@ -699,7 +873,14 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      value: item.mon
+                      readonly: ""
+                    },
+                    model: {
+                      value: item.mon,
+                      callback: function($$v) {
+                        _vm.$set(item, "mon", $$v);
+                      },
+                      expression: "item.mon"
                     }
                   })
                 ];
@@ -716,7 +897,14 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      value: item.tue
+                      readonly: ""
+                    },
+                    model: {
+                      value: item.tue,
+                      callback: function($$v) {
+                        _vm.$set(item, "tue", $$v);
+                      },
+                      expression: "item.tue"
                     }
                   })
                 ];
@@ -733,7 +921,14 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      value: item.wed
+                      readonly: ""
+                    },
+                    model: {
+                      value: item.wed,
+                      callback: function($$v) {
+                        _vm.$set(item, "wed", $$v);
+                      },
+                      expression: "item.wed"
                     }
                   })
                 ];
@@ -750,7 +945,14 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      value: item.thu
+                      readonly: ""
+                    },
+                    model: {
+                      value: item.thu,
+                      callback: function($$v) {
+                        _vm.$set(item, "thu", $$v);
+                      },
+                      expression: "item.thu"
                     }
                   })
                 ];
@@ -767,7 +969,14 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      value: item.fri
+                      readonly: ""
+                    },
+                    model: {
+                      value: item.fri,
+                      callback: function($$v) {
+                        _vm.$set(item, "fri", $$v);
+                      },
+                      expression: "item.fri"
                     }
                   })
                 ];
@@ -784,7 +993,14 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      value: item.sat
+                      readonly: ""
+                    },
+                    model: {
+                      value: item.sat,
+                      callback: function($$v) {
+                        _vm.$set(item, "sat", $$v);
+                      },
+                      expression: "item.sat"
                     }
                   })
                 ];
@@ -801,7 +1017,14 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      value: item.sun
+                      readonly: ""
+                    },
+                    model: {
+                      value: item.sun,
+                      callback: function($$v) {
+                        _vm.$set(item, "sun", $$v);
+                      },
+                      expression: "item.sun"
                     }
                   })
                 ];
@@ -818,8 +1041,14 @@
                       outlined: "",
                       color: "table_field_box",
                       "hide-details": "",
-                      readonly: "",
-                      value: item.row_total
+                      readonly: ""
+                    },
+                    model: {
+                      value: item.row_total,
+                      callback: function($$v) {
+                        _vm.$set(item, "row_total", $$v);
+                      },
+                      expression: "item.row_total"
                     }
                   })
                 ];
@@ -1124,7 +1353,8 @@
                 navigation_field: "#BBDEFB",
                 date_select: "#1565C0",
                 text: "#1565C0",
-                table_field_box: "#82B1FF"
+                table_field_box: "#82B1FF",
+                error: "#EF5350"
               }
             }
           }
@@ -1138,4 +1368,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.OGFWKMJ3.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.52LNVE2I.js.map

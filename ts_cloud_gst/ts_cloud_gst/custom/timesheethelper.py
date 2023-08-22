@@ -139,7 +139,7 @@ def find_week(date):
         },
     ]
 
-    return week_description, table_headers, table_total_column_headers, [main_table_values], [total_table_values]
+    return week_description, table_headers, table_total_column_headers, [main_table_values], [total_table_values], start_of_week, end_of_week
 
 @frappe.whitelist()
 def get_customer():

@@ -23,7 +23,8 @@ ts_cloud_gst.timesheethelper = class {
                                 navigation_field: '#BBDEFB',
                                 date_select: '#1565C0',
                                 text: '#1565C0',
-                                table_field_box: '#82B1FF'
+                                table_field_box: '#82B1FF',
+                                error: '#EF5350'
                             },
                         },
                     },
