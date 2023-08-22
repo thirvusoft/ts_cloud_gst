@@ -7,12 +7,14 @@
                 <span style="color: #1565C0; font-size: 4vh">TSheets</span>
             
             </v-toolbar-title>
-    
-            <!-- <v-btn style="cursor: unset" text color="button" @click="go_desk">
+
+            <v-spacer></v-spacer>
+            
+            <v-btn style="cursor: unset; font-weight: bold;" text color="button" @click="go_desk">
                 <span right>{{ "Go To Home" }}</span>
             </v-btn>
 
-            <v-btn style="cursor: unset" text color="button" @click="logOut">
+            <!-- <v-btn style="cursor: unset" text color="button" @click="logOut">
                 <span right>{{ "Logout" }}</span>
             </v-btn> -->
 
@@ -64,11 +66,11 @@
                 <span style="color: #283593; font-weight: bold; font-size: 2vh" right>{{"Reset"}}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 3vh; max-height: 7vh; cursor: unset">
+            <v-btn style="margin-left: 3vh; max-height: 7vh; cursor: unset" @click="save">
                 <span style="color: #283593; font-weight: bold; font-size: 2vh" right>{{ "Save" }}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 3vh; max-height: 7vh; cursor: unset">
+            <v-btn style="margin-left: 3vh; max-height: 7vh; cursor: unset" @click="submit">
                 <span style="color: #283593; font-weight: bold; font-size: 2vh" right>{{ "Submit" }}</span>
             </v-btn>
 
@@ -155,6 +157,15 @@ export default {
                         evntBus.$emit("update_total_table_header", r.message[2]);
                         evntBus.$emit("main_table_values", r.message[3]);
                         evntBus.$emit("total_table_values", r.message[4]);
+
+                        if(r.message[7]){
+
+                            evntBus.$emit("show_mesage", {
+                                text: r.message[7],
+                                color: "warning",
+                            });
+                            
+                        }
                         
                     }
 
@@ -162,10 +173,10 @@ export default {
             })
         },
 
-        // go_desk() {
-        //     frappe.set_route('/');
-        //     location.reload();
-        // },
+        go_desk() {
+            frappe.set_route('/');
+            location.reload();
+        },
 
         reset() {
             frappe.set_route('/timesheethelper');
@@ -189,6 +200,14 @@ export default {
         //         },
         //     });
         // },
+
+        save() {
+            evntBus.$emit("save", this.start_date_week, this.end_date_week);
+        },
+
+        submit() {
+            evntBus.$emit("submit", this.start_date_week, this.end_date_week);
+        },
 
         show_mesage(data) {
 

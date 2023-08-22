@@ -21,6 +21,7 @@
                         item-text="name"
                         item-value="name"
                         @change="update_project_data(item)"
+
                         >
                         <template v-slot:item="data">
                             <template>
@@ -365,7 +366,10 @@ data() {
     table_total_column_headers: [],
     table_headers: [],
 
-    total_row_id: 0
+    total_row_id: 0,
+
+    start_date_week: '',
+    end_date_week: '',
 
     };
 
@@ -535,6 +539,43 @@ methods: {
 
     },
 
+    save_or_submit(){
+        
+        frappe.call({
+
+            method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.save_or_submit",
+
+            args: {
+                start_date_week: this.start_date_week,
+                end_date_week: this.end_date_week,
+                data: this.table_row,
+                type: this.type
+            },
+
+            callback: function (r) {
+
+                if(r.message[0]){
+
+                    evntBus.$emit("show_mesage", {
+                        text: r.message[1],
+                        color: "success",
+                    });
+
+                }
+
+                else{
+
+                    evntBus.$emit("show_mesage", {
+                        text: r.message[1],
+                        color: "error",
+                    });
+                }
+
+            }
+        })
+
+    },
+
 },
 
 mounted() {
@@ -549,10 +590,31 @@ mounted() {
 
     evntBus.$on("main_table_values", (table_row) => {
         this.table_row = table_row
+        this.total_row_id = (this.table_row).length - 1
     });
 
     evntBus.$on("total_table_values", (table_column_total) => {
         this.table_column_total = table_column_total
+    });
+
+    evntBus.$on("save", (start_date_week, end_date_week) => {
+
+        this.start_date_week = start_date_week
+        this.end_date_week = end_date_week
+
+        this.type = "Save"
+
+        this.save_or_submit()
+    });
+
+    evntBus.$on("submit", (start_date_week, end_date_week) => {
+
+        this.start_date_week = start_date_week
+        this.end_date_week = end_date_week
+
+        this.type = "Submit"
+
+        this.save_or_submit()
     });
 },
 

@@ -24,7 +24,9 @@ ts_cloud_gst.timesheethelper = class {
                                 date_select: '#1565C0',
                                 text: '#1565C0',
                                 table_field_box: '#82B1FF',
-                                error: '#EF5350'
+                                error: '#EF5350',
+                                success: '#9CCC65',
+                                warning: '#FFAB40'
                             },
                         },
                     },

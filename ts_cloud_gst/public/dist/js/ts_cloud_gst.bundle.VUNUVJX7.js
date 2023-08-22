@@ -47,13 +47,29 @@
               evntBus.$emit("update_total_table_header", r.message[2]);
               evntBus.$emit("main_table_values", r.message[3]);
               evntBus.$emit("total_table_values", r.message[4]);
+              if (r.message[7]) {
+                evntBus.$emit("show_mesage", {
+                  text: r.message[7],
+                  color: "warning"
+                });
+              }
             }
           }
         });
       },
+      go_desk() {
+        frappe.set_route("/");
+        location.reload();
+      },
       reset() {
         frappe.set_route("/timesheethelper");
         location.reload();
+      },
+      save() {
+        evntBus.$emit("save", this.start_date_week, this.end_date_week);
+      },
+      submit() {
+        evntBus.$emit("submit", this.start_date_week, this.end_date_week);
       },
       show_mesage(data) {
         this.snack = true;
@@ -81,6 +97,18 @@
       }, [
         _c("v-toolbar-title", [
           _c("span", { staticStyle: { color: "#1565C0", "font-size": "4vh" } }, [_vm._v("TSheets")])
+        ]),
+        _vm._v(" "),
+        _c("v-spacer"),
+        _vm._v(" "),
+        _c("v-btn", {
+          staticStyle: { cursor: "unset", "font-weight": "bold" },
+          attrs: { text: "", color: "button" },
+          on: { click: _vm.go_desk }
+        }, [
+          _c("span", { attrs: { right: "" } }, [
+            _vm._v(_vm._s("Go To Home"))
+          ])
         ])
       ], 1),
       _vm._v(" "),
@@ -219,7 +247,8 @@
             "margin-left": "3vh",
             "max-height": "7vh",
             cursor: "unset"
-          }
+          },
+          on: { click: _vm.save }
         }, [
           _c("span", {
             staticStyle: {
@@ -236,7 +265,8 @@
             "margin-left": "3vh",
             "max-height": "7vh",
             cursor: "unset"
-          }
+          },
+          on: { click: _vm.submit }
         }, [
           _c("span", {
             staticStyle: {
@@ -329,7 +359,9 @@
         table_column_total: [],
         table_total_column_headers: [],
         table_headers: [],
-        total_row_id: 0
+        total_row_id: 0,
+        start_date_week: "",
+        end_date_week: ""
       };
     },
     methods: {
@@ -433,6 +465,30 @@
         } else {
           item.project_data = [];
         }
+      },
+      save_or_submit() {
+        frappe.call({
+          method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.save_or_submit",
+          args: {
+            start_date_week: this.start_date_week,
+            end_date_week: this.end_date_week,
+            data: this.table_row,
+            type: this.type
+          },
+          callback: function(r) {
+            if (r.message[0]) {
+              evntBus.$emit("show_mesage", {
+                text: r.message[1],
+                color: "success"
+              });
+            } else {
+              evntBus.$emit("show_mesage", {
+                text: r.message[1],
+                color: "error"
+              });
+            }
+          }
+        });
       }
     },
     mounted() {
@@ -444,9 +500,22 @@
       });
       evntBus.$on("main_table_values", (table_row) => {
         this.table_row = table_row;
+        this.total_row_id = this.table_row.length - 1;
       });
       evntBus.$on("total_table_values", (table_column_total) => {
         this.table_column_total = table_column_total;
+      });
+      evntBus.$on("save", (start_date_week, end_date_week) => {
+        this.start_date_week = start_date_week;
+        this.end_date_week = end_date_week;
+        this.type = "Save";
+        this.save_or_submit();
+      });
+      evntBus.$on("submit", (start_date_week, end_date_week) => {
+        this.start_date_week = start_date_week;
+        this.end_date_week = end_date_week;
+        this.type = "Submit";
+        this.save_or_submit();
       });
     },
     created: function() {
@@ -1354,7 +1423,9 @@
                 date_select: "#1565C0",
                 text: "#1565C0",
                 table_field_box: "#82B1FF",
-                error: "#EF5350"
+                error: "#EF5350",
+                success: "#9CCC65",
+                warning: "#FFAB40"
               }
             }
           }
@@ -1368,4 +1439,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.52LNVE2I.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.VUNUVJX7.js.map
