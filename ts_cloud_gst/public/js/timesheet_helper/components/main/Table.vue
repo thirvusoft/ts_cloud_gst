@@ -11,7 +11,7 @@
 
                 <template v-slot:item.customer_name="{ item }">
 
-                    <v-autocomplete
+                    <v-autocomplete style="max-width: 50vh"
                         dense
                         outlined
                         color="table_field_box"
@@ -70,7 +70,7 @@
 
                 <template v-slot:item.mon="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
@@ -84,7 +84,7 @@
                 
                 <template v-slot:item.tue="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
@@ -98,7 +98,7 @@
 
                 <template v-slot:item.wed="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
@@ -112,7 +112,7 @@
 
                 <template v-slot:item.thu="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
@@ -126,7 +126,7 @@
 
                 <template v-slot:item.fri="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
@@ -140,7 +140,7 @@
 
                 <template v-slot:item.sat="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
@@ -154,7 +154,7 @@
 
                 <template v-slot:item.sun="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
@@ -168,16 +168,8 @@
 
                 <template v-slot:item.row_total="{ item }">
 
-                    <v-text-field
-                        dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
-                        readonly
-                        v-model="item.row_total"
-                        >
-                    </v-text-field>
-                    
+                    <span>{{ item.row_total }}</span>
+
                 </template>
 
                 <template v-slot:item.delete="{ item }">
@@ -195,7 +187,7 @@
             
         </v-card-actions>
 
-        <v-card-actions style="margin-top: -26vh; margin-left: 3vh;">
+        <v-card-actions style="margin-top: -26vh; margin-left: 1vh;">
 
             <v-btn style="margin-left: 0vh; color: #283593; font-weight: bold;" color=#BBDEFB @click="add_row">{{
                 __('Add Row')
@@ -203,7 +195,7 @@
 
             </v-card-actions>
 
-        <v-card-actions style="margin-top: -2vh; margin-left: 5vh; max-width: 165vh;">
+        <v-card-actions style="margin-top: -2vh; margin-left: 49vh; max-width: 127vh;">
 
             <v-data-table
                 :headers="table_total_column_headers"
@@ -213,28 +205,27 @@
             >
 
                 <template v-slot:item.column_total="{ item }">
-                    
-                    <v-text-field
+
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
+                        flat solo
                         readonly
+                        hide-details
                         v-model="item.column_total"
                         >
                     </v-text-field>
-
+                    
                 </template>
 
                 <template v-slot:item.mon="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
+                        readonly
                         outlined
-                        color="table_field_box"
+                        text color="error"
                         hide-details
                         v-model="item.mon"
-                        readonly
                         >
                     </v-text-field>
                     
@@ -242,13 +233,13 @@
 
                 <template v-slot:item.tue="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
+                        flat solo
+                        readonly
                         color="table_field_box"
                         hide-details
                         v-model="item.tue"
-                        readonly
                         >
                     </v-text-field>
 
@@ -256,13 +247,13 @@
 
                 <template v-slot:item.wed="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
+                        flat solo
+                        readonly
                         color="table_field_box"
                         hide-details
                         v-model="item.wed"
-                        readonly
                         >
                     </v-text-field>
                     
@@ -270,27 +261,27 @@
 
                 <template v-slot:item.thu="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
+                        flat solo
+                        readonly
                         color="table_field_box"
                         hide-details
                         v-model="item.thu"
-                        readonly
                         >
                     </v-text-field>
-                    
+
                 </template>
 
                 <template v-slot:item.fri="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
+                        flat solo
+                        readonly
                         color="table_field_box"
                         hide-details
                         v-model="item.fri"
-                        readonly
                         >
                     </v-text-field>
                     
@@ -298,13 +289,13 @@
 
                 <template v-slot:item.sat="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
+                        flat solo
+                        readonly
                         dense
-                        outlined
                         color="table_field_box"
                         hide-details
                         v-model="item.sat"
-                        readonly
                         >
                     </v-text-field>
                     
@@ -312,13 +303,13 @@
 
                 <template v-slot:item.sun="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
+                        flat solo
+                        readonly
                         color="table_field_box"
                         hide-details
                         v-model="item.sun"
-                        readonly
                         >
                     </v-text-field>
                     
@@ -326,12 +317,12 @@
                     
                 <template v-slot:item.row_total="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
+                        flat solo
+                        readonly
                         color="table_field_box"
                         hide-details
-                        readonly
                         v-model="item.row_total"
                         >
                     </v-text-field>

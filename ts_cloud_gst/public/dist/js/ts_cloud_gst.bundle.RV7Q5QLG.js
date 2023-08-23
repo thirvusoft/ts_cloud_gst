@@ -563,6 +563,7 @@
                 var item = ref.item;
                 return [
                   _c("v-autocomplete", {
+                    staticStyle: { "max-width": "50vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
@@ -665,6 +666,7 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
@@ -693,6 +695,7 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
@@ -721,6 +724,7 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
@@ -749,6 +753,7 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
@@ -777,6 +782,7 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
@@ -805,6 +811,7 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
@@ -833,6 +840,7 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
@@ -859,24 +867,7 @@
               key: "item.row_total",
               fn: function(ref) {
                 var item = ref.item;
-                return [
-                  _c("v-text-field", {
-                    attrs: {
-                      dense: "",
-                      outlined: "",
-                      color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
-                    },
-                    model: {
-                      value: item.row_total,
-                      callback: function($$v) {
-                        _vm.$set(item, "row_total", $$v);
-                      },
-                      expression: "item.row_total"
-                    }
-                  })
-                ];
+                return [_c("span", [_vm._v(_vm._s(item.row_total))])];
               }
             },
             {
@@ -900,7 +891,7 @@
         })
       ], 1),
       _vm._v(" "),
-      _c("v-card-actions", { staticStyle: { "margin-top": "-26vh", "margin-left": "3vh" } }, [
+      _c("v-card-actions", { staticStyle: { "margin-top": "-26vh", "margin-left": "1vh" } }, [
         _c("v-btn", {
           staticStyle: {
             "margin-left": "0vh",
@@ -915,8 +906,8 @@
       _c("v-card-actions", {
         staticStyle: {
           "margin-top": "-2vh",
-          "margin-left": "5vh",
-          "max-width": "165vh"
+          "margin-left": "49vh",
+          "max-width": "127vh"
         }
       }, [
         _c("v-data-table", {
@@ -933,12 +924,13 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
-                      color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "hide-details": ""
                     },
                     model: {
                       value: item.column_total,
@@ -957,12 +949,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
+                      readonly: "",
                       outlined: "",
-                      color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
+                      text: "",
+                      color: "error",
+                      "hide-details": ""
                     },
                     model: {
                       value: item.mon,
@@ -981,12 +975,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
+                      "hide-details": ""
                     },
                     model: {
                       value: item.tue,
@@ -1005,12 +1001,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
+                      "hide-details": ""
                     },
                     model: {
                       value: item.wed,
@@ -1029,12 +1027,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
+                      "hide-details": ""
                     },
                     model: {
                       value: item.thu,
@@ -1053,12 +1053,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
+                      "hide-details": ""
                     },
                     model: {
                       value: item.fri,
@@ -1077,12 +1079,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       dense: "",
-                      outlined: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
+                      "hide-details": ""
                     },
                     model: {
                       value: item.sat,
@@ -1101,12 +1105,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
+                      "hide-details": ""
                     },
                     model: {
                       value: item.sun,
@@ -1125,12 +1131,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
+                      "hide-details": ""
                     },
                     model: {
                       value: item.row_total,
@@ -1459,4 +1467,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.M4PYIQ42.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.RV7Q5QLG.js.map
