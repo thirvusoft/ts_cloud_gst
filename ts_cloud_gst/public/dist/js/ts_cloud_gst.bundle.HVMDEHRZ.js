@@ -12,6 +12,7 @@
         select_date: "",
         process_date: "",
         allow_date_picker: false,
+        show_warning: true,
         snack: false,
         snackColor: "",
         snackText: ""
@@ -48,11 +49,17 @@
               evntBus.$emit("main_table_values", r.message[3]);
               evntBus.$emit("total_table_values", r.message[4]);
               if (r.message[7]) {
-                evntBus.$emit("show_mesage", {
-                  text: r.message[7],
-                  color: "warning"
-                });
+                evntBus.$emit("submitted_record", true);
+                if (me.show_warning) {
+                  evntBus.$emit("show_mesage", {
+                    text: r.message[7],
+                    color: "warning"
+                  });
+                }
+              } else {
+                evntBus.$emit("submitted_record", false);
               }
+              me.show_warning = true;
             }
           }
         });
@@ -62,8 +69,28 @@
         location.reload();
       },
       reset() {
-        frappe.set_route("/timesheethelper");
-        location.reload();
+        var me = this;
+        frappe.call({
+          method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.reset",
+          args: {
+            start_date_week: this.start_date_week,
+            end_date_week: this.end_date_week
+          },
+          callback: function(r) {
+            if (r.message[0]) {
+              evntBus.$emit("show_mesage", {
+                text: r.message[1],
+                color: "success"
+              });
+              me.get_week();
+            } else {
+              evntBus.$emit("show_mesage", {
+                text: r.message[1],
+                color: "error"
+              });
+            }
+          }
+        });
       },
       save() {
         evntBus.$emit("save", this.start_date_week, this.end_date_week);
@@ -83,6 +110,10 @@
       this.get_week();
       evntBus.$on("show_mesage", (data) => {
         this.show_mesage(data);
+      });
+      evntBus.$on("update_after_save_submit", () => {
+        this.show_warning = false;
+        this.get_week();
       });
     }
   };
@@ -280,7 +311,7 @@
       ], 1),
       _vm._v(" "),
       _c("v-snackbar", {
-        attrs: { timeout: 2500, color: _vm.snackColor, top: "", right: "" },
+        attrs: { timeout: 3500, color: _vm.snackColor, top: "", right: "" },
         model: {
           value: _vm.snack,
           callback: function($$v) {
@@ -354,6 +385,7 @@
     data() {
       return {
         itemsPerPage: 5,
+        submitted_record: false,
         customer_data: [],
         table_row: [],
         table_column_total: [],
@@ -368,70 +400,154 @@
       add_row_value(item) {
         item.row_total = 0;
         if (item.mon) {
+          var value = item.mon.split(".");
+          if (value.length == 2) {
+            if (!["0", "5"].includes(value[1])) {
+              evntBus.$emit("show_mesage", {
+                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                color: "warning"
+              });
+              item.mon = 0;
+            }
+          }
           item.row_total = item.row_total + parseFloat(item.mon);
-          this.table_column_total[0].mon = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].mon += flt(item2.mon);
-          });
         }
         if (item.tue) {
+          var value = item.tue.split(".");
+          if (value.length == 2) {
+            if (!["0", "5"].includes(value[1])) {
+              evntBus.$emit("show_mesage", {
+                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                color: "warning"
+              });
+              item.tue = 0;
+            }
+          }
           item.row_total = item.row_total + parseFloat(item.tue);
-          this.table_column_total[0].tue = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].tue += flt(item2.tue);
-          });
         }
         if (item.wed) {
+          var value = item.wed.split(".");
+          if (value.length == 2) {
+            if (!["0", "5"].includes(value[1])) {
+              evntBus.$emit("show_mesage", {
+                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                color: "warning"
+              });
+              item.wed = 0;
+            }
+          }
           item.row_total = item.row_total + parseFloat(item.wed);
-          this.table_column_total[0].wed = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].wed += flt(item2.wed);
-          });
         }
         if (item.thu) {
+          var value = item.thu.split(".");
+          if (value.length == 2) {
+            if (!["0", "5"].includes(value[1])) {
+              evntBus.$emit("show_mesage", {
+                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                color: "warning"
+              });
+              item.thu = 0;
+            }
+          }
           item.row_total = item.row_total + parseFloat(item.thu);
-          this.table_column_total[0].thu = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].thu += flt(item2.thu);
-          });
         }
         if (item.fri) {
+          var value = item.fri.split(".");
+          if (value.length == 2) {
+            if (!["0", "5"].includes(value[1])) {
+              evntBus.$emit("show_mesage", {
+                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                color: "warning"
+              });
+              item.fri = 0;
+            }
+          }
           item.row_total = item.row_total + parseFloat(item.fri);
-          this.table_column_total[0].fri = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].fri += flt(item2.fri);
-          });
         }
         if (item.sat) {
+          var value = item.sat.split(".");
+          if (value.length == 2) {
+            if (!["0", "5"].includes(value[1])) {
+              evntBus.$emit("show_mesage", {
+                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                color: "warning"
+              });
+              item.sat = 0;
+            }
+          }
           item.row_total = item.row_total + parseFloat(item.sat);
-          this.table_column_total[0].sat = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].sat += flt(item2.sat);
-          });
         }
         if (item.sun) {
+          var value = item.sun.split(".");
+          if (value.length == 2) {
+            if (!["0", "5"].includes(value[1])) {
+              evntBus.$emit("show_mesage", {
+                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                color: "warning"
+              });
+              item.sun = 0;
+            }
+          }
           item.row_total = item.row_total + parseFloat(item.sun);
-          this.table_column_total[0].sun = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].sun += flt(item2.sun);
-          });
         }
+        this.table_column_total[0].mon = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].mon += flt(item2.mon);
+        });
+        this.table_column_total[0].tue = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].tue += flt(item2.tue);
+        });
+        this.table_column_total[0].wed = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].wed += flt(item2.wed);
+        });
+        this.table_column_total[0].thu = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].thu += flt(item2.thu);
+        });
+        this.table_column_total[0].fri = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].fri += flt(item2.fri);
+        });
+        this.table_column_total[0].sat = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].sat += flt(item2.sat);
+        });
+        this.table_column_total[0].sun = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].sun += flt(item2.sun);
+        });
         this.table_column_total[0].row_total = flt(this.table_column_total[0].mon) + flt(this.table_column_total[0].tue) + flt(this.table_column_total[0].wed) + flt(this.table_column_total[0].thu) + flt(this.table_column_total[0].fri) + flt(this.table_column_total[0].sat) + flt(this.table_column_total[0].sun);
       },
       add_row() {
-        this.total_row_id = this.total_row_id + 1;
-        this.table_row.push({ "main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0 });
-      },
-      remove_item_update_total_values(item) {
-        if (1 < this.table_row.length) {
-          const index = this.table_row.findIndex((el) => el.main_row_id == item.main_row_id);
-          if (index >= 0) {
-            this.table_row.splice(index, 1);
-          }
-          this.add_row_value(item);
+        if (!this.submitted_record) {
+          this.total_row_id = this.total_row_id + 1;
+          this.table_row.push({ "main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0 });
         } else {
           evntBus.$emit("show_mesage", {
-            text: __("Atleast One Row Needed."),
+            text: __("Already Submitted, Not Able To Add Row..."),
+            color: "error"
+          });
+        }
+      },
+      remove_item_update_total_values(item) {
+        if (!this.submitted_record) {
+          if (1 < this.table_row.length) {
+            const index = this.table_row.findIndex((el) => el.main_row_id == item.main_row_id);
+            if (index >= 0) {
+              this.table_row.splice(index, 1);
+            }
+            this.add_row_value(item);
+          } else {
+            evntBus.$emit("show_mesage", {
+              text: __("Atleast One Row Needed."),
+              color: "error"
+            });
+          }
+        } else {
+          evntBus.$emit("show_mesage", {
+            text: __("Already Submitted, Not Able To Remove It..."),
             color: "error"
           });
         }
@@ -477,6 +593,7 @@
           },
           callback: function(r) {
             if (r.message[0]) {
+              evntBus.$emit("update_after_save_submit");
               evntBus.$emit("show_mesage", {
                 text: r.message[1],
                 color: "success"
@@ -517,6 +634,9 @@
         this.type = "Submit";
         this.save_or_submit();
       });
+      evntBus.$on("submitted_record", (value) => {
+        this.submitted_record = value;
+      });
     },
     created: function() {
       this.get_customer_data();
@@ -543,6 +663,7 @@
                 var item = ref.item;
                 return [
                   _c("v-autocomplete", {
+                    staticStyle: { "max-width": "50vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
@@ -550,7 +671,8 @@
                       "hide-details": "",
                       items: item.customer_data,
                       "item-text": "name",
-                      "item-value": "name"
+                      "item-value": "name",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -600,7 +722,8 @@
                       "hide-details": "",
                       items: item.project_data,
                       "item-text": "project_name",
-                      "item-value": "name"
+                      "item-value": "name",
+                      disabled: _vm.submitted_record
                     },
                     scopedSlots: _vm._u([
                       {
@@ -645,11 +768,13 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -673,11 +798,13 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -701,11 +828,13 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -729,11 +858,13 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -757,11 +888,13 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -785,11 +918,13 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -813,11 +948,13 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -839,24 +976,7 @@
               key: "item.row_total",
               fn: function(ref) {
                 var item = ref.item;
-                return [
-                  _c("v-text-field", {
-                    attrs: {
-                      dense: "",
-                      outlined: "",
-                      color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
-                    },
-                    model: {
-                      value: item.row_total,
-                      callback: function($$v) {
-                        _vm.$set(item, "row_total", $$v);
-                      },
-                      expression: "item.row_total"
-                    }
-                  })
-                ];
+                return [_c("span", [_vm._v(_vm._s(item.row_total))])];
               }
             },
             {
@@ -880,7 +1000,7 @@
         })
       ], 1),
       _vm._v(" "),
-      _c("v-card-actions", { staticStyle: { "margin-top": "-26vh", "margin-left": "3vh" } }, [
+      _c("v-card-actions", { staticStyle: { "margin-top": "-26vh", "margin-left": "1vh" } }, [
         _c("v-btn", {
           staticStyle: {
             "margin-left": "0vh",
@@ -895,8 +1015,8 @@
       _c("v-card-actions", {
         staticStyle: {
           "margin-top": "-2vh",
-          "margin-left": "5vh",
-          "max-width": "165vh"
+          "margin-left": "49vh",
+          "max-width": "125vh"
         }
       }, [
         _c("v-data-table", {
@@ -913,12 +1033,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
-                      color: "table_field_box",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       "hide-details": "",
-                      readonly: ""
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.column_total,
@@ -936,13 +1058,16 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.mon > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
-                      color: "table_field_box",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
                       "hide-details": "",
-                      readonly: ""
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.mon,
@@ -951,7 +1076,26 @@
                       },
                       expression: "item.mon"
                     }
-                  })
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.mon < 8.1 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.mon,
+                      callback: function($$v) {
+                        _vm.$set(item, "mon", $$v);
+                      },
+                      expression: "item.mon"
+                    }
+                  }) : _vm._e()
                 ];
               }
             },
@@ -961,12 +1105,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
-                      color: "table_field_box",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       "hide-details": "",
-                      readonly: ""
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.tue,
@@ -985,12 +1131,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
-                      color: "table_field_box",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       "hide-details": "",
-                      readonly: ""
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.wed,
@@ -1009,12 +1157,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
-                      color: "table_field_box",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       "hide-details": "",
-                      readonly: ""
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.thu,
@@ -1033,12 +1183,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
-                      color: "table_field_box",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       "hide-details": "",
-                      readonly: ""
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.fri,
@@ -1057,12 +1209,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       dense: "",
-                      outlined: "",
-                      color: "table_field_box",
                       "hide-details": "",
-                      readonly: ""
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.sat,
@@ -1081,12 +1235,14 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
-                      outlined: "",
-                      color: "table_field_box",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
                       "hide-details": "",
-                      readonly: ""
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.sun,
@@ -1103,24 +1259,7 @@
               key: "item.row_total",
               fn: function(ref) {
                 var item = ref.item;
-                return [
-                  _c("v-text-field", {
-                    attrs: {
-                      dense: "",
-                      outlined: "",
-                      color: "table_field_box",
-                      "hide-details": "",
-                      readonly: ""
-                    },
-                    model: {
-                      value: item.row_total,
-                      callback: function($$v) {
-                        _vm.$set(item, "row_total", $$v);
-                      },
-                      expression: "item.row_total"
-                    }
-                  })
-                ];
+                return [_c("span", [_vm._v(_vm._s(item.row_total))])];
               }
             }
           ])
@@ -1439,4 +1578,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.VUNUVJX7.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.HVMDEHRZ.js.map

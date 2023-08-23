@@ -215,6 +215,31 @@ def save_or_submit(start_date_week, end_date_week, data, type):
 
     data = json.loads(data)
 
+    processed_data = []
+
+    matched_idx = []
+
+    for i in range (0, len(data), 1):
+
+        if i not in matched_idx:
+
+            for j in range(i+1, len(data), 1):
+
+                if data[i].get("customer_name") == data[j].get("customer_name") and data[i].get("project") == data[j].get("project"):
+                    
+                    matched_idx.append(j)
+                    
+                    for week in week_short_forms:
+
+                        hrs = 0
+                    
+                        hrs = float(data[i].get(week.lower()) or 0) + float(data[j].get(week.lower()) or 0)
+
+                        if hrs:
+                            data[i][week.lower()] = hrs
+
+            processed_data.append(data[i])
+
     start_date_week = getdate(start_date_week)
 
     end_date_week = getdate(end_date_week)
@@ -248,7 +273,7 @@ def save_or_submit(start_date_week, end_date_week, data, type):
 
             doc.details = []
 
-            for row in data:
+            for row in processed_data:
 
                 doc.append("details", {
                     "customer": row.get("customer_name"),
@@ -276,3 +301,49 @@ def save_or_submit(start_date_week, end_date_week, data, type):
         msg = "Saved Successfully..."
 
     return True, msg
+
+@frappe.whitelist()
+def reset(start_date_week, end_date_week):
+
+    start_date_week = getdate(start_date_week)
+
+    end_date_week = getdate(end_date_week)
+
+    if frappe.db.exists("TSheets Record", {"user": frappe.session.user, "date": start_date_week, "docstatus": ["!=", 2]}):
+
+        doc = frappe.get_doc("TSheets Record", {"user": frappe.session.user, "date": start_date_week, "docstatus": ["!=", 2]})
+
+        if doc.docstatus == 1:
+
+            msg = "Submitted Record Cannot Able To Reset..."
+
+            return False, msg
+        
+        else:
+
+            frappe.delete_doc("TSheets Record", doc.name)
+
+            for i in range(1, 7, 1):
+
+                current_date = start_date_week + timedelta(days = i)
+
+                if frappe.db.exists("TSheets Record", {"user": frappe.session.user, "date": current_date, "docstatus": ["!=", 2]}):
+
+                    doc = frappe.get_doc("TSheets Record", {"user": frappe.session.user, "date": current_date, "docstatus": ["!=", 2]})
+
+                    frappe.delete_doc("TSheets Record", doc.name)
+
+                if str(current_date) == str(end_date_week):
+
+                    break
+
+            msg = "Reset Successfully..."
+
+            return True, msg
+        
+    else:
+
+        msg = "No Record Found To Reset..."
+
+        return False, msg
+

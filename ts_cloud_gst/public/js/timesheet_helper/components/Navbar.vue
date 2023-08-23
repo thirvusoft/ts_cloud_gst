@@ -76,7 +76,7 @@
 
         </v-bottom-navigation>
 
-        <v-snackbar v-model="snack" :timeout="2500" :color="snackColor" top right>
+        <v-snackbar v-model="snack" :timeout="3500" :color="snackColor" top right>
             {{ snackText }}
         </v-snackbar>
         
@@ -100,6 +100,8 @@ export default {
             select_date: '',
             process_date: '',
             allow_date_picker: false,
+
+            show_warning: true,
             
             snack: false,
             snackColor: '',
@@ -160,12 +162,24 @@ export default {
 
                         if(r.message[7]){
 
-                            evntBus.$emit("show_mesage", {
-                                text: r.message[7],
-                                color: "warning",
-                            });
+                            evntBus.$emit("submitted_record", (true));
+                            
+                            if (me.show_warning){
+
+                                evntBus.$emit("show_mesage", {
+                                    text: r.message[7],
+                                    color: "warning",
+                                });
+
+                            }
                             
                         }
+
+                        else{
+                            evntBus.$emit("submitted_record", (false));
+                        }
+
+                        me.show_warning = true
                         
                     }
 
@@ -179,8 +193,41 @@ export default {
         },
 
         reset() {
-            frappe.set_route('/timesheethelper');
-            location.reload();
+
+            var me = this
+
+            frappe.call({
+                method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.reset",
+
+                args: {
+                    start_date_week: this.start_date_week,
+                    end_date_week: this.end_date_week
+                },
+
+                callback: function (r) {
+
+                    if(r.message[0]){
+                        
+                        evntBus.$emit("show_mesage", {
+                            text: r.message[1],
+                            color: "success",
+                        });
+
+                        me.get_week()
+                            
+                    }
+
+                    else{
+
+                        evntBus.$emit("show_mesage", {
+                            text: r.message[1],
+                            color: "error",
+                        });
+
+                    }
+
+                }
+            })
         },
         
         // logOut() {
@@ -230,6 +277,14 @@ export default {
         evntBus.$on('show_mesage', (data) => {
             this.show_mesage(data);
         })
+
+        evntBus.$on("update_after_save_submit", () => {
+
+            this.show_warning = false
+
+            this.get_week()
+
+        });
 
     },
 };

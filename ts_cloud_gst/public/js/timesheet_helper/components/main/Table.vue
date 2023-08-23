@@ -11,7 +11,7 @@
 
                 <template v-slot:item.customer_name="{ item }">
 
-                    <v-autocomplete
+                    <v-autocomplete style="max-width: 50vh"
                         dense
                         outlined
                         color="table_field_box"
@@ -20,6 +20,7 @@
                         :items="item.customer_data"
                         item-text="name"
                         item-value="name"
+                        :disabled="submitted_record"
                         @change="update_project_data(item)"
 
                         >
@@ -48,6 +49,7 @@
                         :items="item.project_data"
                         item-text="project_name"
                         item-value="name"
+                        :disabled="submitted_record"
                         >
                         <template v-slot:item="data">
                             <template>
@@ -70,12 +72,13 @@
 
                 <template v-slot:item.mon="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
                         v-model="item.mon"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -84,12 +87,13 @@
                 
                 <template v-slot:item.tue="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
                         v-model="item.tue"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -98,12 +102,13 @@
 
                 <template v-slot:item.wed="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
                         v-model="item.wed"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -112,12 +117,13 @@
 
                 <template v-slot:item.thu="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
                         v-model="item.thu"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -126,12 +132,13 @@
 
                 <template v-slot:item.fri="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
                         v-model="item.fri"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -140,12 +147,13 @@
 
                 <template v-slot:item.sat="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
                         v-model="item.sat"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -154,12 +162,13 @@
 
                 <template v-slot:item.sun="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
                         outlined
                         color="table_field_box"
                         hide-details
                         v-model="item.sun"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -168,16 +177,8 @@
 
                 <template v-slot:item.row_total="{ item }">
 
-                    <v-text-field
-                        dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
-                        readonly
-                        v-model="item.row_total"
-                        >
-                    </v-text-field>
-                    
+                    <span>{{ item.row_total }}</span>
+
                 </template>
 
                 <template v-slot:item.delete="{ item }">
@@ -195,7 +196,7 @@
             
         </v-card-actions>
 
-        <v-card-actions style="margin-top: -26vh; margin-left: 3vh;">
+        <v-card-actions style="margin-top: -26vh; margin-left: 1vh;">
 
             <v-btn style="margin-left: 0vh; color: #283593; font-weight: bold;" color=#BBDEFB @click="add_row">{{
                 __('Add Row')
@@ -203,7 +204,7 @@
 
             </v-card-actions>
 
-        <v-card-actions style="margin-top: -2vh; margin-left: 5vh; max-width: 165vh;">
+        <v-card-actions style="margin-top: -2vh; margin-left: 49vh; max-width: 125vh;">
 
             <v-data-table
                 :headers="table_total_column_headers"
@@ -213,28 +214,41 @@
             >
 
                 <template v-slot:item.column_total="{ item }">
-                    
-                    <v-text-field
+
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
+                        flat solo
                         readonly
+                        hide-details
+                        :disabled="submitted_record"
                         v-model="item.column_total"
                         >
                     </v-text-field>
-
+                    
                 </template>
 
                 <template v-slot:item.mon="{ item }">
 
-                    <v-text-field
+                    <v-text-field v-if="item.mon > 8"
+                        style="max-width: 10vh"
                         dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
-                        v-model="item.mon"
+                        flat solo
                         readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.mon"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.mon < 8.1"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.mon"
                         >
                     </v-text-field>
                     
@@ -242,13 +256,13 @@
 
                 <template v-slot:item.tue="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
-                        v-model="item.tue"
+                        flat solo
                         readonly
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.tue"
                         >
                     </v-text-field>
 
@@ -256,13 +270,13 @@
 
                 <template v-slot:item.wed="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
-                        v-model="item.wed"
+                        flat solo
                         readonly
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.wed"
                         >
                     </v-text-field>
                     
@@ -270,27 +284,27 @@
 
                 <template v-slot:item.thu="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
-                        v-model="item.thu"
+                        flat solo
                         readonly
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.thu"
                         >
                     </v-text-field>
-                    
+
                 </template>
 
                 <template v-slot:item.fri="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
-                        v-model="item.fri"
+                        flat solo
                         readonly
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.fri"
                         >
                     </v-text-field>
                     
@@ -298,13 +312,13 @@
 
                 <template v-slot:item.sat="{ item }">
 
-                    <v-text-field
-                        dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
-                        v-model="item.sat"
+                    <v-text-field style="max-width: 10vh"
+                        flat solo
                         readonly
+                        dense
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.sat"
                         >
                     </v-text-field>
                     
@@ -312,13 +326,13 @@
 
                 <template v-slot:item.sun="{ item }">
 
-                    <v-text-field
+                    <v-text-field style="max-width: 10vh"
                         dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
-                        v-model="item.sun"
+                        flat solo
                         readonly
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.sun"
                         >
                     </v-text-field>
                     
@@ -326,15 +340,7 @@
                     
                 <template v-slot:item.row_total="{ item }">
 
-                    <v-text-field
-                        dense
-                        outlined
-                        color="table_field_box"
-                        hide-details
-                        readonly
-                        v-model="item.row_total"
-                        >
-                    </v-text-field>
+                    <span>{{ item.row_total }}</span>
 
                 </template>
                 
@@ -357,6 +363,8 @@ data() {
     return {
 
     itemsPerPage: 5,
+
+    submitted_record: false,
 
     customer_data: [],
 
@@ -382,75 +390,193 @@ methods: {
         item.row_total = 0
 
         if (item.mon){
+            
+            var value = ((item.mon).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.mon = 0
+                }
+
+            }
 
             item.row_total = item.row_total + parseFloat(item.mon)
-
-            this.table_column_total[0].mon = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].mon += flt(item.mon);
-            });
         }
 
         if (item.tue){
-            item.row_total = item.row_total + parseFloat(item.tue)
 
-            this.table_column_total[0].tue = 0
+            var value = ((item.tue).split("."))
+            
+            if(value.length == 2){
 
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].tue += flt(item.tue);
-            });
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.tue = 0
+                }
+
+            }
+
+            item.row_total = item.row_total + parseFloat(item.tue)            
         }
 
         if (item.wed){
+
+            var value = ((item.wed).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.wed = 0
+                }
+
+            }
+
             item.row_total = item.row_total + parseFloat(item.wed)
-
-            this.table_column_total[0].wed = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].wed += flt(item.wed);
-            });
         }
 
         if (item.thu){
+
+            var value = ((item.thu).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.thu = 0
+                }
+
+            }
+
             item.row_total = item.row_total + parseFloat(item.thu)
-
-            this.table_column_total[0].thu = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].thu += flt(item.thu);
-            });
         }
 
         if (item.fri){
-            item.row_total = item.row_total + parseFloat(item.fri)
 
-            this.table_column_total[0].fri = 0
+            var value = ((item.fri).split("."))
+            
+            if(value.length == 2){
 
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].fri += flt(item.fri);
-            });
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.fri = 0
+                }
+
+            }
+
+            item.row_total = item.row_total + parseFloat(item.fri)  
         }
 
         if (item.sat){
-            item.row_total = item.row_total + parseFloat(item.sat)
 
-            this.table_column_total[0].sat = 0
+            var value = ((item.sat).split("."))
+            
+            if(value.length == 2){
 
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].sat += flt(item.sat);
-            });
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.sat = 0
+                }
+
+            }
+
+            item.row_total = item.row_total + parseFloat(item.sat)  
         }
 
         if (item.sun){
+
+            var value = ((item.sun).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.sun = 0
+                }
+
+            }
+
             item.row_total = item.row_total + parseFloat(item.sun)
-
-            this.table_column_total[0].sun = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].sun += flt(item.sun);
-            });
         }
+        
+        this.table_column_total[0].mon = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].mon += flt(item.mon);
+        });
+
+        this.table_column_total[0].tue = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].tue += flt(item.tue);
+        });
+
+        this.table_column_total[0].wed = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].wed += flt(item.wed);
+        });
+
+        this.table_column_total[0].thu = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].thu += flt(item.thu);
+        });
+
+        this.table_column_total[0].fri = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].fri += flt(item.fri);
+        });
+
+        this.table_column_total[0].sat = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].sat += flt(item.sat);
+        });
+
+        this.table_column_total[0].sun = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].sun += flt(item.sun);
+        });
 
         this.table_column_total[0].row_total = flt(this.table_column_total[0].mon) + flt(this.table_column_total[0].tue) + flt(this.table_column_total[0].wed) + flt(this.table_column_total[0].thu) + flt(this.table_column_total[0].fri) + flt(this.table_column_total[0].sat) + flt(this.table_column_total[0].sun)
 
@@ -458,31 +584,52 @@ methods: {
     
     add_row() {
 
-        this.total_row_id = this.total_row_id + 1
+        if (!this.submitted_record){
 
-        this.table_row.push({"main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0})
+            this.total_row_id = this.total_row_id + 1
 
-    },
-
-    remove_item_update_total_values(item) {
-
-        if ( 1 < (this.table_row).length){
-
-            const index = this.table_row.findIndex(
-                (el) => el.main_row_id == item.main_row_id
-            );
-
-            if (index >= 0) {
-                this.table_row.splice(index, 1);
-            }
-
-            this.add_row_value(item);
+            this.table_row.push({"main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0})
         }
 
         else{
 
             evntBus.$emit("show_mesage", {
-                text: __("Atleast One Row Needed."),
+                text: __("Already Submitted, Not Able To Add Row..."),
+                color: "error",
+            });
+        }
+    },
+
+    remove_item_update_total_values(item) {
+
+        if(!this.submitted_record){
+
+            if ( 1 < (this.table_row).length){
+
+                const index = this.table_row.findIndex(
+                    (el) => el.main_row_id == item.main_row_id
+                );
+
+                if (index >= 0) {
+                    this.table_row.splice(index, 1);
+                }
+
+                this.add_row_value(item);
+            }
+
+            else{
+
+                evntBus.$emit("show_mesage", {
+                    text: __("Atleast One Row Needed."),
+                    color: "error",
+                });
+            }
+        }
+
+        else{
+
+            evntBus.$emit("show_mesage", {
+                text: __("Already Submitted, Not Able To Remove It..."),
                 color: "error",
             });
         }
@@ -556,6 +703,8 @@ methods: {
 
                 if(r.message[0]){
 
+                    evntBus.$emit("update_after_save_submit");
+
                     evntBus.$emit("show_mesage", {
                         text: r.message[1],
                         color: "success",
@@ -616,6 +765,11 @@ mounted() {
 
         this.save_or_submit()
     });
+
+    evntBus.$on("submitted_record", (value) => {
+        this.submitted_record = value
+    });
+
 },
 
 created: function () {
