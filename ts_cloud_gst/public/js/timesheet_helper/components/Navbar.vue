@@ -160,13 +160,23 @@ export default {
                         evntBus.$emit("main_table_values", r.message[3]);
                         evntBus.$emit("total_table_values", r.message[4]);
 
-                        if(r.message[7] && me.show_warning){
+                        if(r.message[7]){
 
-                            evntBus.$emit("show_mesage", {
-                                text: r.message[7],
-                                color: "warning",
-                            });
+                            evntBus.$emit("submitted_record", (true));
                             
+                            if (me.show_warning){
+
+                                evntBus.$emit("show_mesage", {
+                                    text: r.message[7],
+                                    color: "warning",
+                                });
+
+                            }
+                            
+                        }
+
+                        else{
+                            evntBus.$emit("submitted_record", (false));
                         }
 
                         me.show_warning = true

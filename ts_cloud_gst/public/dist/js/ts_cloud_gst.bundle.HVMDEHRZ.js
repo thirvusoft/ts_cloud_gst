@@ -48,11 +48,16 @@
               evntBus.$emit("update_total_table_header", r.message[2]);
               evntBus.$emit("main_table_values", r.message[3]);
               evntBus.$emit("total_table_values", r.message[4]);
-              if (r.message[7] && me.show_warning) {
-                evntBus.$emit("show_mesage", {
-                  text: r.message[7],
-                  color: "warning"
-                });
+              if (r.message[7]) {
+                evntBus.$emit("submitted_record", true);
+                if (me.show_warning) {
+                  evntBus.$emit("show_mesage", {
+                    text: r.message[7],
+                    color: "warning"
+                  });
+                }
+              } else {
+                evntBus.$emit("submitted_record", false);
               }
               me.show_warning = true;
             }
@@ -380,6 +385,7 @@
     data() {
       return {
         itemsPerPage: 5,
+        submitted_record: false,
         customer_data: [],
         table_row: [],
         table_column_total: [],
@@ -515,19 +521,33 @@
         this.table_column_total[0].row_total = flt(this.table_column_total[0].mon) + flt(this.table_column_total[0].tue) + flt(this.table_column_total[0].wed) + flt(this.table_column_total[0].thu) + flt(this.table_column_total[0].fri) + flt(this.table_column_total[0].sat) + flt(this.table_column_total[0].sun);
       },
       add_row() {
-        this.total_row_id = this.total_row_id + 1;
-        this.table_row.push({ "main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0 });
-      },
-      remove_item_update_total_values(item) {
-        if (1 < this.table_row.length) {
-          const index = this.table_row.findIndex((el) => el.main_row_id == item.main_row_id);
-          if (index >= 0) {
-            this.table_row.splice(index, 1);
-          }
-          this.add_row_value(item);
+        if (!this.submitted_record) {
+          this.total_row_id = this.total_row_id + 1;
+          this.table_row.push({ "main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0 });
         } else {
           evntBus.$emit("show_mesage", {
-            text: __("Atleast One Row Needed."),
+            text: __("Already Submitted, Not Able To Add Row..."),
+            color: "error"
+          });
+        }
+      },
+      remove_item_update_total_values(item) {
+        if (!this.submitted_record) {
+          if (1 < this.table_row.length) {
+            const index = this.table_row.findIndex((el) => el.main_row_id == item.main_row_id);
+            if (index >= 0) {
+              this.table_row.splice(index, 1);
+            }
+            this.add_row_value(item);
+          } else {
+            evntBus.$emit("show_mesage", {
+              text: __("Atleast One Row Needed."),
+              color: "error"
+            });
+          }
+        } else {
+          evntBus.$emit("show_mesage", {
+            text: __("Already Submitted, Not Able To Remove It..."),
             color: "error"
           });
         }
@@ -614,6 +634,9 @@
         this.type = "Submit";
         this.save_or_submit();
       });
+      evntBus.$on("submitted_record", (value) => {
+        this.submitted_record = value;
+      });
     },
     created: function() {
       this.get_customer_data();
@@ -648,7 +671,8 @@
                       "hide-details": "",
                       items: item.customer_data,
                       "item-text": "name",
-                      "item-value": "name"
+                      "item-value": "name",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -698,7 +722,8 @@
                       "hide-details": "",
                       items: item.project_data,
                       "item-text": "project_name",
-                      "item-value": "name"
+                      "item-value": "name",
+                      disabled: _vm.submitted_record
                     },
                     scopedSlots: _vm._u([
                       {
@@ -748,7 +773,8 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -777,7 +803,8 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -806,7 +833,8 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -835,7 +863,8 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -864,7 +893,8 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -893,7 +923,8 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -922,7 +953,8 @@
                       dense: "",
                       outlined: "",
                       color: "table_field_box",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     on: {
                       change: function($event) {
@@ -984,7 +1016,7 @@
         staticStyle: {
           "margin-top": "-2vh",
           "margin-left": "49vh",
-          "max-width": "127vh"
+          "max-width": "125vh"
         }
       }, [
         _c("v-data-table", {
@@ -1007,7 +1039,8 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.column_total,
@@ -1033,7 +1066,8 @@
                       solo: "",
                       readonly: "",
                       "background-color": "error",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.mon,
@@ -1051,7 +1085,8 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.mon,
@@ -1076,7 +1111,8 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.tue,
@@ -1101,7 +1137,8 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.wed,
@@ -1126,7 +1163,8 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.thu,
@@ -1151,7 +1189,8 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.fri,
@@ -1176,7 +1215,8 @@
                       solo: "",
                       readonly: "",
                       dense: "",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.sat,
@@ -1201,7 +1241,8 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      "hide-details": ""
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
                     },
                     model: {
                       value: item.sun,
@@ -1218,25 +1259,7 @@
               key: "item.row_total",
               fn: function(ref) {
                 var item = ref.item;
-                return [
-                  _c("v-text-field", {
-                    staticStyle: { "max-width": "10vh" },
-                    attrs: {
-                      dense: "",
-                      flat: "",
-                      solo: "",
-                      readonly: "",
-                      "hide-details": ""
-                    },
-                    model: {
-                      value: item.row_total,
-                      callback: function($$v) {
-                        _vm.$set(item, "row_total", $$v);
-                      },
-                      expression: "item.row_total"
-                    }
-                  })
-                ];
+                return [_c("span", [_vm._v(_vm._s(item.row_total))])];
               }
             }
           ])
@@ -1555,4 +1578,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.ZFI6GL4R.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.HVMDEHRZ.js.map

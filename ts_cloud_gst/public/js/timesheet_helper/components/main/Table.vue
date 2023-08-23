@@ -20,6 +20,7 @@
                         :items="item.customer_data"
                         item-text="name"
                         item-value="name"
+                        :disabled="submitted_record"
                         @change="update_project_data(item)"
 
                         >
@@ -48,6 +49,7 @@
                         :items="item.project_data"
                         item-text="project_name"
                         item-value="name"
+                        :disabled="submitted_record"
                         >
                         <template v-slot:item="data">
                             <template>
@@ -76,6 +78,7 @@
                         color="table_field_box"
                         hide-details
                         v-model="item.mon"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -90,6 +93,7 @@
                         color="table_field_box"
                         hide-details
                         v-model="item.tue"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -104,6 +108,7 @@
                         color="table_field_box"
                         hide-details
                         v-model="item.wed"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -118,6 +123,7 @@
                         color="table_field_box"
                         hide-details
                         v-model="item.thu"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -132,6 +138,7 @@
                         color="table_field_box"
                         hide-details
                         v-model="item.fri"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -146,6 +153,7 @@
                         color="table_field_box"
                         hide-details
                         v-model="item.sat"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -160,6 +168,7 @@
                         color="table_field_box"
                         hide-details
                         v-model="item.sun"
+                        :disabled="submitted_record"
                         @change="add_row_value(item)"
                         >
                     </v-text-field>
@@ -195,7 +204,7 @@
 
             </v-card-actions>
 
-        <v-card-actions style="margin-top: -2vh; margin-left: 49vh; max-width: 127vh;">
+        <v-card-actions style="margin-top: -2vh; margin-left: 49vh; max-width: 125vh;">
 
             <v-data-table
                 :headers="table_total_column_headers"
@@ -211,6 +220,7 @@
                         flat solo
                         readonly
                         hide-details
+                        :disabled="submitted_record"
                         v-model="item.column_total"
                         >
                     </v-text-field>
@@ -226,6 +236,7 @@
                         readonly
                         background-color="error"
                         hide-details
+                        :disabled="submitted_record"
                         v-model="item.mon"
                         >
                     </v-text-field>
@@ -236,6 +247,7 @@
                         flat solo
                         readonly
                         hide-details
+                        :disabled="submitted_record"
                         v-model="item.mon"
                         >
                     </v-text-field>
@@ -249,6 +261,7 @@
                         flat solo
                         readonly
                         hide-details
+                        :disabled="submitted_record"
                         v-model="item.tue"
                         >
                     </v-text-field>
@@ -262,6 +275,7 @@
                         flat solo
                         readonly
                         hide-details
+                        :disabled="submitted_record"
                         v-model="item.wed"
                         >
                     </v-text-field>
@@ -275,6 +289,7 @@
                         flat solo
                         readonly
                         hide-details
+                        :disabled="submitted_record"
                         v-model="item.thu"
                         >
                     </v-text-field>
@@ -288,6 +303,7 @@
                         flat solo
                         readonly
                         hide-details
+                        :disabled="submitted_record"
                         v-model="item.fri"
                         >
                     </v-text-field>
@@ -301,6 +317,7 @@
                         readonly
                         dense
                         hide-details
+                        :disabled="submitted_record"
                         v-model="item.sat"
                         >
                     </v-text-field>
@@ -314,6 +331,7 @@
                         flat solo
                         readonly
                         hide-details
+                        :disabled="submitted_record"
                         v-model="item.sun"
                         >
                     </v-text-field>
@@ -322,14 +340,7 @@
                     
                 <template v-slot:item.row_total="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
-                        dense
-                        flat solo
-                        readonly
-                        hide-details
-                        v-model="item.row_total"
-                        >
-                    </v-text-field>
+                    <span>{{ item.row_total }}</span>
 
                 </template>
                 
@@ -352,6 +363,8 @@ data() {
     return {
 
     itemsPerPage: 5,
+
+    submitted_record: false,
 
     customer_data: [],
 
@@ -571,31 +584,52 @@ methods: {
     
     add_row() {
 
-        this.total_row_id = this.total_row_id + 1
+        if (!this.submitted_record){
 
-        this.table_row.push({"main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0})
+            this.total_row_id = this.total_row_id + 1
 
-    },
-
-    remove_item_update_total_values(item) {
-
-        if ( 1 < (this.table_row).length){
-
-            const index = this.table_row.findIndex(
-                (el) => el.main_row_id == item.main_row_id
-            );
-
-            if (index >= 0) {
-                this.table_row.splice(index, 1);
-            }
-
-            this.add_row_value(item);
+            this.table_row.push({"main_row_id": this.total_row_id, "customer_data": this.customer_data, "row_total": 0})
         }
 
         else{
 
             evntBus.$emit("show_mesage", {
-                text: __("Atleast One Row Needed."),
+                text: __("Already Submitted, Not Able To Add Row..."),
+                color: "error",
+            });
+        }
+    },
+
+    remove_item_update_total_values(item) {
+
+        if(!this.submitted_record){
+
+            if ( 1 < (this.table_row).length){
+
+                const index = this.table_row.findIndex(
+                    (el) => el.main_row_id == item.main_row_id
+                );
+
+                if (index >= 0) {
+                    this.table_row.splice(index, 1);
+                }
+
+                this.add_row_value(item);
+            }
+
+            else{
+
+                evntBus.$emit("show_mesage", {
+                    text: __("Atleast One Row Needed."),
+                    color: "error",
+                });
+            }
+        }
+
+        else{
+
+            evntBus.$emit("show_mesage", {
+                text: __("Already Submitted, Not Able To Remove It..."),
                 color: "error",
             });
         }
@@ -731,6 +765,11 @@ mounted() {
 
         this.save_or_submit()
     });
+
+    evntBus.$on("submitted_record", (value) => {
+        this.submitted_record = value
+    });
+
 },
 
 created: function () {
