@@ -12,6 +12,7 @@
         select_date: "",
         process_date: "",
         allow_date_picker: false,
+        show_warning: true,
         snack: false,
         snackColor: "",
         snackText: ""
@@ -47,12 +48,13 @@
               evntBus.$emit("update_total_table_header", r.message[2]);
               evntBus.$emit("main_table_values", r.message[3]);
               evntBus.$emit("total_table_values", r.message[4]);
-              if (r.message[7]) {
+              if (r.message[7] && me.show_warning) {
                 evntBus.$emit("show_mesage", {
                   text: r.message[7],
                   color: "warning"
                 });
               }
+              me.show_warning = true;
             }
           }
         });
@@ -103,6 +105,10 @@
       this.get_week();
       evntBus.$on("show_mesage", (data) => {
         this.show_mesage(data);
+      });
+      evntBus.$on("update_after_save_submit", () => {
+        this.show_warning = false;
+        this.get_week();
       });
     }
   };
@@ -567,6 +573,7 @@
           },
           callback: function(r) {
             if (r.message[0]) {
+              evntBus.$emit("update_after_save_submit");
               evntBus.$emit("show_mesage", {
                 text: r.message[1],
                 color: "success"
@@ -1548,4 +1555,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.OBCQMPJK.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.ZFI6GL4R.js.map

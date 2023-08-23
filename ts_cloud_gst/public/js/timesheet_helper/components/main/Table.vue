@@ -669,6 +669,8 @@ methods: {
 
                 if(r.message[0]){
 
+                    evntBus.$emit("update_after_save_submit");
+
                     evntBus.$emit("show_mesage", {
                         text: r.message[1],
                         color: "success",

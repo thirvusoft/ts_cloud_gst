@@ -100,6 +100,8 @@ export default {
             select_date: '',
             process_date: '',
             allow_date_picker: false,
+
+            show_warning: true,
             
             snack: false,
             snackColor: '',
@@ -158,7 +160,7 @@ export default {
                         evntBus.$emit("main_table_values", r.message[3]);
                         evntBus.$emit("total_table_values", r.message[4]);
 
-                        if(r.message[7]){
+                        if(r.message[7] && me.show_warning){
 
                             evntBus.$emit("show_mesage", {
                                 text: r.message[7],
@@ -166,6 +168,8 @@ export default {
                             });
                             
                         }
+
+                        me.show_warning = true
                         
                     }
 
@@ -263,6 +267,14 @@ export default {
         evntBus.$on('show_mesage', (data) => {
             this.show_mesage(data);
         })
+
+        evntBus.$on("update_after_save_submit", () => {
+
+            this.show_warning = false
+
+            this.get_week()
+
+        });
 
     },
 };
