@@ -376,6 +376,153 @@ methods: {
 
         item.row_total = 0
 
+        if (item.mon){
+            
+            var value = ((item.mon).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.mon = 0
+                }
+
+            }
+
+            item.row_total = item.row_total + parseFloat(item.mon)
+        }
+
+        if (item.tue){
+
+            var value = ((item.tue).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.tue = 0
+                }
+
+            }
+
+            item.row_total = item.row_total + parseFloat(item.tue)            
+        }
+
+        if (item.wed){
+
+            var value = ((item.wed).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.wed = 0
+                }
+
+            }
+
+            item.row_total = item.row_total + parseFloat(item.wed)
+        }
+
+        if (item.thu){
+
+            var value = ((item.thu).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.thu = 0
+                }
+
+            }
+
+            item.row_total = item.row_total + parseFloat(item.thu)
+        }
+
+        if (item.fri){
+
+            var value = ((item.fri).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.fri = 0
+                }
+
+            }
+
+            item.row_total = item.row_total + parseFloat(item.fri)  
+        }
+
+        if (item.sat){
+
+            var value = ((item.sat).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.sat = 0
+                }
+
+            }
+
+            item.row_total = item.row_total + parseFloat(item.sat)  
+        }
+
+        if (item.sun){
+
+            var value = ((item.sun).split("."))
+            
+            if(value.length == 2){
+
+                if (!["0", "5"].includes(value[1])){
+
+                    evntBus.$emit("show_mesage", {
+                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        color: "warning",
+                    });
+
+                    item.sun = 0
+                }
+
+            }
+
+            item.row_total = item.row_total + parseFloat(item.sun)
+        }
+        
         this.table_column_total[0].mon = 0
 
         this.table_row.forEach((item) => {
@@ -417,34 +564,6 @@ methods: {
         this.table_row.forEach((item) => {
             this.table_column_total[0].sun += flt(item.sun);
         });
-
-        if (item.mon){
-            item.row_total = item.row_total + parseFloat(item.mon)
-        }
-
-        if (item.tue){
-            item.row_total = item.row_total + parseFloat(item.tue)            
-        }
-
-        if (item.wed){
-            item.row_total = item.row_total + parseFloat(item.wed)
-        }
-
-        if (item.thu){
-            item.row_total = item.row_total + parseFloat(item.thu)
-        }
-
-        if (item.fri){
-            item.row_total = item.row_total + parseFloat(item.fri)  
-        }
-
-        if (item.sat){
-            item.row_total = item.row_total + parseFloat(item.sat)  
-        }
-
-        if (item.sun){
-            item.row_total = item.row_total + parseFloat(item.sun)
-        }
 
         this.table_column_total[0].row_total = flt(this.table_column_total[0].mon) + flt(this.table_column_total[0].tue) + flt(this.table_column_total[0].wed) + flt(this.table_column_total[0].thu) + flt(this.table_column_total[0].fri) + flt(this.table_column_total[0].sat) + flt(this.table_column_total[0].sun)
 

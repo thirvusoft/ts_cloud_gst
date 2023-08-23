@@ -76,7 +76,7 @@
 
         </v-bottom-navigation>
 
-        <v-snackbar v-model="snack" :timeout="2500" :color="snackColor" top right>
+        <v-snackbar v-model="snack" :timeout="3500" :color="snackColor" top right>
             {{ snackText }}
         </v-snackbar>
         
