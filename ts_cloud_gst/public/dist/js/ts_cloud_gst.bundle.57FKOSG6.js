@@ -387,54 +387,54 @@
     methods: {
       add_row_value(item) {
         item.row_total = 0;
+        this.table_column_total[0].mon = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].mon += flt(item2.mon);
+        });
+        this.table_column_total[0].tue = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].tue += flt(item2.tue);
+        });
+        this.table_column_total[0].wed = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].wed += flt(item2.wed);
+        });
+        this.table_column_total[0].thu = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].thu += flt(item2.thu);
+        });
+        this.table_column_total[0].fri = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].fri += flt(item2.fri);
+        });
+        this.table_column_total[0].sat = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].sat += flt(item2.sat);
+        });
+        this.table_column_total[0].sun = 0;
+        this.table_row.forEach((item2) => {
+          this.table_column_total[0].sun += flt(item2.sun);
+        });
         if (item.mon) {
           item.row_total = item.row_total + parseFloat(item.mon);
-          this.table_column_total[0].mon = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].mon += flt(item2.mon);
-          });
         }
         if (item.tue) {
           item.row_total = item.row_total + parseFloat(item.tue);
-          this.table_column_total[0].tue = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].tue += flt(item2.tue);
-          });
         }
         if (item.wed) {
           item.row_total = item.row_total + parseFloat(item.wed);
-          this.table_column_total[0].wed = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].wed += flt(item2.wed);
-          });
         }
         if (item.thu) {
           item.row_total = item.row_total + parseFloat(item.thu);
-          this.table_column_total[0].thu = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].thu += flt(item2.thu);
-          });
         }
         if (item.fri) {
           item.row_total = item.row_total + parseFloat(item.fri);
-          this.table_column_total[0].fri = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].fri += flt(item2.fri);
-          });
         }
         if (item.sat) {
           item.row_total = item.row_total + parseFloat(item.sat);
-          this.table_column_total[0].sat = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].sat += flt(item2.sat);
-          });
         }
         if (item.sun) {
           item.row_total = item.row_total + parseFloat(item.sun);
-          this.table_column_total[0].sun = 0;
-          this.table_row.forEach((item2) => {
-            this.table_column_total[0].sun += flt(item2.sun);
-          });
         }
         this.table_column_total[0].row_total = flt(this.table_column_total[0].mon) + flt(this.table_column_total[0].tue) + flt(this.table_column_total[0].wed) + flt(this.table_column_total[0].thu) + flt(this.table_column_total[0].fri) + flt(this.table_column_total[0].sat) + flt(this.table_column_total[0].sun);
       },
@@ -948,14 +948,14 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.mon > 8 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
+                      flat: "",
+                      solo: "",
                       readonly: "",
-                      outlined: "",
-                      text: "",
-                      color: "error",
+                      "background-color": "error",
                       "hide-details": ""
                     },
                     model: {
@@ -965,7 +965,25 @@
                       },
                       expression: "item.mon"
                     }
-                  })
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.mon < 9 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "hide-details": ""
+                    },
+                    model: {
+                      value: item.mon,
+                      callback: function($$v) {
+                        _vm.$set(item, "mon", $$v);
+                      },
+                      expression: "item.mon"
+                    }
+                  }) : _vm._e()
                 ];
               }
             },
@@ -981,7 +999,6 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      color: "table_field_box",
                       "hide-details": ""
                     },
                     model: {
@@ -1007,7 +1024,6 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      color: "table_field_box",
                       "hide-details": ""
                     },
                     model: {
@@ -1033,7 +1049,6 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      color: "table_field_box",
                       "hide-details": ""
                     },
                     model: {
@@ -1059,7 +1074,6 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      color: "table_field_box",
                       "hide-details": ""
                     },
                     model: {
@@ -1085,7 +1099,6 @@
                       solo: "",
                       readonly: "",
                       dense: "",
-                      color: "table_field_box",
                       "hide-details": ""
                     },
                     model: {
@@ -1111,7 +1124,6 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      color: "table_field_box",
                       "hide-details": ""
                     },
                     model: {
@@ -1137,7 +1149,6 @@
                       flat: "",
                       solo: "",
                       readonly: "",
-                      color: "table_field_box",
                       "hide-details": ""
                     },
                     model: {
@@ -1467,4 +1478,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.RV7Q5QLG.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.57FKOSG6.js.map

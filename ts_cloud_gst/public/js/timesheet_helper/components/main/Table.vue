@@ -219,11 +219,22 @@
 
                 <template v-slot:item.mon="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.mon > 8"
+                        style="max-width: 10vh"
                         dense
+                        flat solo
                         readonly
-                        outlined
-                        text color="error"
+                        background-color="error"
+                        hide-details
+                        v-model="item.mon"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.mon < 9"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
                         hide-details
                         v-model="item.mon"
                         >
@@ -237,7 +248,6 @@
                         dense
                         flat solo
                         readonly
-                        color="table_field_box"
                         hide-details
                         v-model="item.tue"
                         >
@@ -251,7 +261,6 @@
                         dense
                         flat solo
                         readonly
-                        color="table_field_box"
                         hide-details
                         v-model="item.wed"
                         >
@@ -265,7 +274,6 @@
                         dense
                         flat solo
                         readonly
-                        color="table_field_box"
                         hide-details
                         v-model="item.thu"
                         >
@@ -279,7 +287,6 @@
                         dense
                         flat solo
                         readonly
-                        color="table_field_box"
                         hide-details
                         v-model="item.fri"
                         >
@@ -293,7 +300,6 @@
                         flat solo
                         readonly
                         dense
-                        color="table_field_box"
                         hide-details
                         v-model="item.sat"
                         >
@@ -307,7 +313,6 @@
                         dense
                         flat solo
                         readonly
-                        color="table_field_box"
                         hide-details
                         v-model="item.sun"
                         >
@@ -321,7 +326,6 @@
                         dense
                         flat solo
                         readonly
-                        color="table_field_box"
                         hide-details
                         v-model="item.row_total"
                         >
@@ -372,75 +376,74 @@ methods: {
 
         item.row_total = 0
 
+        this.table_column_total[0].mon = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].mon += flt(item.mon);
+        });
+
+        this.table_column_total[0].tue = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].tue += flt(item.tue);
+        });
+
+        this.table_column_total[0].wed = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].wed += flt(item.wed);
+        });
+
+        this.table_column_total[0].thu = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].thu += flt(item.thu);
+        });
+
+        this.table_column_total[0].fri = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].fri += flt(item.fri);
+        });
+
+        this.table_column_total[0].sat = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].sat += flt(item.sat);
+        });
+
+        this.table_column_total[0].sun = 0
+
+        this.table_row.forEach((item) => {
+            this.table_column_total[0].sun += flt(item.sun);
+        });
+
         if (item.mon){
-
             item.row_total = item.row_total + parseFloat(item.mon)
-
-            this.table_column_total[0].mon = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].mon += flt(item.mon);
-            });
         }
 
         if (item.tue){
-            item.row_total = item.row_total + parseFloat(item.tue)
-
-            this.table_column_total[0].tue = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].tue += flt(item.tue);
-            });
+            item.row_total = item.row_total + parseFloat(item.tue)            
         }
 
         if (item.wed){
             item.row_total = item.row_total + parseFloat(item.wed)
-
-            this.table_column_total[0].wed = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].wed += flt(item.wed);
-            });
         }
 
         if (item.thu){
             item.row_total = item.row_total + parseFloat(item.thu)
-
-            this.table_column_total[0].thu = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].thu += flt(item.thu);
-            });
         }
 
         if (item.fri){
-            item.row_total = item.row_total + parseFloat(item.fri)
-
-            this.table_column_total[0].fri = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].fri += flt(item.fri);
-            });
+            item.row_total = item.row_total + parseFloat(item.fri)  
         }
 
         if (item.sat){
-            item.row_total = item.row_total + parseFloat(item.sat)
-
-            this.table_column_total[0].sat = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].sat += flt(item.sat);
-            });
+            item.row_total = item.row_total + parseFloat(item.sat)  
         }
 
         if (item.sun){
             item.row_total = item.row_total + parseFloat(item.sun)
-
-            this.table_column_total[0].sun = 0
-
-            this.table_row.forEach((item) => {
-                this.table_column_total[0].sun += flt(item.sun);
-            });
         }
 
         this.table_column_total[0].row_total = flt(this.table_column_total[0].mon) + flt(this.table_column_total[0].tue) + flt(this.table_column_total[0].wed) + flt(this.table_column_total[0].thu) + flt(this.table_column_total[0].fri) + flt(this.table_column_total[0].sat) + flt(this.table_column_total[0].sun)
