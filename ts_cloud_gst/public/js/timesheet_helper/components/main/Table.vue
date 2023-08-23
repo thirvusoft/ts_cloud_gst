@@ -230,7 +230,7 @@
                         >
                     </v-text-field>
 
-                    <v-text-field v-if="item.mon < 9"
+                    <v-text-field v-if="item.mon < 8.1"
                         style="max-width: 10vh"
                         dense
                         flat solo

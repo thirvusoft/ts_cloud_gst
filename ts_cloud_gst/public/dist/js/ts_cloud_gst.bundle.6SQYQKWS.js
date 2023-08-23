@@ -967,7 +967,7 @@
                     }
                   }) : _vm._e(),
                   _vm._v(" "),
-                  item.mon < 9 ? _c("v-text-field", {
+                  item.mon < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1478,4 +1478,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.57FKOSG6.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.6SQYQKWS.js.map
