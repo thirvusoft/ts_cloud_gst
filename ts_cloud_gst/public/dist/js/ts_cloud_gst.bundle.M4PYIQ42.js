@@ -62,8 +62,28 @@
         location.reload();
       },
       reset() {
-        frappe.set_route("/timesheethelper");
-        location.reload();
+        var me = this;
+        frappe.call({
+          method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.reset",
+          args: {
+            start_date_week: this.start_date_week,
+            end_date_week: this.end_date_week
+          },
+          callback: function(r) {
+            if (r.message[0]) {
+              evntBus.$emit("show_mesage", {
+                text: r.message[1],
+                color: "success"
+              });
+              me.get_week();
+            } else {
+              evntBus.$emit("show_mesage", {
+                text: r.message[1],
+                color: "error"
+              });
+            }
+          }
+        });
       },
       save() {
         evntBus.$emit("save", this.start_date_week, this.end_date_week);
@@ -1439,4 +1459,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.VUNUVJX7.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.M4PYIQ42.js.map
