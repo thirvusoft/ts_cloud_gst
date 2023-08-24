@@ -8,19 +8,19 @@
             
             </v-toolbar-title>
 
-            <v-img style="margin-left: 5vh;"
+            <v-spacer></v-spacer>
+
+            <v-btn style="cursor: unset; font-weight: bold;" text color="button" @click="go_desk">
+                <span right>{{ "Go To Home" }}</span>
+            </v-btn>
+
+            <v-img
                 src="/assets/ts_cloud_gst/icon/user.png"
                 max-width="45"
             ></v-img>
 
             <span style="color: #1565C0; font-size: 3vh">{{ session_user }}</span>
-
-            <v-spacer></v-spacer>
             
-            <v-btn style="cursor: unset; font-weight: bold;" text color="button" @click="go_desk">
-                <span right>{{ "Go To Home" }}</span>
-            </v-btn>
-
             <!-- <v-btn style="cursor: unset" text color="button" @click="logOut">
                 <span right>{{ "Logout" }}</span>
             </v-btn> -->
