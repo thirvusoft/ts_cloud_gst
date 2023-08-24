@@ -8,6 +8,13 @@
             
             </v-toolbar-title>
 
+            <v-img style="margin-left: 5vh;"
+                src="/assets/ts_cloud_gst/icon/user.png"
+                max-width="45"
+            ></v-img>
+
+            <span style="color: #1565C0; font-size: 3vh">{{ session_user }}</span>
+
             <v-spacer></v-spacer>
             
             <v-btn style="cursor: unset; font-weight: bold;" text color="button" @click="go_desk">
@@ -106,6 +113,8 @@ export default {
             snack: false,
             snackColor: '',
             snackText: '',
+
+            session_user: frappe.session.user
         };
 
     },

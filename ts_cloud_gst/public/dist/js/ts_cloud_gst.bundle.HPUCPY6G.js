@@ -15,7 +15,8 @@
         show_warning: true,
         snack: false,
         snackColor: "",
-        snackText: ""
+        snackText: "",
+        session_user: frappe.session.user
       };
     },
     methods: {
@@ -129,6 +130,16 @@
         _c("v-toolbar-title", [
           _c("span", { staticStyle: { color: "#1565C0", "font-size": "4vh" } }, [_vm._v("TSheets")])
         ]),
+        _vm._v(" "),
+        _c("v-img", {
+          staticStyle: { "margin-left": "5vh" },
+          attrs: {
+            src: "/assets/ts_cloud_gst/icon/user.png",
+            "max-width": "45"
+          }
+        }),
+        _vm._v(" "),
+        _c("span", { staticStyle: { color: "#1565C0", "font-size": "3vh" } }, [_vm._v(_vm._s(_vm.session_user))]),
         _vm._v(" "),
         _c("v-spacer"),
         _vm._v(" "),
@@ -1715,4 +1726,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.LDU3ZQ2H.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.HPUCPY6G.js.map
