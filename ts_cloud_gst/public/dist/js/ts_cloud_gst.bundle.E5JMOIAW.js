@@ -177,9 +177,11 @@
                 return [
                   _c("v-btn", _vm._g(_vm._b({
                     staticStyle: {
-                      "margin-left": "0vh",
-                      "max-width": "30vh"
-                    }
+                      "max-width": "30vh",
+                      "max-height": "4vh",
+                      "margin-top": "1.5vh"
+                    },
+                    attrs: { tonal: "" }
                   }, "v-btn", attrs, false), on), [
                     _c("span", {
                       staticStyle: {
@@ -223,9 +225,11 @@
         _c("v-btn", {
           staticStyle: {
             "margin-left": "5vh",
-            "max-height": "7vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
             cursor: "unset"
           },
+          attrs: { tonal: "" },
           on: { click: _vm.previous_week }
         }, [
           _c("span", {
@@ -240,7 +244,7 @@
         _vm._v(" "),
         _c("span", {
           staticStyle: {
-            "margin-top": "12px",
+            "margin-top": "13px",
             "margin-left": "2vh",
             color: "#1565C0",
             "font-weight": "bold"
@@ -250,9 +254,11 @@
         _c("v-btn", {
           staticStyle: {
             "margin-left": "2vh",
-            "max-height": "7vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
             cursor: "unset"
           },
+          attrs: { tonal: "" },
           on: { click: _vm.next_week }
         }, [
           _c("span", {
@@ -268,14 +274,16 @@
         _c("v-btn", {
           staticStyle: {
             "margin-left": "80vh",
-            "max-height": "7vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
             cursor: "unset"
           },
+          attrs: { tonal: "" },
           on: { click: _vm.reset }
         }, [
           _c("span", {
             staticStyle: {
-              color: "#283593",
+              color: "#D32F2F",
               "font-weight": "bold",
               "font-size": "2vh"
             },
@@ -286,14 +294,16 @@
         _c("v-btn", {
           staticStyle: {
             "margin-left": "3vh",
-            "max-height": "7vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
             cursor: "unset"
           },
+          attrs: { tonal: "" },
           on: { click: _vm.save }
         }, [
           _c("span", {
             staticStyle: {
-              color: "#283593",
+              color: "#43A047",
               "font-weight": "bold",
               "font-size": "2vh"
             },
@@ -304,14 +314,15 @@
         _c("v-btn", {
           staticStyle: {
             "margin-left": "3vh",
-            "max-height": "7vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
             cursor: "unset"
           },
           on: { click: _vm.submit }
         }, [
           _c("span", {
             staticStyle: {
-              color: "#283593",
+              color: "#3D5AFE",
               "font-weight": "bold",
               "font-size": "2vh"
             },
@@ -1725,4 +1736,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.U4RNKHHQ.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.E5JMOIAW.js.map
