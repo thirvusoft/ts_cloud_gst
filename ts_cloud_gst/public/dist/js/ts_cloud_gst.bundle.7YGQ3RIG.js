@@ -1121,7 +1121,27 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.tue > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.tue,
+                      callback: function($$v) {
+                        _vm.$set(item, "tue", $$v);
+                      },
+                      expression: "item.tue"
+                    }
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.tue < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1138,7 +1158,7 @@
                       },
                       expression: "item.tue"
                     }
-                  })
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1147,7 +1167,27 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.wed > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.wed,
+                      callback: function($$v) {
+                        _vm.$set(item, "wed", $$v);
+                      },
+                      expression: "item.wed"
+                    }
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.wed < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1164,7 +1204,7 @@
                       },
                       expression: "item.wed"
                     }
-                  })
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1173,7 +1213,27 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.thu > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.thu,
+                      callback: function($$v) {
+                        _vm.$set(item, "thu", $$v);
+                      },
+                      expression: "item.thu"
+                    }
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.thu < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1190,7 +1250,7 @@
                       },
                       expression: "item.thu"
                     }
-                  })
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1199,7 +1259,27 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.fri > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.fri,
+                      callback: function($$v) {
+                        _vm.$set(item, "fri", $$v);
+                      },
+                      expression: "item.fri"
+                    }
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.fri < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1216,7 +1296,7 @@
                       },
                       expression: "item.fri"
                     }
-                  })
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1225,12 +1305,13 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.sat > 8 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       flat: "",
                       solo: "",
                       readonly: "",
+                      "background-color": "error",
                       dense: "",
                       "hide-details": "",
                       disabled: _vm.submitted_record
@@ -1242,7 +1323,26 @@
                       },
                       expression: "item.sat"
                     }
-                  })
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.sat < 8.1 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.sat,
+                      callback: function($$v) {
+                        _vm.$set(item, "sat", $$v);
+                      },
+                      expression: "item.sat"
+                    }
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1251,7 +1351,27 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.sun > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.sun,
+                      callback: function($$v) {
+                        _vm.$set(item, "sun", $$v);
+                      },
+                      expression: "item.sun"
+                    }
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.sun < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1268,7 +1388,7 @@
                       },
                       expression: "item.sun"
                     }
-                  })
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1595,4 +1715,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.D376DGZN.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.7YGQ3RIG.js.map

@@ -259,7 +259,20 @@
 
                 <template v-slot:item.tue="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.tue > 8"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.tue"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.tue < 8.1"
+                        style="max-width: 10vh"
                         dense
                         flat solo
                         readonly
@@ -273,7 +286,20 @@
 
                 <template v-slot:item.wed="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.wed > 8"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.wed"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.wed < 8.1"
+                        style="max-width: 10vh"
                         dense
                         flat solo
                         readonly
@@ -287,7 +313,20 @@
 
                 <template v-slot:item.thu="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.thu > 8"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.thu"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.thu < 8.1"
+                        style="max-width: 10vh"
                         dense
                         flat solo
                         readonly
@@ -301,7 +340,20 @@
 
                 <template v-slot:item.fri="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.fri > 8"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.fri"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.fri < 8.1"
+                        style="max-width: 10vh"
                         dense
                         flat solo
                         readonly
@@ -315,10 +367,23 @@
 
                 <template v-slot:item.sat="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.sat > 8"
+                        style="max-width: 10vh"
                         flat solo
                         readonly
+                        background-color="error"
                         dense
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.sat"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.sat < 8.1"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
                         hide-details
                         :disabled="submitted_record"
                         v-model="item.sat"
@@ -329,7 +394,20 @@
 
                 <template v-slot:item.sun="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.sun > 8"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.sun"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.sun < 8.1"
+                        style="max-width: 10vh"
                         dense
                         flat solo
                         readonly
