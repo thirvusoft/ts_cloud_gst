@@ -479,7 +479,7 @@ methods: {
                 if (!["0", "5"].includes(value[1])){
 
                     evntBus.$emit("show_mesage", {
-                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        text: __("Allowed Format For Decimal Place Is .0 or .5, So Automatically Resetted To 0."),
                         color: "warning",
                     });
 

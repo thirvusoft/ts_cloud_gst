@@ -404,7 +404,7 @@
           if (value.length == 2) {
             if (!["0", "5"].includes(value[1])) {
               evntBus.$emit("show_mesage", {
-                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                text: __("Allowed Format For Decimal Place Is .0 or .5, So Automatically Resetted To 0."),
                 color: "warning"
               });
               item.mon = 0;
@@ -1715,4 +1715,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.7YGQ3RIG.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.LDU3ZQ2H.js.map
