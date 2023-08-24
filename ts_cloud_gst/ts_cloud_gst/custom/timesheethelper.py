@@ -168,6 +168,7 @@ def find_week(date):
                 f"{week_short_forms[0].lower()}": row.hrs,
                 "customer_name": row.customer,
                 "project": row.project,
+                "project_name": frappe.get_value("Project", row.project, "project_name"),
                 "row_total": row.hrs
             })
 

@@ -564,6 +564,7 @@
         });
       },
       update_project_data(item) {
+        item.project_name = "";
         if (item.customer_name) {
           var me = item;
           frappe.call({
@@ -580,6 +581,15 @@
           });
         } else {
           item.project_data = [];
+        }
+      },
+      update_project_name(item) {
+        item["project_name"] = "";
+        for (var i = 0; i < item.project_data.length; i++) {
+          if (item.project == item.project_data[i].name) {
+            item["project_name"] = item.project_data[i].project_name;
+            break;
+          }
         }
       },
       save_or_submit() {
@@ -721,9 +731,14 @@
                       color: "table_field_box",
                       "hide-details": "",
                       items: item.project_data,
-                      "item-text": "project_name",
+                      "item-text": "name",
                       "item-value": "name",
                       disabled: _vm.submitted_record
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.update_project_name(item);
+                      }
                     },
                     scopedSlots: _vm._u([
                       {
@@ -758,7 +773,9 @@
                       },
                       expression: "item.project"
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c("span", [_vm._v(_vm._s(item.project_name))])
                 ];
               }
             },
@@ -1578,4 +1595,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.HVMDEHRZ.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.D376DGZN.js.map

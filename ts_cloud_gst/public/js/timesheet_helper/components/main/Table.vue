@@ -47,9 +47,10 @@
                         hide-details
                         v-model="item.project"
                         :items="item.project_data"
-                        item-text="project_name"
+                        item-text="name"
                         item-value="name"
                         :disabled="submitted_record"
+                        @change="update_project_name(item)"
                         >
                         <template v-slot:item="data">
                             <template>
@@ -67,6 +68,8 @@
                             </template>
                         </template>
                     </v-autocomplete>
+
+                    <span>{{ item.project_name }}</span>
                             
                 </template>
 
@@ -655,6 +658,8 @@ methods: {
 
     update_project_data(item){
 
+        item.project_name = ""
+
         if (item.customer_name){
 
             var me = item;
@@ -666,7 +671,6 @@ methods: {
                     customer: item.customer_name
                 },
                 async: false,
-
 
                 callback: function (r) {
 
@@ -683,6 +687,23 @@ methods: {
             item.project_data = []
 
         }
+
+    },
+
+    update_project_name(item) {
+
+        item["project_name"] = ""
+
+        for(var i = 0; i < (item.project_data).length; i++){
+
+            if (item.project == item.project_data[i].name){
+
+                item["project_name"] = item.project_data[i].project_name
+
+                break
+            }
+        }
+
 
     },
 
