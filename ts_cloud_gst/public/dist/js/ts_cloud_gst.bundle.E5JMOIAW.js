@@ -15,7 +15,8 @@
         show_warning: true,
         snack: false,
         snackColor: "",
-        snackText: ""
+        snackText: "",
+        session_user: frappe.session.user
       };
     },
     methods: {
@@ -140,7 +141,16 @@
           _c("span", { attrs: { right: "" } }, [
             _vm._v(_vm._s("Go To Home"))
           ])
-        ])
+        ]),
+        _vm._v(" "),
+        _c("v-img", {
+          attrs: {
+            src: "/assets/ts_cloud_gst/icon/user.png",
+            "max-width": "45"
+          }
+        }),
+        _vm._v(" "),
+        _c("span", { staticStyle: { color: "#1565C0", "font-size": "3vh" } }, [_vm._v(_vm._s(_vm.session_user))])
       ], 1),
       _vm._v(" "),
       _c("v-bottom-navigation", {
@@ -167,9 +177,11 @@
                 return [
                   _c("v-btn", _vm._g(_vm._b({
                     staticStyle: {
-                      "margin-left": "0vh",
-                      "max-width": "30vh"
-                    }
+                      "max-width": "30vh",
+                      "max-height": "4vh",
+                      "margin-top": "1.5vh"
+                    },
+                    attrs: { tonal: "" }
                   }, "v-btn", attrs, false), on), [
                     _c("span", {
                       staticStyle: {
@@ -213,9 +225,11 @@
         _c("v-btn", {
           staticStyle: {
             "margin-left": "5vh",
-            "max-height": "7vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
             cursor: "unset"
           },
+          attrs: { tonal: "" },
           on: { click: _vm.previous_week }
         }, [
           _c("span", {
@@ -230,7 +244,7 @@
         _vm._v(" "),
         _c("span", {
           staticStyle: {
-            "margin-top": "12px",
+            "margin-top": "13px",
             "margin-left": "2vh",
             color: "#1565C0",
             "font-weight": "bold"
@@ -240,9 +254,11 @@
         _c("v-btn", {
           staticStyle: {
             "margin-left": "2vh",
-            "max-height": "7vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
             cursor: "unset"
           },
+          attrs: { tonal: "" },
           on: { click: _vm.next_week }
         }, [
           _c("span", {
@@ -258,14 +274,16 @@
         _c("v-btn", {
           staticStyle: {
             "margin-left": "80vh",
-            "max-height": "7vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
             cursor: "unset"
           },
+          attrs: { tonal: "" },
           on: { click: _vm.reset }
         }, [
           _c("span", {
             staticStyle: {
-              color: "#283593",
+              color: "#D32F2F",
               "font-weight": "bold",
               "font-size": "2vh"
             },
@@ -276,14 +294,16 @@
         _c("v-btn", {
           staticStyle: {
             "margin-left": "3vh",
-            "max-height": "7vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
             cursor: "unset"
           },
+          attrs: { tonal: "" },
           on: { click: _vm.save }
         }, [
           _c("span", {
             staticStyle: {
-              color: "#283593",
+              color: "#43A047",
               "font-weight": "bold",
               "font-size": "2vh"
             },
@@ -294,14 +314,15 @@
         _c("v-btn", {
           staticStyle: {
             "margin-left": "3vh",
-            "max-height": "7vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
             cursor: "unset"
           },
           on: { click: _vm.submit }
         }, [
           _c("span", {
             staticStyle: {
-              color: "#283593",
+              color: "#3D5AFE",
               "font-weight": "bold",
               "font-size": "2vh"
             },
@@ -404,7 +425,7 @@
           if (value.length == 2) {
             if (!["0", "5"].includes(value[1])) {
               evntBus.$emit("show_mesage", {
-                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                text: __("Allowed Format For Decimal Place Is .0 or .5, So Automatically Resetted To 0."),
                 color: "warning"
               });
               item.mon = 0;
@@ -564,6 +585,7 @@
         });
       },
       update_project_data(item) {
+        item.project_name = "";
         if (item.customer_name) {
           var me = item;
           frappe.call({
@@ -580,6 +602,15 @@
           });
         } else {
           item.project_data = [];
+        }
+      },
+      update_project_name(item) {
+        item["project_name"] = "";
+        for (var i = 0; i < item.project_data.length; i++) {
+          if (item.project == item.project_data[i].name) {
+            item["project_name"] = item.project_data[i].project_name;
+            break;
+          }
         }
       },
       save_or_submit() {
@@ -721,9 +752,14 @@
                       color: "table_field_box",
                       "hide-details": "",
                       items: item.project_data,
-                      "item-text": "project_name",
+                      "item-text": "name",
                       "item-value": "name",
                       disabled: _vm.submitted_record
+                    },
+                    on: {
+                      change: function($event) {
+                        return _vm.update_project_name(item);
+                      }
                     },
                     scopedSlots: _vm._u([
                       {
@@ -758,7 +794,9 @@
                       },
                       expression: "item.project"
                     }
-                  })
+                  }),
+                  _vm._v(" "),
+                  _c("span", [_vm._v(_vm._s(item.project_name))])
                 ];
               }
             },
@@ -1104,7 +1142,27 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.tue > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.tue,
+                      callback: function($$v) {
+                        _vm.$set(item, "tue", $$v);
+                      },
+                      expression: "item.tue"
+                    }
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.tue < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1121,7 +1179,7 @@
                       },
                       expression: "item.tue"
                     }
-                  })
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1130,7 +1188,27 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.wed > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.wed,
+                      callback: function($$v) {
+                        _vm.$set(item, "wed", $$v);
+                      },
+                      expression: "item.wed"
+                    }
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.wed < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1147,7 +1225,7 @@
                       },
                       expression: "item.wed"
                     }
-                  })
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1156,7 +1234,27 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.thu > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.thu,
+                      callback: function($$v) {
+                        _vm.$set(item, "thu", $$v);
+                      },
+                      expression: "item.thu"
+                    }
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.thu < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1173,7 +1271,7 @@
                       },
                       expression: "item.thu"
                     }
-                  })
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1182,7 +1280,27 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.fri > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.fri,
+                      callback: function($$v) {
+                        _vm.$set(item, "fri", $$v);
+                      },
+                      expression: "item.fri"
+                    }
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.fri < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1199,7 +1317,7 @@
                       },
                       expression: "item.fri"
                     }
-                  })
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1208,12 +1326,13 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.sat > 8 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       flat: "",
                       solo: "",
                       readonly: "",
+                      "background-color": "error",
                       dense: "",
                       "hide-details": "",
                       disabled: _vm.submitted_record
@@ -1225,7 +1344,26 @@
                       },
                       expression: "item.sat"
                     }
-                  })
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.sat < 8.1 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.sat,
+                      callback: function($$v) {
+                        _vm.$set(item, "sat", $$v);
+                      },
+                      expression: "item.sat"
+                    }
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1234,7 +1372,27 @@
               fn: function(ref) {
                 var item = ref.item;
                 return [
-                  _c("v-text-field", {
+                  item.sun > 8 ? _c("v-text-field", {
+                    staticStyle: { "max-width": "10vh" },
+                    attrs: {
+                      dense: "",
+                      flat: "",
+                      solo: "",
+                      readonly: "",
+                      "background-color": "error",
+                      "hide-details": "",
+                      disabled: _vm.submitted_record
+                    },
+                    model: {
+                      value: item.sun,
+                      callback: function($$v) {
+                        _vm.$set(item, "sun", $$v);
+                      },
+                      expression: "item.sun"
+                    }
+                  }) : _vm._e(),
+                  _vm._v(" "),
+                  item.sun < 8.1 ? _c("v-text-field", {
                     staticStyle: { "max-width": "10vh" },
                     attrs: {
                       dense: "",
@@ -1251,7 +1409,7 @@
                       },
                       expression: "item.sun"
                     }
-                  })
+                  }) : _vm._e()
                 ];
               }
             },
@@ -1578,4 +1736,4 @@
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.HVMDEHRZ.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.E5JMOIAW.js.map

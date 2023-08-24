@@ -9,11 +9,18 @@
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
-            
+
             <v-btn style="cursor: unset; font-weight: bold;" text color="button" @click="go_desk">
                 <span right>{{ "Go To Home" }}</span>
             </v-btn>
 
+            <v-img
+                src="/assets/ts_cloud_gst/icon/user.png"
+                max-width="45"
+            ></v-img>
+
+            <span style="color: #1565C0; font-size: 3vh">{{ session_user }}</span>
+            
             <!-- <v-btn style="cursor: unset" text color="button" @click="logOut">
                 <span right>{{ "Logout" }}</span>
             </v-btn> -->
@@ -30,7 +37,8 @@
             dense
           >
             <template v-slot:activator="{ on, attrs }" >
-                <v-btn style="margin-left: 0vh; max-width: 30vh"
+
+                <v-btn style="max-width: 30vh; max-height: 4vh; margin-top: 1.5vh;" tonal
                     v-bind="attrs"
                     v-on="on"
                 >
@@ -38,6 +46,7 @@
                     <span style="color: #283593; font-weight: bold;" right>{{"Select Date"}}</span>
                 
                 </v-btn>
+
             </template>
 
             <v-date-picker
@@ -52,26 +61,26 @@
 
           </v-menu>
             
-            <v-btn style="margin-left: 5vh; max-height: 7vh; cursor: unset" @click="previous_week">
+            <v-btn style="margin-left: 5vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="previous_week" tonal>
                 <span style="color: #283593; font-weight: bold; font-size: 3vh" right>{{"<"}}</span>
             </v-btn>
 
-            <span style="margin-top: 12px; margin-left: 2vh; color: #1565C0; font-weight: bold;">{{ current_week }}</span>
+            <span style="margin-top: 13px; margin-left: 2vh; color: #1565C0; font-weight: bold;">{{ current_week }}</span>
 
-            <v-btn style="margin-left: 2vh; max-height: 7vh; cursor: unset" @click="next_week">
+            <v-btn style="margin-left: 2vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="next_week" tonal>
                 <span style="color: #283593; font-weight: bold; font-size: 3vh" right>{{">"}}</span>
             </v-btn>
             
-            <v-btn style="margin-left: 80vh; max-height: 7vh; cursor: unset" @click="reset">
-                <span style="color: #283593; font-weight: bold; font-size: 2vh" right>{{"Reset"}}</span>
+            <v-btn style="margin-left: 80vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="reset" tonal>
+                <span style="color: #D32F2F; font-weight: bold; font-size: 2vh" right>{{"Reset"}}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 3vh; max-height: 7vh; cursor: unset" @click="save">
-                <span style="color: #283593; font-weight: bold; font-size: 2vh" right>{{ "Save" }}</span>
+            <v-btn style="margin-left: 3vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="save" tonal>
+                <span style="color: #43A047; font-weight: bold; font-size: 2vh" right>{{ "Save" }}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 3vh; max-height: 7vh; cursor: unset" @click="submit">
-                <span style="color: #283593; font-weight: bold; font-size: 2vh" right>{{ "Submit" }}</span>
+            <v-btn style="margin-left: 3vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="submit">
+                <span style="color: #3D5AFE; font-weight: bold; font-size: 2vh" right>{{ "Submit" }}</span>
             </v-btn>
 
         </v-bottom-navigation>
@@ -106,6 +115,8 @@ export default {
             snack: false,
             snackColor: '',
             snackText: '',
+
+            session_user: frappe.session.user
         };
 
     },

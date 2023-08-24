@@ -47,9 +47,10 @@
                         hide-details
                         v-model="item.project"
                         :items="item.project_data"
-                        item-text="project_name"
+                        item-text="name"
                         item-value="name"
                         :disabled="submitted_record"
+                        @change="update_project_name(item)"
                         >
                         <template v-slot:item="data">
                             <template>
@@ -67,6 +68,8 @@
                             </template>
                         </template>
                     </v-autocomplete>
+
+                    <span>{{ item.project_name }}</span>
                             
                 </template>
 
@@ -256,7 +259,20 @@
 
                 <template v-slot:item.tue="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.tue > 8"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.tue"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.tue < 8.1"
+                        style="max-width: 10vh"
                         dense
                         flat solo
                         readonly
@@ -270,7 +286,20 @@
 
                 <template v-slot:item.wed="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.wed > 8"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.wed"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.wed < 8.1"
+                        style="max-width: 10vh"
                         dense
                         flat solo
                         readonly
@@ -284,7 +313,20 @@
 
                 <template v-slot:item.thu="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.thu > 8"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.thu"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.thu < 8.1"
+                        style="max-width: 10vh"
                         dense
                         flat solo
                         readonly
@@ -298,7 +340,20 @@
 
                 <template v-slot:item.fri="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.fri > 8"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.fri"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.fri < 8.1"
+                        style="max-width: 10vh"
                         dense
                         flat solo
                         readonly
@@ -312,10 +367,23 @@
 
                 <template v-slot:item.sat="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.sat > 8"
+                        style="max-width: 10vh"
                         flat solo
                         readonly
+                        background-color="error"
                         dense
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.sat"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.sat < 8.1"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
                         hide-details
                         :disabled="submitted_record"
                         v-model="item.sat"
@@ -326,7 +394,20 @@
 
                 <template v-slot:item.sun="{ item }">
 
-                    <v-text-field style="max-width: 10vh"
+                    <v-text-field v-if="item.sun > 8"
+                        style="max-width: 10vh"
+                        dense
+                        flat solo
+                        readonly
+                        background-color="error"
+                        hide-details
+                        :disabled="submitted_record"
+                        v-model="item.sun"
+                        >
+                    </v-text-field>
+
+                    <v-text-field v-if="item.sun < 8.1"
+                        style="max-width: 10vh"
                         dense
                         flat solo
                         readonly
@@ -398,7 +479,7 @@ methods: {
                 if (!["0", "5"].includes(value[1])){
 
                     evntBus.$emit("show_mesage", {
-                        text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                        text: __("Allowed Format For Decimal Place Is .0 or .5, So Automatically Resetted To 0."),
                         color: "warning",
                     });
 
@@ -655,6 +736,8 @@ methods: {
 
     update_project_data(item){
 
+        item.project_name = ""
+
         if (item.customer_name){
 
             var me = item;
@@ -666,7 +749,6 @@ methods: {
                     customer: item.customer_name
                 },
                 async: false,
-
 
                 callback: function (r) {
 
@@ -683,6 +765,23 @@ methods: {
             item.project_data = []
 
         }
+
+    },
+
+    update_project_name(item) {
+
+        item["project_name"] = ""
+
+        for(var i = 0; i < (item.project_data).length; i++){
+
+            if (item.project == item.project_data[i].name){
+
+                item["project_name"] = item.project_data[i].project_name
+
+                break
+            }
+        }
+
 
     },
 
