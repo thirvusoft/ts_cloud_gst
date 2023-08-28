@@ -51,7 +51,7 @@ def find_week(date):
 
     for i in range(1, 7, 1):
 
-        if str(start_of_week) != str(start_of_week + timedelta(days = i)):
+        if str(start_of_week) != str(start_of_week + timedelta(days = i)) and str(start_of_week) != str(nowdate()):
 
             end_of_week = start_of_week + timedelta(days = i)
 
@@ -79,6 +79,15 @@ def find_week(date):
                 break
 
         else:
+
+            end_of_week = start_of_week
+
+            end_of_week_current_month_num = start_of_week_current_month_num
+
+            end_of_week_current_month = start_of_week_current_month
+
+            end_of_week_date = start_of_week.day
+
             break
 
     current_year = start_of_week.year
