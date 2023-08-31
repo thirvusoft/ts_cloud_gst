@@ -10,7 +10,7 @@ ts_cloud_gst.timesheethelper = class {
 
     }
     make_body () {
-        this.$el = this.$parent.find('.main-section');
+        this.$el = this.$parent.find('#body');
         this.vue = new Vue({
             vuetify: new Vuetify(
                 {
@@ -37,8 +37,5 @@ ts_cloud_gst.timesheethelper = class {
             },
             render: h => h(Home),
         });
-    }
-    setup_header () {
-
     }
 }

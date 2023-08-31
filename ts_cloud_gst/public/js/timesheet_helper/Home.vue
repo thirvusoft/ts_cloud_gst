@@ -8,6 +8,7 @@
   </template>
   
   <script>
+  
   import Navbar from './components/Navbar.vue';
   import Table from './components/main/Table.vue';
   
@@ -17,36 +18,24 @@
         page: 'Table',
       };
     },
+
     components: {
       Navbar,
       Table
     },
+
     methods: {
       setPage(page) {
         this.page = page;
       },
-      remove_frappe_nav() {
-        this.$nextTick(function () {
-          $('.page-head').remove();
-          $('.navbar.navbar-default.navbar-fixed-top').remove();
-        });
-      },
     },
-    mounted() {
-      this.remove_frappe_nav();
-    },
-    updated() {},
-    created: function () {
-      setTimeout(() => {
-        this.remove_frappe_nav();
-      }, 1000);
-    },
+
   };
   </script>
   
   <style scoped>
   .container1 {
-    margin-top: 0px;
+    margin-top: 0vh;
   }
   </style>
   
