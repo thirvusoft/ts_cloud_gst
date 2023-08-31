@@ -20,6 +20,9 @@
       };
     },
     methods: {
+      refresh_page() {
+        location.reload();
+      },
       update_date() {
         this.allow_date_picker = false;
         this.process_date = this.select_date;
@@ -64,10 +67,6 @@
             }
           }
         });
-      },
-      go_desk() {
-        frappe.set_route("/");
-        location.reload();
       },
       reset() {
         var me = this;
@@ -123,36 +122,6 @@
     var _h = _vm.$createElement;
     var _c = _vm._self._c || _h;
     return _c("nav", [
-      _c("v-app-bar", {
-        staticClass: "elevation-2",
-        attrs: { app: "", height: "40", color: "background" }
-      }, [
-        _c("v-toolbar-title", [
-          _c("span", { staticStyle: { color: "#1565C0", "font-size": "4vh" } }, [_vm._v("TSheets")])
-        ]),
-        _vm._v(" "),
-        _c("v-spacer"),
-        _vm._v(" "),
-        _c("v-btn", {
-          staticStyle: { cursor: "unset", "font-weight": "bold" },
-          attrs: { text: "", color: "button" },
-          on: { click: _vm.go_desk }
-        }, [
-          _c("span", { attrs: { right: "" } }, [
-            _vm._v(_vm._s("Go To Home"))
-          ])
-        ]),
-        _vm._v(" "),
-        _c("v-img", {
-          attrs: {
-            src: "/assets/ts_cloud_gst/icon/user.png",
-            "max-width": "45"
-          }
-        }),
-        _vm._v(" "),
-        _c("span", { staticStyle: { color: "#1565C0", "font-size": "3vh" } }, [_vm._v(_vm._s(_vm.session_user))])
-      ], 1),
-      _vm._v(" "),
       _c("v-bottom-navigation", {
         staticStyle: {
           "max-height": "7vh",
@@ -247,13 +216,14 @@
             "margin-top": "13px",
             "margin-left": "2vh",
             color: "#1565C0",
-            "font-weight": "bold"
+            "font-weight": "bold",
+            "font-size": "2vh"
           }
         }, [_vm._v(_vm._s(_vm.current_week))]),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "2vh",
+            "margin-left": "3vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -273,7 +243,7 @@
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "80vh",
+            "margin-left": "65vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -328,11 +298,30 @@
             },
             attrs: { right: "" }
           }, [_vm._v(_vm._s("Submit"))])
+        ]),
+        _vm._v(" "),
+        _c("v-btn", {
+          staticStyle: {
+            "margin-left": "3vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh",
+            cursor: "unset"
+          },
+          on: { click: _vm.refresh_page }
+        }, [
+          _c("span", {
+            staticStyle: {
+              color: "#F4511E",
+              "font-weight": "bold",
+              "font-size": "2vh"
+            },
+            attrs: { right: "" }
+          }, [_vm._v(_vm._s("Refresh Page"))])
         ])
       ], 1),
       _vm._v(" "),
       _c("v-snackbar", {
-        attrs: { timeout: 3500, color: _vm.snackColor, top: "", right: "" },
+        attrs: { timeout: 3500, color: _vm.snackColor, right: "" },
         model: {
           value: _vm.snack,
           callback: function($$v) {
@@ -438,7 +427,7 @@
           if (value.length == 2) {
             if (!["0", "5"].includes(value[1])) {
               evntBus.$emit("show_mesage", {
-                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                text: __("Allowed Format For Decimal Place Is .0 or .5, So Automatically Resetted To 0."),
                 color: "warning"
               });
               item.tue = 0;
@@ -451,7 +440,7 @@
           if (value.length == 2) {
             if (!["0", "5"].includes(value[1])) {
               evntBus.$emit("show_mesage", {
-                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                text: __("Allowed Format For Decimal Place Is .0 or .5, So Automatically Resetted To 0."),
                 color: "warning"
               });
               item.wed = 0;
@@ -464,7 +453,7 @@
           if (value.length == 2) {
             if (!["0", "5"].includes(value[1])) {
               evntBus.$emit("show_mesage", {
-                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                text: __("Allowed Format For Decimal Place Is .0 or .5, So Automatically Resetted To 0."),
                 color: "warning"
               });
               item.thu = 0;
@@ -477,7 +466,7 @@
           if (value.length == 2) {
             if (!["0", "5"].includes(value[1])) {
               evntBus.$emit("show_mesage", {
-                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                text: __("Allowed Format For Decimal Place Is .0 or .5, So Automatically Resetted To 0."),
                 color: "warning"
               });
               item.fri = 0;
@@ -490,7 +479,7 @@
           if (value.length == 2) {
             if (!["0", "5"].includes(value[1])) {
               evntBus.$emit("show_mesage", {
-                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                text: __("Allowed Format For Decimal Place Is .0 or .5, So Automatically Resetted To 0."),
                 color: "warning"
               });
               item.sat = 0;
@@ -503,7 +492,7 @@
           if (value.length == 2) {
             if (!["0", "5"].includes(value[1])) {
               evntBus.$emit("show_mesage", {
-                text: __("Entered Hour Format Is Wrong, So Automatically Resetted To 0."),
+                text: __("Allowed Format For Decimal Place Is .0 or .5, So Automatically Resetted To 0."),
                 color: "warning"
               });
               item.sun = 0;
@@ -1071,7 +1060,7 @@
                 var item = ref.item;
                 return [
                   _c("v-text-field", {
-                    staticStyle: { "max-width": "10vh" },
+                    staticStyle: { "max-width": "12vh" },
                     attrs: {
                       dense: "",
                       flat: "",
@@ -1497,23 +1486,7 @@
     methods: {
       setPage(page) {
         this.page = page;
-      },
-      remove_frappe_nav() {
-        this.$nextTick(function() {
-          $(".page-head").remove();
-          $(".navbar.navbar-default.navbar-fixed-top").remove();
-        });
       }
-    },
-    mounted() {
-      this.remove_frappe_nav();
-    },
-    updated() {
-    },
-    created: function() {
-      setTimeout(() => {
-        this.remove_frappe_nav();
-      }, 1e3);
     }
   };
   var __vue_render__3 = function() {
@@ -1539,7 +1512,7 @@
   var __vue_inject_styles__3 = function(inject) {
     if (!inject)
       return;
-    inject("data-v-5b125e28_0", { source: "\n.container1[data-v-5b125e28] {\n  margin-top: 0px;\n}\n", map: { "version": 3, "sources": ["../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/Home.vue"], "names": [], "mappings": ";AA+CA;EACA,eAAA;AACA", "file": "Home.vue", "sourcesContent": [`<template>
+    inject("data-v-0ff15170_0", { source: "\n.container1[data-v-0ff15170] {\n  margin-top: 0vh;\n}\n", map: { "version": 3, "sources": ["../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/Home.vue"], "names": [], "mappings": ";AAoCA;EACA,eAAA;AACA", "file": "Home.vue", "sourcesContent": [`<template>
     <v-app class="container1">
       <v-main>
         <Navbar @changePage="setPage($event)"></Navbar>
@@ -1549,6 +1522,7 @@
   </template>
   
   <script>
+  
   import Navbar from './components/Navbar.vue';
   import Table from './components/main/Table.vue';
   
@@ -1558,41 +1532,29 @@
         page: 'Table',
       };
     },
+
     components: {
       Navbar,
       Table
     },
+
     methods: {
       setPage(page) {
         this.page = page;
       },
-      remove_frappe_nav() {
-        this.$nextTick(function () {
-          $('.page-head').remove();
-          $('.navbar.navbar-default.navbar-fixed-top').remove();
-        });
-      },
     },
-    mounted() {
-      this.remove_frappe_nav();
-    },
-    updated() {},
-    created: function () {
-      setTimeout(() => {
-        this.remove_frappe_nav();
-      }, 1000);
-    },
+
   };
   <\/script>
   
   <style scoped>
   .container1 {
-    margin-top: 0px;
+    margin-top: 0vh;
   }
   </style>
   `] }, media: void 0 });
   };
-  var __vue_scope_id__3 = "data-v-5b125e28";
+  var __vue_scope_id__3 = "data-v-0ff15170";
   var __vue_module_identifier__3 = void 0;
   var __vue_is_functional_template__3 = false;
   function __vue_normalize__3(template, style, script, scope, functional, moduleIdentifier, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
@@ -1707,7 +1669,7 @@
       this.make_body();
     }
     make_body() {
-      this.$el = this.$parent.find(".main-section");
+      this.$el = this.$parent.find("#body");
       this.vue = new Vue({
         vuetify: new Vuetify({
           rtl: frappe.utils.is_rtl(),
@@ -1732,19 +1694,19 @@
         render: (h) => h(Home_default)
       });
     }
-    setup_header() {
-    }
   };
 
   // ../ts_cloud_gst/ts_cloud_gst/public/js/tlog/tlog.js
   frappe.provide("ts_cloud_gst");
   ts_cloud_gst.tlog = class {
-    constructor({ parent }) {
-      this.make_body();
+    constructor({ wrapper, parent }) {
+      this.wrapper = wrapper;
+      this.parent = parent;
       this.setup_header(parent);
     }
     make_body() {
-      console.log("---");
+      this.pa.append(`<html><button type="button" class="v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default" style="max-width: 30vh; max-height: 4vh; margin-top: 1.5vh;" tonal="" role="button" aria-haspopup="true" aria-expanded="false"><span class="v-btn__content"><span right="" style="color: rgb(40, 53, 147); font-weight: bold;"><</span></span></button></html>`);
+      this.wrapper.append(`<html><button type="button"  style="padding-top: -100vh; max-width: 30vh; max-height: 1vh; margin-top: 1.5vh;" tonal="" role="button" aria-haspopup="true" aria-expanded="false"><span class="v-btn__content"><span right="" style="color: rgb(40, 53, 147); font-weight: bold;"><</span></span></button></html>`);
     }
     setup_header(parent) {
       parent.date_field = parent.page.add_field({
@@ -1752,13 +1714,8 @@
         label: __("Select Date"),
         fieldtype: "Date"
       });
-      parent.date_field = parent.page.add_field({
-        fieldname: "left_arrow",
-        label: __("<"),
-        fieldtype: "HTML",
-        options: `<html><button type="button" class="v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default" style="max-width: 30vh; max-height: 4vh; margin-top: 1.5vh;" tonal="" role="button" aria-haspopup="true" aria-expanded="false"><span class="v-btn__content"><span right="" style="color: rgb(40, 53, 147); font-weight: bold;">Select Date</span></span></button></html>`
-      });
+      parent.append(`<html><button type="button" style="padding-top: -100vh; max-width: 30vh; max-height: 4vh; margin-top: 1.5vh;"><</button></html>`);
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.3ESIDPDY.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.SD2URFFX.js.map

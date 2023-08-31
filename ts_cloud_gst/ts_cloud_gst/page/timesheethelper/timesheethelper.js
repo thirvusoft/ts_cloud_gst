@@ -1,4 +1,5 @@
 frappe.provide('ts_cloud_gst');
+console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
 frappe.pages['timesheethelper'].on_page_load = function(wrapper) {
 	var page = frappe.ui.make_app_page({

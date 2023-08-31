@@ -1,8 +1,8 @@
 <template>
     <nav>
-        <v-app-bar app height="40" class="elevation-2" color="background">
+        <!-- <v-app-bar app height="40" class="elevation-2" color="background"> -->
 
-            <v-toolbar-title>
+            <!-- <v-toolbar-title>
 
                 <span style="color: #1565C0; font-size: 4vh">TSheets</span>
             
@@ -19,13 +19,13 @@
                 max-width="45"
             ></v-img>
 
-            <span style="color: #1565C0; font-size: 3vh">{{ session_user }}</span>
+            <span style="color: #1565C0; font-size: 3vh">{{ session_user }}</span> -->
             
             <!-- <v-btn style="cursor: unset" text color="button" @click="logOut">
                 <span right>{{ "Logout" }}</span>
             </v-btn> -->
 
-        </v-app-bar>
+        <!-- </v-app-bar> -->
 
         <v-bottom-navigation background-color="background" color = "button" style="max-height: 7vh; height: 7vh; margin-top: 13px;">
 
@@ -65,13 +65,13 @@
                 <span style="color: #283593; font-weight: bold; font-size: 3vh" right>{{"<"}}</span>
             </v-btn>
 
-            <span style="margin-top: 13px; margin-left: 2vh; color: #1565C0; font-weight: bold;">{{ current_week }}</span>
+            <span style="margin-top: 13px; margin-left: 2vh; color: #1565C0; font-weight: bold; font-size: 2vh;">{{ current_week }}</span>
 
-            <v-btn style="margin-left: 2vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="next_week" tonal>
+            <v-btn style="margin-left: 3vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="next_week" tonal>
                 <span style="color: #283593; font-weight: bold; font-size: 3vh" right>{{">"}}</span>
             </v-btn>
             
-            <v-btn style="margin-left: 80vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="reset" tonal>
+            <v-btn style="margin-left: 65vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="reset" tonal>
                 <span style="color: #D32F2F; font-weight: bold; font-size: 2vh" right>{{"Reset"}}</span>
             </v-btn>
 
@@ -83,9 +83,13 @@
                 <span style="color: #3D5AFE; font-weight: bold; font-size: 2vh" right>{{ "Submit" }}</span>
             </v-btn>
 
+            <v-btn style="margin-left: 3vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="refresh_page">
+                <span style="color: #F4511E; font-weight: bold; font-size: 2vh" right>{{ "Refresh Page" }}</span>
+            </v-btn>
+
         </v-bottom-navigation>
 
-        <v-snackbar v-model="snack" :timeout="3500" :color="snackColor" top right>
+        <v-snackbar v-model="snack" :timeout="3500" :color="snackColor" right>
             {{ snackText }}
         </v-snackbar>
         
@@ -122,6 +126,10 @@ export default {
     },
 
     methods: {
+
+        refresh_page(){
+            location.reload();
+        },
 
         update_date() {
 
@@ -198,10 +206,10 @@ export default {
             })
         },
 
-        go_desk() {
-            frappe.set_route('/');
-            location.reload();
-        },
+        // go_desk() {
+        //     frappe.set_route('/');
+        //     location.reload();
+        // },
 
         reset() {
 
