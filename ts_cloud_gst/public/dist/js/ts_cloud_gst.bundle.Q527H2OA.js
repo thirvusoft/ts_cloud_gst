@@ -285,7 +285,6 @@
             "margin-top": "1.5vh",
             cursor: "unset"
           },
-          attrs: { right: "" },
           on: { click: _vm.refresh_page }
         }, [
           _c("span", {
@@ -293,8 +292,7 @@
               color: "#F4511E",
               "font-weight": "bold",
               "font-size": "2vh"
-            },
-            attrs: { right: "" }
+            }
           }, [_vm._v(_vm._s("Refresh Page"))])
         ])
       ], 1),
@@ -316,7 +314,7 @@
   var __vue_inject_styles__ = function(inject) {
     if (!inject)
       return;
-    inject("data-v-7996814e_0", { source: "\n.bottom-navigation-class[data-v-7996814e] {\n    height: unset !important;\n	padding-bottom: 10px !important;\n	flex-wrap: wrap !important;\n}\n  ", map: { "version": 3, "sources": ["../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/components/Navbar.vue"], "names": [], "mappings": ";AAwQA;IACA,wBAAA;CACA,+BAAA;CACA,0BAAA;AACA", "file": "Navbar.vue", "sourcesContent": [`<template>
+    inject("data-v-37caead9_0", { source: "\n.bottom-navigation-class[data-v-37caead9] {\n    height: unset !important;\n	padding-bottom: 10px !important;\n	flex-wrap: wrap !important;\n}\n  ", map: { "version": 3, "sources": ["../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/components/Navbar.vue"], "names": [], "mappings": ";AAwQA;IACA,wBAAA;CACA,+BAAA;CACA,0BAAA;AACA", "file": "Navbar.vue", "sourcesContent": [`<template>
     <nav>
 
         <v-bottom-navigation class = "bottom-navigation-class" background-color="background" color = "button" style="margin-top: 13px;">
@@ -377,8 +375,8 @@
                 <span style="color: #3D5AFE; font-weight: bold; font-size: 2vh">{{ "Submit" }}</span>
             </v-btn>
 
-            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="refresh_page" right>
-                <span style="color: #F4511E; font-weight: bold; font-size: 2vh" right>{{ "Refresh Page" }}</span>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="refresh_page">
+                <span style="color: #F4511E; font-weight: bold; font-size: 2vh">{{ "Refresh Page" }}</span>
             </v-btn>
 
         </v-bottom-navigation>
@@ -588,7 +586,7 @@ export default {
   </style>
 `] }, media: void 0 });
   };
-  var __vue_scope_id__ = "data-v-7996814e";
+  var __vue_scope_id__ = "data-v-37caead9";
   var __vue_module_identifier__ = void 0;
   var __vue_is_functional_template__ = false;
   function __vue_normalize__(template, style, script, scope, functional, moduleIdentifier, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
@@ -1991,4 +1989,4 @@ export default {
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.YPK5TGEN.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.Q527H2OA.js.map

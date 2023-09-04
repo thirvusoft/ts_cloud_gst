@@ -59,8 +59,8 @@
                 <span style="color: #3D5AFE; font-weight: bold; font-size: 2vh">{{ "Submit" }}</span>
             </v-btn>
 
-            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="refresh_page" right>
-                <span style="color: #F4511E; font-weight: bold; font-size: 2vh" right>{{ "Refresh Page" }}</span>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="refresh_page">
+                <span style="color: #F4511E; font-weight: bold; font-size: 2vh">{{ "Refresh Page" }}</span>
             </v-btn>
 
         </v-bottom-navigation>
