@@ -123,11 +123,8 @@
     var _c = _vm._self._c || _h;
     return _c("nav", [
       _c("v-bottom-navigation", {
-        staticStyle: {
-          "max-height": "7vh",
-          height: "7vh",
-          "margin-top": "13px"
-        },
+        staticClass: "bottom-navigation-class",
+        staticStyle: { "margin-top": "13px" },
         attrs: { "background-color": "background", color: "button" }
       }, [
         _c("v-menu", {
@@ -146,7 +143,7 @@
                 return [
                   _c("v-btn", _vm._g(_vm._b({
                     staticStyle: {
-                      "max-width": "30vh",
+                      "max-width": "0vh",
                       "max-height": "4vh",
                       "margin-top": "1.5vh"
                     },
@@ -156,8 +153,7 @@
                       staticStyle: {
                         color: "#283593",
                         "font-weight": "bold"
-                      },
-                      attrs: { right: "" }
+                      }
                     }, [_vm._v(_vm._s("Select Date"))])
                   ])
                 ];
@@ -193,7 +189,7 @@
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "5vh",
+            "margin-left": "0vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -206,24 +202,23 @@
               color: "#283593",
               "font-weight": "bold",
               "font-size": "3vh"
-            },
-            attrs: { right: "" }
+            }
           }, [_vm._v(_vm._s("<"))])
         ]),
         _vm._v(" "),
-        _c("span", {
+        _c("v-btn", {
           staticStyle: {
-            "margin-top": "13px",
-            "margin-left": "2vh",
-            color: "#1565C0",
-            "font-weight": "bold",
-            "font-size": "2vh"
+            "margin-left": "0vh",
+            "max-height": "4vh",
+            "margin-top": "1.5vh"
           }
-        }, [_vm._v(_vm._s(_vm.current_week))]),
+        }, [
+          _c("span", { staticStyle: { color: "#1565C0", "font-weight": "bold" } }, [_vm._v(_vm._s(_vm.current_week))])
+        ]),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "3vh",
+            "margin-left": "0vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -236,14 +231,13 @@
               color: "#283593",
               "font-weight": "bold",
               "font-size": "3vh"
-            },
-            attrs: { right: "" }
+            }
           }, [_vm._v(_vm._s(">"))])
         ]),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "65vh",
+            "margin-left": "0vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -256,14 +250,13 @@
               color: "#D32F2F",
               "font-weight": "bold",
               "font-size": "2vh"
-            },
-            attrs: { right: "" }
+            }
           }, [_vm._v(_vm._s("Reset"))])
         ]),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "3vh",
+            "margin-left": "0vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -276,14 +269,13 @@
               color: "#43A047",
               "font-weight": "bold",
               "font-size": "2vh"
-            },
-            attrs: { right: "" }
+            }
           }, [_vm._v(_vm._s("Save"))])
         ]),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "3vh",
+            "margin-left": "0vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -295,18 +287,17 @@
               color: "#3D5AFE",
               "font-weight": "bold",
               "font-size": "2vh"
-            },
-            attrs: { right: "" }
+            }
           }, [_vm._v(_vm._s("Submit"))])
         ]),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "3vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
           },
+          attrs: { right: "" },
           on: { click: _vm.refresh_page }
         }, [
           _c("span", {
@@ -334,8 +325,282 @@
   };
   var __vue_staticRenderFns__ = [];
   __vue_render__._withStripped = true;
-  var __vue_inject_styles__ = void 0;
-  var __vue_scope_id__ = void 0;
+  var __vue_inject_styles__ = function(inject) {
+    if (!inject)
+      return;
+    inject("data-v-26375d0b_0", { source: "\n.bottom-navigation-class[data-v-26375d0b] {\n    height: unset !important;\n	padding-bottom: 10px !important;\n	flex-wrap: wrap !important;\n}\n  ", map: { "version": 3, "sources": ["../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/components/Navbar.vue"], "names": [], "mappings": ";AAwQA;IACA,wBAAA;CACA,+BAAA;CACA,0BAAA;AACA", "file": "Navbar.vue", "sourcesContent": [`<template>
+    <nav>
+
+        <v-bottom-navigation class = "bottom-navigation-class" background-color="background" color = "button" style="margin-top: 13px;">
+
+            <v-menu 
+            ref="allow_date_picker"
+            v-model="allow_date_picker"
+            :close-on-content-click="false"
+            transition="scale-transition"
+            dense
+          >
+            <template v-slot:activator="{ on, attrs }" >
+
+                <v-btn style="max-width: 0vh; max-height: 4vh; margin-top: 1.5vh;" tonal
+                    v-bind="attrs"
+                    v-on="on"
+                >
+                
+                    <span style="color: #283593; font-weight: bold;">{{"Select Date"}}</span>
+                
+                </v-btn>
+
+            </template>
+
+            <v-date-picker
+                v-model="select_date"
+                no-title
+                scrollable
+                color="date_select"
+                :max="frappe.datetime.add_days(frappe.datetime.now_date(true))"
+                @input="update_date"
+            >
+            </v-date-picker>
+
+          </v-menu>
+            
+            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="previous_week" tonal>
+                <span style="color: #283593; font-weight: bold; font-size: 3vh">{{"<"}}</span>
+            </v-btn>
+
+            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh;">
+                <span style="color: #1565C0; font-weight: bold;">{{ current_week }}</span>
+            </v-btn>
+
+            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="next_week" tonal>
+                <span style="color: #283593; font-weight: bold; font-size: 3vh">{{">"}}</span>
+            </v-btn>
+            
+            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="reset" tonal>
+                <span style="color: #D32F2F; font-weight: bold; font-size: 2vh">{{"Reset"}}</span>
+            </v-btn>
+
+            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="save" tonal>
+                <span style="color: #43A047; font-weight: bold; font-size: 2vh">{{ "Save" }}</span>
+            </v-btn>
+
+            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="submit">
+                <span style="color: #3D5AFE; font-weight: bold; font-size: 2vh">{{ "Submit" }}</span>
+            </v-btn>
+
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="refresh_page" right>
+                <span style="color: #F4511E; font-weight: bold; font-size: 2vh" right>{{ "Refresh Page" }}</span>
+            </v-btn>
+
+        </v-bottom-navigation>
+
+        <v-snackbar v-model="snack" :timeout="3500" :color="snackColor" right>
+            {{ snackText }}
+        </v-snackbar>
+        
+    </nav>
+    
+</template>
+
+<script>
+
+import { evntBus } from '../bus';
+
+export default {
+
+    data() {
+
+        return {
+
+            start_date_week: '',
+            end_date_week: '',
+            current_week: '',
+            select_date: '',
+            process_date: '',
+            allow_date_picker: false,
+
+            show_warning: true,
+            
+            snack: false,
+            snackColor: '',
+            snackText: '',
+
+            session_user: frappe.session.user
+        };
+
+    },
+
+    methods: {
+
+        refresh_page(){
+            location.reload();
+        },
+
+        update_date() {
+
+            this.allow_date_picker = false
+
+            this.process_date = this.select_date
+            
+            this.get_week()
+        },
+
+        previous_week() {
+
+            this.process_date = frappe.datetime.add_days(this.start_date_week, -1)
+
+            this.get_week()
+        },
+
+        next_week() {
+
+            this.process_date = frappe.datetime.add_days(this.end_date_week, 1)
+            
+            this.get_week()
+        },
+        
+        get_week(){
+
+            var me = this;
+
+            frappe.call({
+                method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.find_week",
+
+                args: {
+                    date: this.process_date
+                },
+
+                callback: function (r) {
+
+                    if(r.message){
+                        
+                        me.current_week = r.message[0];
+                        
+                        me.start_date_week = r.message[5];
+                        me.end_date_week = r.message[6];
+
+                        evntBus.$emit("update_main_table_header", r.message[1]);
+                        evntBus.$emit("update_total_table_header", r.message[2]);
+                        evntBus.$emit("main_table_values", r.message[3]);
+                        evntBus.$emit("total_table_values", r.message[4]);
+
+                        if(r.message[7]){
+
+                            evntBus.$emit("submitted_record", (true));
+                            
+                            if (me.show_warning){
+
+                                evntBus.$emit("show_mesage", {
+                                    text: r.message[7],
+                                    color: "warning",
+                                });
+
+                            }
+                            
+                        }
+
+                        else{
+                            evntBus.$emit("submitted_record", (false));
+                        }
+
+                        me.show_warning = true
+                        
+                    }
+
+                }
+            })
+        },
+
+        reset() {
+
+            var me = this
+
+            frappe.call({
+                method: "ts_cloud_gst.ts_cloud_gst.custom.timesheethelper.reset",
+
+                args: {
+                    start_date_week: this.start_date_week,
+                    end_date_week: this.end_date_week
+                },
+
+                callback: function (r) {
+
+                    if(r.message[0]){
+                        
+                        evntBus.$emit("show_mesage", {
+                            text: r.message[1],
+                            color: "success",
+                        });
+
+                        me.get_week()
+                            
+                    }
+
+                    else{
+
+                        evntBus.$emit("show_mesage", {
+                            text: r.message[1],
+                            color: "error",
+                        });
+
+                    }
+
+                }
+            })
+        },
+
+        save() {
+            evntBus.$emit("save", this.start_date_week, this.end_date_week);
+        },
+
+        submit() {
+            evntBus.$emit("submit", this.start_date_week, this.end_date_week);
+        },
+
+        show_mesage(data) {
+
+            this.snack = true;
+            this.snackColor = data.color;
+            this.snackText = data.text;
+
+        },
+        
+    },
+
+    created: function () {
+
+        this.select_date = frappe.datetime.now_date()
+
+        this.process_date = this.select_date
+
+        this.get_week()
+
+        evntBus.$on('show_mesage', (data) => {
+            this.show_mesage(data);
+        })
+
+        evntBus.$on("update_after_save_submit", () => {
+
+            this.show_warning = false
+
+            this.get_week()
+
+        });
+
+    },
+};
+<\/script>
+<style scoped>
+  .bottom-navigation-class {
+    height: unset !important;
+	padding-bottom: 10px !important;
+	flex-wrap: wrap !important;
+  }
+  </style>
+`] }, media: void 0 });
+  };
+  var __vue_scope_id__ = "data-v-26375d0b";
   var __vue_module_identifier__ = void 0;
   var __vue_is_functional_template__ = false;
   function __vue_normalize__(template, style, script, scope, functional, moduleIdentifier, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
@@ -349,7 +614,7 @@
         component.functional = true;
     }
     component._scopeId = scope;
-    if (false) {
+    if (true) {
       let hook;
       if (false) {
         hook = function(context) {
@@ -387,7 +652,58 @@
     }
     return component;
   }
-  var __vue_component__ = /* @__PURE__ */ __vue_normalize__({ render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, void 0, void 0, void 0);
+  function __vue_create_injector__() {
+    const styles = __vue_create_injector__.styles || (__vue_create_injector__.styles = {});
+    const isOldIE = typeof navigator !== "undefined" && /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
+    return function addStyle(id, css) {
+      if (document.querySelector('style[data-vue-ssr-id~="' + id + '"]'))
+        return;
+      const group = isOldIE ? css.media || "default" : id;
+      const style = styles[group] || (styles[group] = { ids: [], parts: [], element: void 0 });
+      if (!style.ids.includes(id)) {
+        let code = css.source;
+        let index = style.ids.length;
+        style.ids.push(id);
+        if (false) {
+          code += "\n/*# sourceURL=" + css.map.sources[0] + " */";
+          code += "\n/*# sourceMappingURL=data:application/json;base64," + btoa(unescape(encodeURIComponent(JSON.stringify(css.map)))) + " */";
+        }
+        if (isOldIE) {
+          style.element = style.element || document.querySelector("style[data-group=" + group + "]");
+        }
+        if (!style.element) {
+          const head = document.head || document.getElementsByTagName("head")[0];
+          const el = style.element = document.createElement("style");
+          el.type = "text/css";
+          if (css.media)
+            el.setAttribute("media", css.media);
+          if (isOldIE) {
+            el.setAttribute("data-group", group);
+            el.setAttribute("data-next-index", "0");
+          }
+          head.appendChild(el);
+        }
+        if (isOldIE) {
+          index = parseInt(style.element.getAttribute("data-next-index"));
+          style.element.setAttribute("data-next-index", index + 1);
+        }
+        if (style.element.styleSheet) {
+          style.parts.push(code);
+          style.element.styleSheet.cssText = style.parts.filter(Boolean).join("\n");
+        } else {
+          const textNode = document.createTextNode(code);
+          const nodes = style.element.childNodes;
+          if (nodes[index])
+            style.element.removeChild(nodes[index]);
+          if (nodes.length)
+            style.element.insertBefore(textNode, nodes[index]);
+          else
+            style.element.appendChild(textNode);
+        }
+      }
+    };
+  }
+  var __vue_component__ = /* @__PURE__ */ __vue_normalize__({ render: __vue_render__, staticRenderFns: __vue_staticRenderFns__ }, __vue_inject_styles__, __vue_script__, __vue_scope_id__, __vue_is_functional_template__, __vue_module_identifier__, false, __vue_create_injector__, void 0, void 0);
   var Navbar_default = __vue_component__;
 
   // ../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/components/main/Table.vue
@@ -1027,7 +1343,7 @@
         })
       ], 1),
       _vm._v(" "),
-      _c("v-card-actions", { staticStyle: { "margin-top": "-26vh", "margin-left": "1vh" } }, [
+      _c("v-card-actions", { staticStyle: { "margin-top": "0vh", "margin-left": "0vh" } }, [
         _c("v-btn", {
           staticStyle: {
             "margin-left": "0vh",
@@ -1039,19 +1355,14 @@
         }, [_vm._v(_vm._s(_vm.__("Add Row")))])
       ], 1),
       _vm._v(" "),
-      _c("v-card-actions", {
-        staticStyle: {
-          "margin-top": "-2vh",
-          "margin-left": "49vh",
-          "max-width": "125vh"
-        }
-      }, [
+      _c("v-card-actions", { attrs: { right: "" } }, [
         _c("v-data-table", {
           attrs: {
             headers: _vm.table_total_column_headers,
             items: _vm.table_column_total,
             "item-key": "total_row_id",
-            "hide-default-footer": ""
+            "hide-default-footer": "",
+            right: ""
           },
           scopedSlots: _vm._u([
             {
@@ -1606,8 +1917,8 @@
     }
     return component;
   }
-  function __vue_create_injector__() {
-    const styles = __vue_create_injector__.styles || (__vue_create_injector__.styles = {});
+  function __vue_create_injector__2() {
+    const styles = __vue_create_injector__2.styles || (__vue_create_injector__2.styles = {});
     const isOldIE = typeof navigator !== "undefined" && /msie [6-9]\\b/.test(navigator.userAgent.toLowerCase());
     return function addStyle(id, css) {
       if (document.querySelector('style[data-vue-ssr-id~="' + id + '"]'))
@@ -1657,7 +1968,7 @@
       }
     };
   }
-  var __vue_component__3 = /* @__PURE__ */ __vue_normalize__3({ render: __vue_render__3, staticRenderFns: __vue_staticRenderFns__3 }, __vue_inject_styles__3, __vue_script__3, __vue_scope_id__3, __vue_is_functional_template__3, __vue_module_identifier__3, false, __vue_create_injector__, void 0, void 0);
+  var __vue_component__3 = /* @__PURE__ */ __vue_normalize__3({ render: __vue_render__3, staticRenderFns: __vue_staticRenderFns__3 }, __vue_inject_styles__3, __vue_script__3, __vue_scope_id__3, __vue_is_functional_template__3, __vue_module_identifier__3, false, __vue_create_injector__2, void 0, void 0);
   var Home_default = __vue_component__3;
 
   // ../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/timesheethelper.js
@@ -1695,27 +2006,5 @@
       });
     }
   };
-
-  // ../ts_cloud_gst/ts_cloud_gst/public/js/tlog/tlog.js
-  frappe.provide("ts_cloud_gst");
-  ts_cloud_gst.tlog = class {
-    constructor({ wrapper, parent }) {
-      this.wrapper = wrapper;
-      this.parent = parent;
-      this.setup_header(parent);
-    }
-    make_body() {
-      this.pa.append(`<html><button type="button" class="v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default" style="max-width: 30vh; max-height: 4vh; margin-top: 1.5vh;" tonal="" role="button" aria-haspopup="true" aria-expanded="false"><span class="v-btn__content"><span right="" style="color: rgb(40, 53, 147); font-weight: bold;"><</span></span></button></html>`);
-      this.wrapper.append(`<html><button type="button"  style="padding-top: -100vh; max-width: 30vh; max-height: 1vh; margin-top: 1.5vh;" tonal="" role="button" aria-haspopup="true" aria-expanded="false"><span class="v-btn__content"><span right="" style="color: rgb(40, 53, 147); font-weight: bold;"><</span></span></button></html>`);
-    }
-    setup_header(parent) {
-      parent.date_field = parent.page.add_field({
-        fieldname: "date",
-        label: __("Select Date"),
-        fieldtype: "Date"
-      });
-      parent.append(`<html><button type="button" style="padding-top: -100vh; max-width: 30vh; max-height: 4vh; margin-top: 1.5vh;"><</button></html>`);
-    }
-  };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.SD2URFFX.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.65L5NZ4B.js.map
