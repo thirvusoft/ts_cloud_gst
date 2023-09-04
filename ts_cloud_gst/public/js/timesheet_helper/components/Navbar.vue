@@ -12,7 +12,7 @@
           >
             <template v-slot:activator="{ on, attrs }" >
 
-                <v-btn style="max-width: 0vh; max-height: 4vh; margin-top: 1.5vh;" tonal
+                <v-btn style="max-height: 4vh; margin-top: 1.5vh;" tonal
                     v-bind="attrs"
                     v-on="on"
                 >
@@ -35,27 +35,27 @@
 
           </v-menu>
             
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="previous_week" tonal>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="previous_week" tonal>
                 <span style="color: #283593; font-weight: bold; font-size: 3vh">{{"<"}}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh;">
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh;">
                 <span style="color: #1565C0; font-weight: bold;">{{ current_week }}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="next_week" tonal>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="next_week" tonal>
                 <span style="color: #283593; font-weight: bold; font-size: 3vh">{{">"}}</span>
             </v-btn>
             
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="reset" tonal>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="reset" tonal>
                 <span style="color: #D32F2F; font-weight: bold; font-size: 2vh">{{"Reset"}}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="save" tonal>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="save" tonal>
                 <span style="color: #43A047; font-weight: bold; font-size: 2vh">{{ "Save" }}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="submit">
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="submit">
                 <span style="color: #3D5AFE; font-weight: bold; font-size: 2vh">{{ "Submit" }}</span>
             </v-btn>
 

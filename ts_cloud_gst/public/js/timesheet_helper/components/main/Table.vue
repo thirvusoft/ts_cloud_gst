@@ -199,9 +199,9 @@
             
         </v-card-actions>
 
-        <v-card-actions style="margin-top: 0vh; margin-left: 0vh;">
+        <v-card-actions>
 
-            <v-btn style="margin-left: 0vh; color: #283593; font-weight: bold;" color=#BBDEFB @click="add_row">{{
+            <v-btn style="color: #283593; font-weight: bold;" color=#BBDEFB @click="add_row">{{
                 __('Add Row')
             }}</v-btn>
 

@@ -143,7 +143,6 @@
                 return [
                   _c("v-btn", _vm._g(_vm._b({
                     staticStyle: {
-                      "max-width": "0vh",
                       "max-height": "4vh",
                       "margin-top": "1.5vh"
                     },
@@ -189,7 +188,6 @@
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "0vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -206,19 +204,12 @@
           }, [_vm._v(_vm._s("<"))])
         ]),
         _vm._v(" "),
-        _c("v-btn", {
-          staticStyle: {
-            "margin-left": "0vh",
-            "max-height": "4vh",
-            "margin-top": "1.5vh"
-          }
-        }, [
+        _c("v-btn", { staticStyle: { "max-height": "4vh", "margin-top": "1.5vh" } }, [
           _c("span", { staticStyle: { color: "#1565C0", "font-weight": "bold" } }, [_vm._v(_vm._s(_vm.current_week))])
         ]),
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "0vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -237,7 +228,6 @@
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "0vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -256,7 +246,6 @@
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "0vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -275,7 +264,6 @@
         _vm._v(" "),
         _c("v-btn", {
           staticStyle: {
-            "margin-left": "0vh",
             "max-height": "4vh",
             "margin-top": "1.5vh",
             cursor: "unset"
@@ -328,7 +316,7 @@
   var __vue_inject_styles__ = function(inject) {
     if (!inject)
       return;
-    inject("data-v-26375d0b_0", { source: "\n.bottom-navigation-class[data-v-26375d0b] {\n    height: unset !important;\n	padding-bottom: 10px !important;\n	flex-wrap: wrap !important;\n}\n  ", map: { "version": 3, "sources": ["../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/components/Navbar.vue"], "names": [], "mappings": ";AAwQA;IACA,wBAAA;CACA,+BAAA;CACA,0BAAA;AACA", "file": "Navbar.vue", "sourcesContent": [`<template>
+    inject("data-v-7996814e_0", { source: "\n.bottom-navigation-class[data-v-7996814e] {\n    height: unset !important;\n	padding-bottom: 10px !important;\n	flex-wrap: wrap !important;\n}\n  ", map: { "version": 3, "sources": ["../ts_cloud_gst/ts_cloud_gst/public/js/timesheet_helper/components/Navbar.vue"], "names": [], "mappings": ";AAwQA;IACA,wBAAA;CACA,+BAAA;CACA,0BAAA;AACA", "file": "Navbar.vue", "sourcesContent": [`<template>
     <nav>
 
         <v-bottom-navigation class = "bottom-navigation-class" background-color="background" color = "button" style="margin-top: 13px;">
@@ -342,7 +330,7 @@
           >
             <template v-slot:activator="{ on, attrs }" >
 
-                <v-btn style="max-width: 0vh; max-height: 4vh; margin-top: 1.5vh;" tonal
+                <v-btn style="max-height: 4vh; margin-top: 1.5vh;" tonal
                     v-bind="attrs"
                     v-on="on"
                 >
@@ -365,27 +353,27 @@
 
           </v-menu>
             
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="previous_week" tonal>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="previous_week" tonal>
                 <span style="color: #283593; font-weight: bold; font-size: 3vh">{{"<"}}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh;">
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh;">
                 <span style="color: #1565C0; font-weight: bold;">{{ current_week }}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="next_week" tonal>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="next_week" tonal>
                 <span style="color: #283593; font-weight: bold; font-size: 3vh">{{">"}}</span>
             </v-btn>
             
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="reset" tonal>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="reset" tonal>
                 <span style="color: #D32F2F; font-weight: bold; font-size: 2vh">{{"Reset"}}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="save" tonal>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="save" tonal>
                 <span style="color: #43A047; font-weight: bold; font-size: 2vh">{{ "Save" }}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 0vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="submit">
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="submit">
                 <span style="color: #3D5AFE; font-weight: bold; font-size: 2vh">{{ "Submit" }}</span>
             </v-btn>
 
@@ -600,7 +588,7 @@ export default {
   </style>
 `] }, media: void 0 });
   };
-  var __vue_scope_id__ = "data-v-26375d0b";
+  var __vue_scope_id__ = "data-v-7996814e";
   var __vue_module_identifier__ = void 0;
   var __vue_is_functional_template__ = false;
   function __vue_normalize__(template, style, script, scope, functional, moduleIdentifier, shadowMode, createInjector, createInjectorSSR, createInjectorShadow) {
@@ -1343,13 +1331,9 @@ export default {
         })
       ], 1),
       _vm._v(" "),
-      _c("v-card-actions", { staticStyle: { "margin-top": "0vh", "margin-left": "0vh" } }, [
+      _c("v-card-actions", [
         _c("v-btn", {
-          staticStyle: {
-            "margin-left": "0vh",
-            color: "#283593",
-            "font-weight": "bold"
-          },
+          staticStyle: { color: "#283593", "font-weight": "bold" },
           attrs: { color: "#BBDEFB" },
           on: { click: _vm.add_row }
         }, [_vm._v(_vm._s(_vm.__("Add Row")))])
@@ -2007,4 +1991,4 @@ export default {
     }
   };
 })();
-//# sourceMappingURL=ts_cloud_gst.bundle.65L5NZ4B.js.map
+//# sourceMappingURL=ts_cloud_gst.bundle.YPK5TGEN.js.map
