@@ -199,21 +199,22 @@
             
         </v-card-actions>
 
-        <v-card-actions style="margin-top: -26vh; margin-left: 1vh;">
+        <v-card-actions>
 
-            <v-btn style="margin-left: 0vh; color: #283593; font-weight: bold;" color=#BBDEFB @click="add_row">{{
+            <v-btn style="color: #283593; font-weight: bold;" color=#BBDEFB @click="add_row">{{
                 __('Add Row')
             }}</v-btn>
 
             </v-card-actions>
 
-        <v-card-actions style="margin-top: -2vh; margin-left: 49vh; max-width: 125vh;">
+        <v-card-actions right>
 
             <v-data-table
                 :headers="table_total_column_headers"
                 :items="table_column_total"
                 item-key="total_row_id"
                 hide-default-footer
+                right
             >
 
                 <template v-slot:item.column_total="{ item }">

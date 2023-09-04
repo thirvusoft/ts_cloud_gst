@@ -1,33 +1,7 @@
 <template>
     <nav>
-        <!-- <v-app-bar app height="40" class="elevation-2" color="background"> -->
 
-            <!-- <v-toolbar-title>
-
-                <span style="color: #1565C0; font-size: 4vh">TSheets</span>
-            
-            </v-toolbar-title>
-
-            <v-spacer></v-spacer>
-
-            <v-btn style="cursor: unset; font-weight: bold;" text color="button" @click="go_desk">
-                <span right>{{ "Go To Home" }}</span>
-            </v-btn>
-
-            <v-img
-                src="/assets/ts_cloud_gst/icon/user.png"
-                max-width="45"
-            ></v-img>
-
-            <span style="color: #1565C0; font-size: 3vh">{{ session_user }}</span> -->
-            
-            <!-- <v-btn style="cursor: unset" text color="button" @click="logOut">
-                <span right>{{ "Logout" }}</span>
-            </v-btn> -->
-
-        <!-- </v-app-bar> -->
-
-        <v-bottom-navigation background-color="background" color = "button" style="max-height: 7vh; height: 7vh; margin-top: 13px;">
+        <v-bottom-navigation class = "bottom-navigation-class" background-color="background" color = "button" style="margin-top: 13px;">
 
             <v-menu 
             ref="allow_date_picker"
@@ -38,12 +12,12 @@
           >
             <template v-slot:activator="{ on, attrs }" >
 
-                <v-btn style="max-width: 30vh; max-height: 4vh; margin-top: 1.5vh;" tonal
+                <v-btn style="max-height: 4vh; margin-top: 1.5vh;" tonal
                     v-bind="attrs"
                     v-on="on"
                 >
                 
-                    <span style="color: #283593; font-weight: bold;" right>{{"Select Date"}}</span>
+                    <span style="color: #283593; font-weight: bold;">{{"Select Date"}}</span>
                 
                 </v-btn>
 
@@ -61,30 +35,32 @@
 
           </v-menu>
             
-            <v-btn style="margin-left: 5vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="previous_week" tonal>
-                <span style="color: #283593; font-weight: bold; font-size: 3vh" right>{{"<"}}</span>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="previous_week" tonal>
+                <span style="color: #283593; font-weight: bold; font-size: 3vh">{{"<"}}</span>
             </v-btn>
 
-            <span style="margin-top: 13px; margin-left: 2vh; color: #1565C0; font-weight: bold; font-size: 2vh;">{{ current_week }}</span>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh;">
+                <span style="color: #1565C0; font-weight: bold;">{{ current_week }}</span>
+            </v-btn>
 
-            <v-btn style="margin-left: 3vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="next_week" tonal>
-                <span style="color: #283593; font-weight: bold; font-size: 3vh" right>{{">"}}</span>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="next_week" tonal>
+                <span style="color: #283593; font-weight: bold; font-size: 3vh">{{">"}}</span>
             </v-btn>
             
-            <v-btn style="margin-left: 65vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="reset" tonal>
-                <span style="color: #D32F2F; font-weight: bold; font-size: 2vh" right>{{"Reset"}}</span>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="reset" tonal>
+                <span style="color: #D32F2F; font-weight: bold; font-size: 2vh">{{"Reset"}}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 3vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="save" tonal>
-                <span style="color: #43A047; font-weight: bold; font-size: 2vh" right>{{ "Save" }}</span>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="save" tonal>
+                <span style="color: #43A047; font-weight: bold; font-size: 2vh">{{ "Save" }}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 3vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="submit">
-                <span style="color: #3D5AFE; font-weight: bold; font-size: 2vh" right>{{ "Submit" }}</span>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="submit">
+                <span style="color: #3D5AFE; font-weight: bold; font-size: 2vh">{{ "Submit" }}</span>
             </v-btn>
 
-            <v-btn style="margin-left: 3vh; max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="refresh_page">
-                <span style="color: #F4511E; font-weight: bold; font-size: 2vh" right>{{ "Refresh Page" }}</span>
+            <v-btn style="max-height: 4vh; margin-top: 1.5vh; cursor: unset" @click="refresh_page">
+                <span style="color: #F4511E; font-weight: bold; font-size: 2vh">{{ "Refresh Page" }}</span>
             </v-btn>
 
         </v-bottom-navigation>
@@ -206,11 +182,6 @@ export default {
             })
         },
 
-        // go_desk() {
-        //     frappe.set_route('/');
-        //     location.reload();
-        // },
-
         reset() {
 
             var me = this
@@ -248,24 +219,6 @@ export default {
                 }
             })
         },
-        
-        // logOut() {
-        //     var me = this;
-        //     me.logged_out = true;
-
-        //     return frappe.call({
-        //         method: 'logout',
-                
-        //         callback: function (r) {
-        //             if (r.exc) {
-        //                 return;
-        //             }
-
-        //             frappe.set_route('/login');
-        //             location.reload();
-        //         },
-        //     });
-        // },
 
         save() {
             evntBus.$emit("save", this.start_date_week, this.end_date_week);
@@ -308,4 +261,10 @@ export default {
     },
 };
 </script>
-
+<style scoped>
+  .bottom-navigation-class {
+    height: unset !important;
+	padding-bottom: 10px !important;
+	flex-wrap: wrap !important;
+  }
+  </style>
